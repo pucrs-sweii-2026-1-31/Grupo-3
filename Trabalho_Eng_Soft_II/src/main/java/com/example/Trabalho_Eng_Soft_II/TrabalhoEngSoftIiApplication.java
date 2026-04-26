@@ -5,16 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class TrabalhoEngSoftIiApplication {
-	// Classe principal da aplicação Spring Boot
 
 	public static void main(String[] args) {
 		SpringApplication.run(TrabalhoEngSoftIiApplication.class, args);
 	}
 
 }
-
-// teste comentario davi
-
-//teste comentario Daniel
-
-// teste comentario Matheus
