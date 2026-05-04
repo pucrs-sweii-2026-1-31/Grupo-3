@@ -10,6 +10,13 @@
     }
   ],
   "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/CVS": true,
+    "**/.ruby-lsp": true,
     "**/.ai": true,
     "**/.claude": true,
     "**/.claude-plugin": true,
@@ -21,6 +28,7 @@
     "**/.github": true,
     "**/.kiro": true,
     "**/.opencode": true,
-    "**/.trae": true
+    "**/.trae": true,
+    "**/.ai_log": true
   }
 }

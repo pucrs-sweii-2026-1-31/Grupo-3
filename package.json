@@ -29,7 +29,23 @@
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf dist",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "status": "node .ai/scripts/status.js",
+    "status:json": "node .ai/scripts/status.js --json",
+    "doctor": "node .ai/scripts/doctor.js",
+    "repair": "node .ai/scripts/repair.js",
+    "repair:dry": "node .ai/scripts/repair.js --dry-run",
+    "auto-update": "node .ai/scripts/auto-update.js",
+    "auto-update:dry": "node .ai/scripts/auto-update.js --dry-run",
+    "catalog": "node .ai/scripts/catalog.js",
+    "catalog:profiles": "node .ai/scripts/catalog.js profiles",
+    "installed": "node .ai/scripts/list-installed.js",
+    "installed:json": "node .ai/scripts/list-installed.js --json",
+    "sessions": "node .ai/scripts/sessions-cli.js",
+    "sessions:json": "node .ai/scripts/sessions-cli.js --json",
+    "loop-status": "node .ai/scripts/loop-status.js",
+    "ecc": "node .ai/scripts/ecc.js",
+    "help": "node .ai/scripts/ecc.js --help"
   },
   "keywords": [
     "opencode",

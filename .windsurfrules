@@ -175,3 +175,183 @@ Continuando no dia seguinte?    → /resume-session
 O contexto ficou muito pesado?  → /context-budget e depois /checkpoint
 Quer extrair o que aprendeu?    → /learn-eval e depois /evolve
 ```
+
+
+### AI SENIOR MODPACK - BRAIN INJECTION ###
+# ATENÇÃO - DIRETRIZ ABSOLUTA (SYSTEM INSTRUCTION)
+
+> **REGRA MESTRA DE IDIOMA:** Você DEVE SEMPRE processar as informações, pensar e responder ao usuário EXCLUSIVAMENTE em Português do Brasil (pt-BR). Nunca responda em inglês.
+
+---
+
+## 🧠 Visão Geral do Repositório
+
+Este repositório está turbinado com um **Modpack Sênior** — uma coleção de agentes, skills, hooks, comandos, regras e configurações prontas para produção. Todo este conhecimento está organizado na pasta oculta `.ai/`.
+
+Você está operando como um **Desenvolvedor Sênior**. Antes de qualquer ação, consulte as diretrizes da pasta `.ai/` (especialmente `.ai/RULES.md` e `.ai/COMMANDS-QUICK-REF.md`).
+
+---
+
+## 🚨 O QUE VOCÊ DEVE FAZER ANTES DE QUALQUER AÇÃO
+
+1. Leia o arquivo `CLAUDE.md` (na raiz do projeto) e os arquivos dentro da pasta `.ai/`.
+2. Se o usuário usar comandos com barra (ex: `/tdd`, `/plan`, `/e2e`, `/code-review`), busque imediatamente a regra correspondente dentro de `.ai/skills/` ou `.ai/commands/`.
+3. Nunca forneça respostas genéricas. Assuma a postura e o conhecimento de domínio definido na pasta `.ai/`.
+
+---
+
+## ✅ Regras — Sempre Faça
+
+- Delegue tarefas de domínio para agentes especializados.
+- Escreva testes antes da implementação e verifique caminhos críticos.
+- Valide entradas e mantenha verificações de segurança intactas.
+- Prefira atualizações imutáveis em vez de modificar estado compartilhado.
+- Siga os padrões de repositório estabelecidos antes de inventar novos.
+- Mantenha as contribuições focadas, revisáveis e bem descritas.
+
+## ❌ Regras — Nunca Faça
+
+- Incluir dados confidenciais (chaves de API, tokens, segredos, caminhos absolutos) na saída.
+- Enviar alterações não testadas.
+- Ignorar verificações de segurança ou hooks de validação.
+- Duplicar funcionalidades existentes sem motivo claro.
+- Entregar código sem verificar a suíte de testes relevante.
+- **CRIAR, ALTERAR OU SALVAR** qualquer arquivo do usuário dentro das pastas `.ai/` ou `.vscode/`. Todo código do projeto deve ficar fora dessas pastas ocultas.
+
+---
+
+## 🏆 Os 4 Comandos de Ouro (Guia de Sobrevivência)
+
+Se você não quiser decorar tudo, decore apenas estes 4 comandos:
+
+1. **`/plan` (O Arquiteto):** Use ANTES de começar qualquer funcionalidade nova. Desenha a arquitetura, prevê bugs e pede aprovação antes de codar.
+2. **`/code-review` (O Revisor):** Use APÓS escrever código. Procura ativamente por falhas de segurança e violação de boas práticas.
+3. **`/build-fix` (O Socorrista):** Use QUANDO DER ERRO. O projeto não compila? Use esse comando para acionar o especialista em resolver quebras.
+4. **`/tdd` (O Fiscal):** Use PARA CRIAR TESTES obrigatórios antes de implementar regras de negócio importantes.
+
+**Resumo rápido:**
+- Vai criar algo novo? → `/plan`
+- Terminou de escrever? → `/code-review`
+- Deu pau e não roda? → `/build-fix`
+
+---
+
+## 📋 Referência de Comandos Disponíveis
+
+### Fluxo de Trabalho Principal
+
+| Comando | O que ele faz |
+|---------|-------------|
+| `/plan` | Analisa requisitos, avalia riscos e escreve um plano passo a passo — espera confirmação antes de tocar no código |
+| `/tdd` | Força TDD: cria interface → escreve teste que falha → implementa → verifica 80%+ de cobertura |
+| `/code-review` | Revisão completa de qualidade, segurança e manutenibilidade |
+| `/build-fix` | Detecta e corrige erros de compilação — delega para o agente correto |
+| `/verify` | Ciclo completo: build → lint → testar → checar tipagem |
+| `/quality-gate` | Verificação de qualidade contra os padrões do projeto |
+
+### Testes
+
+| Comando | O que ele faz |
+|---------|-------------|
+| `/tdd` | Fluxo TDD universal (qualquer linguagem) |
+| `/e2e` | Gera + roda testes End-to-End (Playwright) com screenshots/vídeos |
+| `/test-coverage` | Relata cobertura de testes e identifica lacunas |
+| `/go-test` | TDD para Go (80%+ cobertura) |
+| `/kotlin-test` | TDD para Kotlin (Kotest + Kover) |
+| `/rust-test` | TDD para Rust (cargo test) |
+| `/cpp-test` | TDD para C++ (GoogleTest + gcov/lcov) |
+
+### Revisão de Código
+
+| Comando | O que ele faz |
+|---------|-------------|
+| `/code-review` | Revisão de código universal |
+| `/python-review` | Python — PEP 8, tipagem, segurança, padrões idiomáticos |
+| `/go-review` | Go — padrões idiomáticos, segurança de concorrência, tratamento de erros |
+| `/kotlin-review` | Kotlin — null safety, segurança de corrotinas, arquitetura limpa |
+| `/rust-review` | Rust — ownership, lifetimes, uso do unsafe |
+| `/cpp-review` | C++ — segurança de memória, paradigmas modernos, concorrência |
+
+### Corretores de Build
+
+| Comando | O que ele faz |
+|---------|-------------|
+| `/build-fix` | Autodetecta a linguagem e corrige erros de compilação |
+| `/go-build` | Corrige erros de build do Go e avisos do `go vet` |
+| `/kotlin-build` | Corrige erros do compilador Kotlin/Gradle |
+| `/rust-build` | Corrige erros de compilação do Rust e do borrow checker |
+| `/cpp-build` | Corrige problemas do CMake e do linker em C++ |
+| `/gradle-build` | Corrige erros do Gradle para Android/KMP |
+
+### Planejamento & Arquitetura
+
+| Comando | O que ele faz |
+|---------|-------------|
+| `/plan` | Plano de implementação com avaliação de risco |
+| `/multi-plan` | Planejamento colaborativo com múltiplos modelos de IA |
+| `/multi-backend` | Desenvolvimento com foco no Backend (múltiplos modelos) |
+| `/multi-frontend` | Desenvolvimento com foco no Frontend (múltiplos modelos) |
+| `/orchestrate` | Guia para orquestração de múltiplos agentes via tmux/worktree |
+
+### Gerenciamento de Sessão
+
+| Comando | O que ele faz |
+|---------|-------------|
+| `/save-session` | Salva o estado atual da conversa/sessão |
+| `/resume-session` | Carrega a última sessão salva e continua de onde parou |
+| `/sessions` | Navega, pesquisa e gerencia o histórico de sessões |
+| `/checkpoint` | Marca um ponto de salvamento na sessão atual |
+| `/aside` | Responde a uma pergunta rápida sem perder o contexto da tarefa |
+| `/context-budget` | Analisa o uso da janela de contexto — encontra peso de tokens, otimiza |
+
+### Aprendizado & Melhoria
+
+| Comando | O que ele faz |
+|---------|-------------|
+| `/learn` | Extrai padrões reutilizáveis da sessão atual |
+| `/learn-eval` | Extrai padrões + autoavalia a qualidade antes de salvar |
+| `/evolve` | Analisa instintos aprendidos, sugere estruturas de skill evoluídas |
+| `/promote` | Promove instintos do escopo do projeto para escopo global |
+| `/skill-create` | Analisa o histórico do git local → gera uma skill reutilizável |
+| `/skill-health` | Painel de saúde do portfólio de skills com análises |
+| `/rules-distill` | Escaneia skills, extrai princípios transversais e os condensa em regras |
+
+### Refatoração & Limpeza
+
+| Comando | O que ele faz |
+|---------|-------------|
+| `/refactor-clean` | Remove código morto, consolida duplicatas, limpa a estrutura |
+| `/prompt-optimize` | Analisa um rascunho de prompt e retorna uma versão otimizada |
+
+### Documentação & Pesquisa
+
+| Comando | O que ele faz |
+|---------|-------------|
+| `/docs` | Pesquisa na documentação atual da biblioteca/API via Context7 |
+| `/update-docs` | Atualiza a documentação do projeto |
+| `/update-codemaps` | Regenera mapas de código para o repositório |
+
+---
+
+## 🗺️ Arquitetura da Inteligência (pasta `.ai/`)
+
+- **`.ai/agents/`** — Subagentes especializados para delegação (planejador, revisor de código, guia de TDD, etc.)
+- **`.ai/skills/`** — Definições de fluxo de trabalho e conhecimento de domínio (padrões de codificação, arquitetura, testes)
+- **`.ai/commands/`** — Comandos mágicos invocados pelos usuários (`/tdd`, `/plan`, `/e2e`, `/security-review`, etc.)
+- **`.ai/hooks/`** — Automações baseadas em gatilhos (persistência de sessão, hooks automáticos)
+- **`.ai/rules/`** — Diretrizes absolutas de conduta (segurança, estilo de código, qualidade)
+
+---
+
+## 🧭 Guia de Decisão Rápida
+
+```
+Começando uma nova feature?     → /plan primeiro, depois /tdd
+Acabou de escrever código?      → /code-review
+O build quebrou/deu erro?       → /build-fix
+Precisa de documentação viva?   → /docs <nome-da-biblioteca>
+A sessão está terminando?       → /save-session ou /learn-eval
+Continuando no dia seguinte?    → /resume-session
+O contexto ficou muito pesado?  → /context-budget e depois /checkpoint
+Quer extrair o que aprendeu?    → /learn-eval e depois /evolve
+```
