@@ -12,3 +12,9 @@ node_modules/
 .kiro/
 .opencode/
 .trae/
+
+# Terraform local files
+**/terraform/.terraform/
+**/*.tfstate
+**/*.tfstate.backup
+**/.env

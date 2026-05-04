@@ -1,4 +1,16 @@
 services:
+  postgres:
+    image: postgres:15
+    container_name: chave-postgres
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
   ministack:
     image: ministackorg/ministack
     container_name: ministack
@@ -15,7 +27,11 @@ services:
       - ministack_data:/var/lib/localstack
       - /var/run/docker.sock:/var/run/docker.sock
     healthcheck:
-      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:4566/_localstack/health')\""]
+      test:
+        [
+          "CMD-SHELL",
+          'python -c "import urllib.request; urllib.request.urlopen(''http://localhost:4566/_localstack/health'')"',
+        ]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -33,21 +49,26 @@ services:
       - TF_VAR_db_user=${DB_USER:-chave}
       - TF_VAR_db_password=${DB_PASSWORD:-chave_secret}
       - TF_VAR_ms_auth_port=${MS_AUTH_PORT:-3001}
-    entrypoint: ["/bin/sh", "-c", "rm -f terraform.tfstate terraform.tfstate.backup && terraform init && terraform apply -auto-approve"]
+    entrypoint:
+      [
+        "/bin/sh",
+        "-c",
+        "rm -f terraform.tfstate terraform.tfstate.backup && terraform init && terraform apply -auto-approve",
+      ]
     depends_on:
       ministack:
         condition: service_healthy
 
   chave-ms-auth:
     build:
-      context: ../chave-ms-auth
+      context: ../../Trabalho_Eng_Soft_II
       dockerfile: Dockerfile
     container_name: chave-ms-auth
     ports:
-      - "${MS_AUTH_PORT:-3001}:3001"
+      - "${MS_AUTH_PORT:-8080}:8080"
     environment:
       - NODE_ENV=development
-      - PORT=3001
+      - PORT=8080
       - JWT_SECRET=${JWT_SECRET}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
@@ -58,20 +79,26 @@ services:
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
     depends_on:
       infra-provisioner:
         condition: service_completed_successfully
+      postgres:
+        condition: service_started
     restart: unless-stopped
 
   chave-mfe-auth:
+    # Serviço comentado: não existe no repositório
     build:
-      context: ../chave-mfe-auth
+      context: ../../chave-shell-main/chave-shell-main
       dockerfile: Dockerfile
     container_name: chave-mfe-auth
     ports:
       - "${MFE_AUTH_PORT:-4001}:4001"
     environment:
-      - VITE_MS_AUTH_URL=http://localhost:3001
+      - VITE_MS_AUTH_URL=http://localhost:8080
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
       - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
@@ -80,10 +107,12 @@ services:
       infra-provisioner:
         condition: service_completed_successfully
     restart: unless-stopped
+    profiles:
+      - disabled
 
   chave-shell:
     build:
-      context: ../chave-shell
+      context: ../../chave-shell-main/chave-shell-main
       dockerfile: Dockerfile
       args:
         - MFE_AUTH_URL=http://localhost:4001/assets/remoteEntry.js
@@ -96,11 +125,10 @@ services:
       - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
       - AWS_ENDPOINT=http://ministack:4566
     depends_on:
-      infra-provisioner:
-        condition: service_completed_successfully
-      chave-mfe-auth:
+      postgres:
         condition: service_started
     restart: unless-stopped
 
 volumes:
   ministack_data:
+  postgres_data:

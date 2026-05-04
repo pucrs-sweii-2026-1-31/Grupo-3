@@ -19,6 +19,7 @@ public class ApiError {
     private List<ValidationError> validationErrors;
 
     @Data
+    @NoArgsConstructor
     @AllArgsConstructor
     public static class ValidationError {
         private String field;
