@@ -1,29 +1,3 @@
-<<<<<<< HEAD
-{
-  "java.compile.nullAnalysis.mode": "automatic",
-  "files.exclude": {
-    "**/.git": true,
-    "**/.svn": true,
-    "**/.hg": true,
-    "**/.DS_Store": true,
-    "**/Thumbs.db": true,
-    "**/CVS": true,
-    "**/.ruby-lsp": true,
-    "**/.claude": true,
-    "**/.claude-plugin": true,
-    "**/.codebuddy": true,
-    "**/.codex": true,
-    "**/.codex-plugin": true,
-    "**/.cursor": true,
-    "**/.gemini": true,
-    "**/.github": true,
-    "**/.kiro": true,
-    "**/.opencode": true,
-    "**/.trae": true
-  },
-  "java.configuration.updateBuildConfiguration": "interactive"
-}
-=======
 {
   "github.copilot.chat.codeGeneration.instructions": [
     {
@@ -36,13 +10,7 @@
     }
   ],
   "files.exclude": {
-    "**/.git": true,
-    "**/.svn": true,
-    "**/.hg": true,
-    "**/.DS_Store": true,
-    "**/Thumbs.db": true,
-    "**/CVS": true,
-    "**/.ruby-lsp": true,
+    "**/.ai": true,
     "**/.claude": true,
     "**/.claude-plugin": true,
     "**/.codebuddy": true,
@@ -56,4 +24,3 @@
     "**/.trae": true
   }
 }
->>>>>>> bc22bc0f3e35655532f776fd59e03111a2848bfd

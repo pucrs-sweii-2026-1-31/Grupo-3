@@ -1,18 +1,5 @@
 node_modules/
 
-.ai/
-.claude/
-.claude-plugin/
-.codebuddy/
-.codex/
-.codex-plugin/
-.cursor/
-.gemini/
-.github/
-.kiro/
-.opencode/
-.trae/
-
 # Terraform local files
 **/terraform/.terraform/
 **/*.tfstate
