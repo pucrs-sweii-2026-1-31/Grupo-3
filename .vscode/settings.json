@@ -1,5 +1,14 @@
 {
-  "java.compile.nullAnalysis.mode": "automatic",
+  "github.copilot.chat.codeGeneration.instructions": [
+    {
+      "file": ".github/copilot-instructions.md"
+    }
+  ],
+  "github.copilot.chat.editor.instructions": [
+    {
+      "file": ".github/copilot-instructions.md"
+    }
+  ],
   "files.exclude": {
     "**/.git": true,
     "**/.svn": true,
