@@ -1,12 +1,15 @@
 package com.example.Trabalho_Eng_Soft_II.service;
 
-import com.example.Trabalho_Eng_Soft_II.DTO.UserDTO;
-import com.example.Trabalho_Eng_Soft_II.DTO.UserResumoDTO;
+import com.example.Trabalho_Eng_Soft_II.dto.UserDTO;
+import com.example.Trabalho_Eng_Soft_II.dto.UserResumoDTO;
 import com.example.Trabalho_Eng_Soft_II.model.User;
 import com.example.Trabalho_Eng_Soft_II.repository.UserRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,10 +21,14 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public boolean criarUsuario(UserDTO userDTO) {
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    public UserResumoDTO criarUsuario(UserDTO userDTO) {
         User user = toModel(userDTO);
-        userRepository.save(user);
-        return true;
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        user = userRepository.save(user);
+        return UserResumoDTO.fromModel(user);
     }
 
     public Page<UserResumoDTO> listarUsuarios(Pageable pageable) {
@@ -39,11 +46,10 @@ public class UserService {
 
 
     private User toModel(UserDTO dto){
-        return new User(
-            dto.getId(),
-            dto.getUserName(),
-            dto.getEmail(),
-            dto.getPassword()
-        )
+        User user = new User();
+        user.setUsername(dto.getUserName());
+        user.setEmail(dto.getEmail());
+        user.setPassword(dto.getPassword());
+        return user;
     }
 }

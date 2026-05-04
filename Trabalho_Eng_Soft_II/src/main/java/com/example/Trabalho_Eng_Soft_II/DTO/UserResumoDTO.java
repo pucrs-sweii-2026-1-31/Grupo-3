@@ -1,5 +1,6 @@
 package com.example.Trabalho_Eng_Soft_II.dto;
 
+import com.example.Trabalho_Eng_Soft_II.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,7 @@ public class UserResumoDTO {
     public static UserResumoDTO fromModel(User user) {
         return new UserResumoDTO(
             user.getId(),
-            user.getUserName(),
+            user.getUsername(),
             user.getEmail()
         );
     }
