@@ -7,13 +7,9 @@ import com.example.Trabalho_Eng_Soft_II.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -53,3 +49,4 @@ public class UserService {
         return user;
     }
 }
+

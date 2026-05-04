@@ -1,3 +1,4 @@
+
 package com.example.Trabalho_Eng_Soft_II.dto;
 
 import com.example.Trabalho_Eng_Soft_II.model.User;
@@ -15,7 +16,7 @@ public class UserResumoDTO {
     private String email;
 
 
-    public static UserResumoDTO fromModel(User user) {
+   public static UserResumoDTO fromModel(User user) {
         return new UserResumoDTO(
             user.getId(),
             user.getUsername(),
@@ -23,3 +24,4 @@ public class UserResumoDTO {
         );
     }
 }
+
