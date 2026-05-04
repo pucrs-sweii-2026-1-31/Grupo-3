@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -19,7 +20,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
+@ActiveProfiles("test")
 public class UserControllerTest {
 
     @Autowired
@@ -43,12 +45,14 @@ public class UserControllerTest {
 
     @Test
     public void create_ShouldReturnCreatedUser_WhenDataIsValid() throws Exception {
-        UserResumoDTO expectedResumo = new UserResumoDTO(1L, "testuser", "test@email.com");
-        when(userService.criarUsuario(any(UserDTO.class))).thenReturn(expectedResumo);
+
+        UserResumoDTO expected = new UserResumoDTO(1L, "testuser", "test@email.com");
+
+        when(userService.criarUsuario(any(UserDTO.class))).thenReturn(expected);
 
         mockMvc.perform(post("/users")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(userDTO)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(userDTO)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.message").value("Usuário criado com sucesso"))
@@ -59,11 +63,12 @@ public class UserControllerTest {
 
     @Test
     public void create_ShouldReturnBadRequest_WhenEmailIsInvalid() throws Exception {
+
         userDTO.setEmail("invalid-email");
 
         mockMvc.perform(post("/users")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(userDTO)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(userDTO)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.status").value(400))
                 .andExpect(jsonPath("$.error").value("Bad Request"))
