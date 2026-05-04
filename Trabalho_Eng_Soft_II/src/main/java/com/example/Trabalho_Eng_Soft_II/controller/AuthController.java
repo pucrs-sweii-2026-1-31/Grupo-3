@@ -7,6 +7,7 @@ import com.example.Trabalho_Eng_Soft_II.dto.UserDTO;
 import com.example.Trabalho_Eng_Soft_II.dto.UserResumoDTO;
 import com.example.Trabalho_Eng_Soft_II.model.User;
 import com.example.Trabalho_Eng_Soft_II.service.TokenService;
+import com.example.Trabalho_Eng_Soft_II.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
