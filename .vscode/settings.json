@@ -19,5 +19,6 @@
     "**/.kiro": true,
     "**/.opencode": true,
     "**/.trae": true
-  }
+  },
+  "java.configuration.updateBuildConfiguration": "interactive"
 }

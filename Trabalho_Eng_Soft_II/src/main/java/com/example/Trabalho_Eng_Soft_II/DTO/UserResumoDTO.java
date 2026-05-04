@@ -15,6 +15,7 @@ public class UserResumoDTO {
     private String email;
 
 
+
    public static UserResumoDTO fromModel(User user) {
     return new UserResumoDTO(
         user.getId(),
@@ -22,4 +23,13 @@ public class UserResumoDTO {
         user.getEmail()
     );
 }
+
+    public static UserResumoDTO fromModel(User user) {
+        return new UserResumoDTO(
+            user.getId(),
+            user.getUsername(),
+            user.getEmail()
+        );
+    }
+
 }
