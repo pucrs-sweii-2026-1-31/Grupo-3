@@ -1,7 +1,7 @@
 package com.example.Trabalho_Eng_Soft_II.service;
 
-import com.example.Trabalho_Eng_Soft_II.DTO.UserDTO;
-import com.example.Trabalho_Eng_Soft_II.DTO.UserResumoDTO;
+import com.example.Trabalho_Eng_Soft_II.dto.UserDTO;
+import com.example.Trabalho_Eng_Soft_II.dto.UserResumoDTO;
 import com.example.Trabalho_Eng_Soft_II.model.User;
 import com.example.Trabalho_Eng_Soft_II.repository.UserRepository;
 

@@ -3,6 +3,8 @@ package com.example.Trabalho_Eng_Soft_II.controller;
 import com.example.Trabalho_Eng_Soft_II.dto.ApiResponse;
 import com.example.Trabalho_Eng_Soft_II.dto.AuthDTO;
 import com.example.Trabalho_Eng_Soft_II.dto.LoginResponseDTO;
+import com.example.Trabalho_Eng_Soft_II.dto.UserDTO;
+import com.example.Trabalho_Eng_Soft_II.dto.UserResumoDTO;
 import com.example.Trabalho_Eng_Soft_II.model.User;
 import com.example.Trabalho_Eng_Soft_II.service.TokenService;
 import jakarta.validation.Valid;
@@ -25,6 +27,9 @@ public class AuthController {
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+    private UserService userService;
+
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<LoginResponseDTO>> login(@RequestBody @Valid AuthDTO authDTO) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(authDTO.getEmail(), authDTO.getPassword());
@@ -34,4 +39,11 @@ public class AuthController {
 
         return ResponseEntity.ok(ApiResponse.success("Login realizado com sucesso", new LoginResponseDTO(token)));
     }
+
+    @PostMapping("/register")
+    public ResponseEntity<ApiResponse<UserResumoDTO>> register(@RequestBody @Valid UserDTO userDTO) {
+        UserResumoDTO createdUser = userService.criarUsuario(userDTO);
+        return ResponseEntity.ok(ApiResponse.success("Usuário registrado com sucesso", createdUser));
+    }
 }
+
