@@ -24,12 +24,12 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public boolean criarUsuario(UserDTO userDTO) {
+    public UserResumoDTO criarUsuario(UserDTO userDTO) {
         User user = toModel(userDTO);
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        userRepository.save(user);
-        return true;
-}
+        user = userRepository.save(user);
+        return UserResumoDTO.fromModel(user);
+    }
 
     public Page<UserResumoDTO> listarUsuarios(Pageable pageable) {
         return userRepository.findAll(pageable)
@@ -46,11 +46,10 @@ public class UserService {
 
 
     private User toModel(UserDTO dto){
-        return new User(
-            dto.getId(),
-            dto.getUserName(),
-            dto.getEmail(),
-            dto.getPassword()
-        )
+        User user = new User();
+        user.setUserName(dto.getUserName());
+        user.setEmail(dto.getEmail());
+        user.setPassword(dto.getPassword());
+        return user;
     }
 }

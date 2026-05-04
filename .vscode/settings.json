@@ -1,3 +1,23 @@
 {
-  "java.compile.nullAnalysis.mode": "automatic"
+  "java.compile.nullAnalysis.mode": "automatic",
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/CVS": true,
+    "**/.ruby-lsp": true,
+    "**/.claude": true,
+    "**/.claude-plugin": true,
+    "**/.codebuddy": true,
+    "**/.codex": true,
+    "**/.codex-plugin": true,
+    "**/.cursor": true,
+    "**/.gemini": true,
+    "**/.github": true,
+    "**/.kiro": true,
+    "**/.opencode": true,
+    "**/.trae": true
+  }
 }
