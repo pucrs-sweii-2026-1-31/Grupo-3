@@ -1,14 +1,2 @@
 /mvnw text eol=lf
 *.cmd text eol=crlf
-.ai/
-.claude/
-.claude-plugin/
-.codebuddy/
-.codex/
-.codex-plugin/
-.cursor/
-.gemini/
-.github/
-.kiro/
-.opencode/
-.trae/

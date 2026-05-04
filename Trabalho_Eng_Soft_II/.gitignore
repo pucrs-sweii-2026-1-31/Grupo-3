@@ -31,3 +31,16 @@ build/
 
 ### VS Code ###
 .vscode/
+
+.ai/
+.claude/
+.claude-plugin/
+.codebuddy/
+.codex/
+.codex-plugin/
+.cursor/
+.gemini/
+.github/
+.kiro/
+.opencode/
+.trae/
