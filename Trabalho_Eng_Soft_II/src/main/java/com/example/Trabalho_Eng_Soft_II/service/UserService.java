@@ -47,7 +47,7 @@ public class UserService {
 
     private User toModel(UserDTO dto){
         User user = new User();
-        user.setUsername(dto.getUserName());
+        user.setUserName(dto.getUserName());
         user.setEmail(dto.getEmail());
         user.setPassword(dto.getPassword());
         return user;
