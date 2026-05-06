@@ -19,7 +19,7 @@ public class UserResumoDTO {
    public static UserResumoDTO fromModel(User user) {
         return new UserResumoDTO(
             user.getId(),
-            user.getUsername(),
+            user.getUserName(),
             user.getEmail()
         );
     }
