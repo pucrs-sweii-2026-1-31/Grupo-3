@@ -1,7 +1,0 @@
-node_modules/
-
-# Terraform local files
-**/terraform/.terraform/
-**/*.tfstate
-**/*.tfstate.backup
-**/.env
