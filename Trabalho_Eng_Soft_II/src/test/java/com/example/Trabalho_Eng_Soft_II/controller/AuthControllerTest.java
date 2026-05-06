@@ -59,8 +59,7 @@ public class AuthControllerTest {
         when(tokenService.generateToken(mockUser))
                 .thenReturn("mock-jwt-token");
 
-        mockMvc.perform(post("/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/api/auth/login")                        .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(authDTO)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
@@ -75,8 +74,7 @@ public class AuthControllerTest {
         authDTO.setEmail("");
         authDTO.setPassword("123456");
 
-        mockMvc.perform(post("/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/api/auth/login")                        .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(authDTO)))
                 .andExpect(status().isBadRequest());
     }
