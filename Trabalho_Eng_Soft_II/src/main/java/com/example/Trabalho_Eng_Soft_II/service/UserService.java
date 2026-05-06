@@ -64,12 +64,11 @@ public class UserService {
                 .map(UserResumoDTO::fromModel);
     }
 
-    public boolean deletarUsuario(Long id) {
-        if (!userRepository.existsById(id)) {
-            throw new IllegalArgumentException("Usuário com o id não cadastrado");
-        }
-        userRepository.deleteById(id);
-        return true;
+    public void deletarUsuario(Long id) {
+    if (!userRepository.existsById(id)) {
+        throw new IllegalArgumentException("Usuário com o id não cadastrado");
+    }
+    userRepository.deleteById(id);
     }
 
     private User toModel(UserDTO dto){
