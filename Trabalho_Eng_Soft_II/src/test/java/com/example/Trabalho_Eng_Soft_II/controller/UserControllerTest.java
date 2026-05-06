@@ -46,7 +46,7 @@ public class UserControllerTest {
     @Test
     public void create_ShouldReturnCreatedUser_WhenDataIsValid() throws Exception {
 
-        UserResumoDTO expected = new UserResumoDTO(1L, "testuser", "test@email.com");
+        UserResumoDTO expected = new UserResumoDTO(1L, "Nome", "email@teste.com", java.time.LocalDate.of(1950, 1, 1));
 
         when(userService.criarUsuario(any(UserDTO.class))).thenReturn(expected);
 
