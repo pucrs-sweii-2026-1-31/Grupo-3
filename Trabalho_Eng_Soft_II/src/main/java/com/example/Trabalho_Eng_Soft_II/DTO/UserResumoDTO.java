@@ -33,8 +33,6 @@ public class UserResumoDTO {
         return new UserResumoDTO(
             user.getId(),
             user.getUserName(),
-            user.getEmail()
-            user.getUsername(),
             user.getEmail(),
             user.getDataNascimento()
         );
