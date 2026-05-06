@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * Classe principal da aplicação - Trabalho de Engenharia de Software II
- * Responsável por inicializar e executar a aplicação Spring Boot
+ * Responsável por inicializar e executar a aplicação Spring Boot fff
  */
 @SpringBootApplication
 public class TrabalhoEngSoftIiApplication {
