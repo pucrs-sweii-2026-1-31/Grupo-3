@@ -47,10 +47,8 @@ public class UserControllerTest {
         userDTO.setUserName("joaosilva");
         userDTO.setEmail("joao@email.com");
         userDTO.setPassword("senha123");
-        userDTO.setDataNascimento(java.time.LocalDate.of(1960, 5, 15));
-        userDTO.setPerfil("IDOSO");
 
-        userResumoDTO = new UserResumoDTO(1L, "joaosilva", "joao@email.com", java.time.LocalDate.of(1960, 5, 15));
+        userResumoDTO = new UserResumoDTO(1L, "joaosilva", "joao@email.com");
     }
 
     //post
