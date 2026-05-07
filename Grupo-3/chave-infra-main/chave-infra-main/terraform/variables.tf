@@ -1,5 +1,5 @@
 variable "endpoint" {
-  default = "http://localhost:4566"
+  default = "http://ministack:4566"
 }
 
 variable "region" {
@@ -24,5 +24,6 @@ variable "ms_auth_host" {
 }
 
 variable "ms_auth_port" {
-  default = "3001"
+  description = "Porta interna do container Spring Boot"
+  default     = "8080" 
 }
