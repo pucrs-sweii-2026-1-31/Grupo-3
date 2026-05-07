@@ -1,0 +1,262 @@
+# Instincts generated from https://github.com/pucrs-sweii-2026-1-31/Grupo-3
+# Generated: 2026-05-07T03:02:31.105Z
+# Version: 2.0
+# NOTE: This file supplements (does not replace) any existing curated instincts.
+# High-confidence manually curated instincts should be preserved alongside these.
+
+---
+id: Grupo-3-commit-conventional
+trigger: "when writing a commit message"
+confidence: 0.85
+domain: git
+source: repo-analysis
+source_repo: https://github.com/pucrs-sweii-2026-1-31/Grupo-3
+---
+
+# Grupo 3 Commit Conventional
+
+## Action
+
+Use conventional commit format with prefixes: chore
+
+## Evidence
+
+- 1 commits analyzed
+- Detected conventional commit pattern
+- Examples: Chore: deleção do atributo aniversario de User
+
+---
+id: Grupo-3-commit-length
+trigger: "when writing a commit message"
+confidence: 0.6
+domain: git
+source: repo-analysis
+source_repo: https://github.com/pucrs-sweii-2026-1-31/Grupo-3
+---
+
+# Grupo 3 Commit Length
+
+## Action
+
+Keep commit messages concise (~46 characters)
+
+## Evidence
+
+- Average commit message length: 46 chars
+- Based on 1 commits
+
+---
+id: Grupo-3-naming-files
+trigger: "when creating a new file"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/pucrs-sweii-2026-1-31/Grupo-3
+---
+
+# Grupo 3 Naming Files
+
+## Action
+
+Use PascalCase naming convention
+
+## Evidence
+
+- Analyzed file naming patterns in repository
+- Dominant pattern: PascalCase
+
+---
+id: Grupo-3-import-relative
+trigger: "when importing modules"
+confidence: 0.75
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/pucrs-sweii-2026-1-31/Grupo-3
+---
+
+# Grupo 3 Import Relative
+
+## Action
+
+Use relative imports for project files
+
+## Evidence
+
+- Import analysis shows relative import pattern
+- Example: import { x } from '../lib/x'
+
+---
+id: Grupo-3-export-style
+trigger: "when exporting from a module"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/pucrs-sweii-2026-1-31/Grupo-3
+---
+
+# Grupo 3 Export Style
+
+## Action
+
+Prefer named exports
+
+## Evidence
+
+- Export pattern analysis
+- Dominant style: named
+
+---
+id: grupo-3-instinct-class-naming
+trigger: "When creating a new Java class file"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: pucrs-sweii-2026-1-31/Grupo-3
+---
+
+# Grupo 3 Instinct Class Naming
+
+## Action
+
+Name the file and class using PascalCase
+
+## Evidence
+
+- Pattern in namingConventions.files: PascalCase
+- Pattern in namingConventions.classes: PascalCase
+
+---
+id: grupo-3-instinct-function-naming
+trigger: "When defining a function or method in Java"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: pucrs-sweii-2026-1-31/Grupo-3
+---
+
+# Grupo 3 Instinct Function Naming
+
+## Action
+
+Use camelCase for the function name
+
+## Evidence
+
+- Pattern in namingConventions.functions: camelCase
+
+---
+id: grupo-3-instinct-constant-naming
+trigger: "When declaring a constant in Java"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: pucrs-sweii-2026-1-31/Grupo-3
+---
+
+# Grupo 3 Instinct Constant Naming
+
+## Action
+
+Use SCREAMING_SNAKE_CASE for the constant name
+
+## Evidence
+
+- Pattern in namingConventions.constants: SCREAMING_SNAKE_CASE
+
+---
+id: grupo-3-instinct-import-style
+trigger: "When importing modules or classes in Java files"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: pucrs-sweii-2026-1-31/Grupo-3
+---
+
+# Grupo 3 Instinct Import Style
+
+## Action
+
+Use relative import paths
+
+## Evidence
+
+- Pattern in importStyle: relative
+
+---
+id: grupo-3-instinct-export-style
+trigger: "When exporting modules or classes"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: pucrs-sweii-2026-1-31/Grupo-3
+---
+
+# Grupo 3 Instinct Export Style
+
+## Action
+
+Use named exports
+
+## Evidence
+
+- Pattern in exportStyle: named
+
+---
+id: grupo-3-instinct-git-commit-prefix
+trigger: "When making a commit for maintenance or non-feature changes"
+confidence: 0.9
+domain: git
+source: repo-analysis
+source_repo: pucrs-sweii-2026-1-31/Grupo-3
+---
+
+# Grupo 3 Instinct Git Commit Prefix
+
+## Action
+
+Prefix the commit message with 'chore:'
+
+## Evidence
+
+- Pattern in commits.prefixes: chore
+- Seen in commit: 'Chore: deleção do atributo aniversario de User'
+
+---
+id: grupo-3-instinct-git-commit-format
+trigger: "When writing a commit message"
+confidence: 0.9
+domain: git
+source: repo-analysis
+source_repo: pucrs-sweii-2026-1-31/Grupo-3
+---
+
+# Grupo 3 Instinct Git Commit Format
+
+## Action
+
+Follow the Conventional Commits format: <type>: <description>
+
+## Evidence
+
+- Pattern in commits.type: conventional
+- Seen in commit: 'Chore: deleção do atributo aniversario de User'
+
+---
+id: grupo-3-instinct-test-location
+trigger: "When adding or updating tests"
+confidence: 0.7
+domain: testing
+source: repo-analysis
+source_repo: pucrs-sweii-2026-1-31/Grupo-3
+---
+
+# Grupo 3 Instinct Test Location
+
+## Action
+
+Place test files in the same folders as source files (mixed location)
+
+## Evidence
+
+- Pattern in architecture.folderStructure.testLocation: mixed
+
