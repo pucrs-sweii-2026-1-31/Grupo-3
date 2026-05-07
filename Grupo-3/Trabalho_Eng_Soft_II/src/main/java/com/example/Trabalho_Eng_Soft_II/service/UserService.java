@@ -5,6 +5,7 @@ import com.example.Trabalho_Eng_Soft_II.dto.UserResumoDTO;
 import com.example.Trabalho_Eng_Soft_II.model.Role;
 import com.example.Trabalho_Eng_Soft_II.model.User;
 import com.example.Trabalho_Eng_Soft_II.repository.UserRepository;
+import com.example.Trabalho_Eng_Soft_II.repository.RoleRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Service
@@ -20,6 +20,9 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -36,10 +39,15 @@ public class UserService {
         }
 
         User user = toModel(userDTO);
-        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         
-        Set<Role> roles = new HashSet<>();
-        user.setRoles(roles);
+        Role userRole = roleRepository.findByName("ROLE_USER")
+        .orElseGet(() -> {
+            Role newRole = new Role();
+            newRole.setName("ROLE_USER");
+            return roleRepository.save(newRole);
+        });
+
+        user.setRoles(Set.of(userRole));
         
         user = userRepository.save(user);
         return UserResumoDTO.fromModel(user);
@@ -62,7 +70,7 @@ public class UserService {
         User user = new User();
         user.setUserName(dto.getUserName());
         user.setEmail(dto.getEmail());
-        user.setPassword(dto.getPassword());
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
         return user;
     }
 }
