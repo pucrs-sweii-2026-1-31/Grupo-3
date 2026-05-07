@@ -1,0 +1,328 @@
+# Instincts generated from https://github.com/pucrs-sweii-2026-1-31/Grupo-3
+# Generated: 2026-05-07T20:24:57.700Z
+# Version: 2.0
+# NOTE: This file supplements (does not replace) any existing curated instincts.
+# High-confidence manually curated instincts should be preserved alongside these.
+
+---
+id: Grupo-3-commit-length
+trigger: "when writing a commit message"
+confidence: 0.6
+domain: git
+source: repo-analysis
+source_repo: https://github.com/pucrs-sweii-2026-1-31/Grupo-3
+---
+
+# Grupo 3 Commit Length
+
+## Action
+
+Keep commit messages concise (~32 characters)
+
+## Evidence
+
+- Average commit message length: 32 chars
+- Based on 2 commits
+
+---
+id: Grupo-3-naming-files
+trigger: "when creating a new file"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/pucrs-sweii-2026-1-31/Grupo-3
+---
+
+# Grupo 3 Naming Files
+
+## Action
+
+Use PascalCase naming convention
+
+## Evidence
+
+- Analyzed file naming patterns in repository
+- Dominant pattern: PascalCase
+
+---
+id: Grupo-3-export-style
+trigger: "when exporting from a module"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/pucrs-sweii-2026-1-31/Grupo-3
+---
+
+# Grupo 3 Export Style
+
+## Action
+
+Prefer default exports
+
+## Evidence
+
+- Export pattern analysis
+- Dominant style: default
+
+---
+id: Grupo-3-arch-type-based
+trigger: "when adding new code"
+confidence: 0.8
+domain: architecture
+source: repo-analysis
+source_repo: https://github.com/pucrs-sweii-2026-1-31/Grupo-3
+---
+
+# Grupo 3 Arch Type Based
+
+## Action
+
+Place code in the appropriate type folder (components/, services/, utils/, etc.)
+
+## Evidence
+
+- Type-based module organization detected
+- Folders: 
+
+---
+id: Grupo-3-test-naming
+trigger: "when creating a test file"
+confidence: 0.85
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/pucrs-sweii-2026-1-31/Grupo-3
+---
+
+# Grupo 3 Test Naming
+
+## Action
+
+Name test files using the pattern: *.test.ts
+
+## Evidence
+
+- File pattern: *.test.ts
+- Consistent across test files
+
+---
+id: Grupo-3-workflow-project-skeleton-initialization
+trigger: "when doing project skeleton initialization"
+confidence: 0.6
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/pucrs-sweii-2026-1-31/Grupo-3
+---
+
+# Grupo 3 Workflow Project Skeleton Initialization
+
+## Action
+
+Follow the project-skeleton-initialization workflow:
+1. Add .gitignore and basic config files
+2. Add Dockerfile and build scripts
+3. Add backend source files (controllers, models, services, repositories, configs, DTOs, exceptions)
+4. Add backend test files (unit/integration tests for controllers, services, repositories)
+5. Add backend resources (application.properties)
+6. Add frontend source files (pages, components, styles, configs)
+7. Add infra files (Makefile, docker-compose.yml, terraform configs)
+8. Add shell files (Dockerfile, index.html, package.json, src, vite config)
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~2x per month
+- Files: Grupo-3/Trabalho_Eng_Soft_II/Dockerfile, Grupo-3/Trabalho_Eng_Soft_II/pom.xml, Grupo-3/Trabalho_Eng_Soft_II/src/main/java/com/example/Trabalho_Eng_Soft_II/**
+
+---
+id: grupo-3-instinct-file-naming
+trigger: "When creating a new file (Java source, config, or test) in the repository"
+confidence: 0.85
+domain: code-style
+source: repo-analysis
+source_repo: pucrs-sweii-2026-1-31/Grupo-3
+---
+
+# Grupo 3 Instinct File Naming
+
+## Action
+
+Name the file using PascalCase (e.g., MyClass.java, ApplicationConfig.java)
+
+## Evidence
+
+- Pattern in files: Grupo-3/Trabalho_Eng_Soft_II/src/main/java/com/example/Trabalho_Eng_Soft_II/**
+
+---
+id: grupo-3-instinct-function-naming
+trigger: "When defining a new function or method in Java code"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: pucrs-sweii-2026-1-31/Grupo-3
+---
+
+# Grupo 3 Instinct Function Naming
+
+## Action
+
+Use camelCase for function names (e.g., getUserData, processRequest)
+
+## Evidence
+
+- Pattern in files: Grupo-3/Trabalho_Eng_Soft_II/src/main/java/com/example/Trabalho_Eng_Soft_II/**
+
+---
+id: grupo-3-instinct-class-naming
+trigger: "When defining a new class in Java code"
+confidence: 0.85
+domain: code-style
+source: repo-analysis
+source_repo: pucrs-sweii-2026-1-31/Grupo-3
+---
+
+# Grupo 3 Instinct Class Naming
+
+## Action
+
+Use PascalCase for class names (e.g., UserController, ApplicationService)
+
+## Evidence
+
+- Pattern in files: Grupo-3/Trabalho_Eng_Soft_II/src/main/java/com/example/Trabalho_Eng_Soft_II/**
+
+---
+id: grupo-3-instinct-constant-naming
+trigger: "When declaring a constant in Java code"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: pucrs-sweii-2026-1-31/Grupo-3
+---
+
+# Grupo 3 Instinct Constant Naming
+
+## Action
+
+Use SCREAMING_SNAKE_CASE for constant names (e.g., MAX_SIZE, DEFAULT_TIMEOUT)
+
+## Evidence
+
+- Pattern in files: Grupo-3/Trabalho_Eng_Soft_II/src/main/java/com/example/Trabalho_Eng_Soft_II/**
+
+---
+id: grupo-3-instinct-import-style
+trigger: "When importing modules or packages in Java code"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: pucrs-sweii-2026-1-31/Grupo-3
+---
+
+# Grupo 3 Instinct Import Style
+
+## Action
+
+Use a mixed import style (both explicit and wildcard imports may be used as appropriate)
+
+## Evidence
+
+- Pattern in files: Grupo-3/Trabalho_Eng_Soft_II/src/main/java/com/example/Trabalho_Eng_Soft_II/**
+
+---
+id: grupo-3-instinct-export-style
+trigger: "When exporting modules or classes in Java or TypeScript code"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: pucrs-sweii-2026-1-31/Grupo-3
+---
+
+# Grupo 3 Instinct Export Style
+
+## Action
+
+Use default export style
+
+## Evidence
+
+- Pattern in files: Grupo-3/front-end/**
+
+---
+id: grupo-3-instinct-test-file-pattern
+trigger: "When creating a new test file for the front-end"
+confidence: 0.8
+domain: testing
+source: repo-analysis
+source_repo: pucrs-sweii-2026-1-31/Grupo-3
+---
+
+# Grupo 3 Instinct Test File Pattern
+
+## Action
+
+Name the test file with the pattern *.test.ts
+
+## Evidence
+
+- Pattern in files: Grupo-3/front-end/**
+
+---
+id: grupo-3-instinct-test-type
+trigger: "When writing tests for backend or frontend code"
+confidence: 0.7
+domain: testing
+source: repo-analysis
+source_repo: pucrs-sweii-2026-1-31/Grupo-3
+---
+
+# Grupo 3 Instinct Test Type
+
+## Action
+
+Write unit tests as the primary test type
+
+## Evidence
+
+- Pattern in files: Grupo-3/Trabalho_Eng_Soft_II/src/test/java/com/example/Trabalho_Eng_Soft_II/**
+- Grupo-3/front-end/**
+
+---
+id: grupo-3-instinct-git-commit-format
+trigger: "When making a commit to the repository"
+confidence: 0.6
+domain: git
+source: repo-analysis
+source_repo: pucrs-sweii-2026-1-31/Grupo-3
+---
+
+# Grupo 3 Instinct Git Commit Format
+
+## Action
+
+Optionally use a prefix like 'feat:' for features, but allow freeform messages; keep commit messages concise (~32 characters on average)
+
+## Evidence
+
+- Seen in commit: 'feat:feito esqueleto básico do front'
+- Seen in commit: 'Esqueleto ajustado do front'
+
+---
+id: grupo-3-instinct-project-skeleton-init
+trigger: "When starting a new project or major module (front-end, back-end, infra, shell)"
+confidence: 0.95
+domain: workflow
+source: repo-analysis
+source_repo: pucrs-sweii-2026-1-31/Grupo-3
+---
+
+# Grupo 3 Instinct Project Skeleton Init
+
+## Action
+
+Initialize the project skeleton by adding .gitignore, config files, Dockerfile, backend and frontend source files, infra and shell files as per the standard structure
+
+## Evidence
+
+- Workflow: project-skeleton-initialization
+- Example commit sequence and files in workflow definition
+
