@@ -14,7 +14,7 @@ provider "aws" {
   skip_credentials_validation = true
   skip_metadata_api_check     = true
   skip_requesting_account_id  = true
-  s3_use_path_style           = true
+  s3_use_path_style            = true
 
   endpoints {
     s3         = var.endpoint
@@ -25,7 +25,6 @@ provider "aws" {
 }
 
 # ─── S3 ───────────────────────────────────────────────────────────────────────
-
 resource "aws_s3_bucket" "media" {
   bucket = "chave-media"
 }
@@ -38,7 +37,6 @@ resource "aws_s3_bucket_versioning" "media" {
 }
 
 # ─── RDS ──────────────────────────────────────────────────────────────────────
-
 resource "aws_db_instance" "auth" {
   identifier          = "chave-auth-db"
   engine              = "postgres"
@@ -53,112 +51,49 @@ resource "aws_db_instance" "auth" {
   skip_final_snapshot = true
 }
 
-# ─── API Gateway ──────────────────────────────────────────────────────────────
+# ─── API Gateway (Configuração Proxy para o Backend) ──────────────────────────
 
 resource "aws_api_gateway_rest_api" "chave" {
   name = "chave-api"
 }
 
-resource "aws_api_gateway_resource" "auth" {
+# Recurso Base: /api
+resource "aws_api_gateway_resource" "api" {
   rest_api_id = aws_api_gateway_rest_api.chave.id
   parent_id   = aws_api_gateway_rest_api.chave.root_resource_id
-  path_part   = "auth"
+  path_part   = "api"
 }
 
-# POST /auth/login
-
-resource "aws_api_gateway_resource" "auth_login" {
+# Recurso Proxy: /api/{proxy+}
+# Isso captura qualquer coisa depois de /api/ (ex: /api/auth/login, /api/users)
+resource "aws_api_gateway_resource" "proxy" {
   rest_api_id = aws_api_gateway_rest_api.chave.id
-  parent_id   = aws_api_gateway_resource.auth.id
-  path_part   = "login"
+  parent_id   = aws_api_gateway_resource.api.id
+  path_part   = "{proxy+}"
 }
 
-resource "aws_api_gateway_method" "auth_login" {
+# Método ANY: Aceita GET, POST, PUT, DELETE, etc.
+resource "aws_api_gateway_method" "proxy_method" {
   rest_api_id   = aws_api_gateway_rest_api.chave.id
-  resource_id   = aws_api_gateway_resource.auth_login.id
-  http_method   = "POST"
+  resource_id   = aws_api_gateway_resource.proxy.id
+  http_method   = "ANY"
   authorization = "NONE"
 }
 
-resource "aws_api_gateway_integration" "auth_login" {
+# Integração Proxy: Repassa tudo para o container chave-ms-auth
+resource "aws_api_gateway_integration" "proxy_integration" {
   rest_api_id             = aws_api_gateway_rest_api.chave.id
-  resource_id             = aws_api_gateway_resource.auth_login.id
-  http_method             = aws_api_gateway_method.auth_login.http_method
+  resource_id             = aws_api_gateway_resource.proxy.id
+  http_method             = aws_api_gateway_method.proxy_method.http_method
   type                    = "HTTP_PROXY"
-  integration_http_method = "POST"
-  uri                     = "http://${var.ms_auth_host}:${var.ms_auth_port}/login"
-}
+  integration_http_method = "ANY"
+  
+  # A URI utiliza o nome do serviço no Docker e a porta interna 8080
+  uri = "http://${var.ms_auth_host}:${var.ms_auth_port}/api/{proxy}"
 
-# POST /auth/refresh
-
-resource "aws_api_gateway_resource" "auth_refresh" {
-  rest_api_id = aws_api_gateway_rest_api.chave.id
-  parent_id   = aws_api_gateway_resource.auth.id
-  path_part   = "refresh"
-}
-
-resource "aws_api_gateway_method" "auth_refresh" {
-  rest_api_id   = aws_api_gateway_rest_api.chave.id
-  resource_id   = aws_api_gateway_resource.auth_refresh.id
-  http_method   = "POST"
-  authorization = "NONE"
-}
-
-resource "aws_api_gateway_integration" "auth_refresh" {
-  rest_api_id             = aws_api_gateway_rest_api.chave.id
-  resource_id             = aws_api_gateway_resource.auth_refresh.id
-  http_method             = aws_api_gateway_method.auth_refresh.http_method
-  type                    = "HTTP_PROXY"
-  integration_http_method = "POST"
-  uri                     = "http://${var.ms_auth_host}:${var.ms_auth_port}/refresh"
-}
-
-# POST /auth/logout
-
-resource "aws_api_gateway_resource" "auth_logout" {
-  rest_api_id = aws_api_gateway_rest_api.chave.id
-  parent_id   = aws_api_gateway_resource.auth.id
-  path_part   = "logout"
-}
-
-resource "aws_api_gateway_method" "auth_logout" {
-  rest_api_id   = aws_api_gateway_rest_api.chave.id
-  resource_id   = aws_api_gateway_resource.auth_logout.id
-  http_method   = "POST"
-  authorization = "NONE"
-}
-
-resource "aws_api_gateway_integration" "auth_logout" {
-  rest_api_id             = aws_api_gateway_rest_api.chave.id
-  resource_id             = aws_api_gateway_resource.auth_logout.id
-  http_method             = aws_api_gateway_method.auth_logout.http_method
-  type                    = "HTTP_PROXY"
-  integration_http_method = "POST"
-  uri                     = "http://${var.ms_auth_host}:${var.ms_auth_port}/logout"
-}
-
-# GET /auth/me
-
-resource "aws_api_gateway_resource" "auth_me" {
-  rest_api_id = aws_api_gateway_rest_api.chave.id
-  parent_id   = aws_api_gateway_resource.auth.id
-  path_part   = "me"
-}
-
-resource "aws_api_gateway_method" "auth_me" {
-  rest_api_id   = aws_api_gateway_rest_api.chave.id
-  resource_id   = aws_api_gateway_resource.auth_me.id
-  http_method   = "GET"
-  authorization = "NONE"
-}
-
-resource "aws_api_gateway_integration" "auth_me" {
-  rest_api_id             = aws_api_gateway_rest_api.chave.id
-  resource_id             = aws_api_gateway_resource.auth_me.id
-  http_method             = aws_api_gateway_method.auth_me.http_method
-  type                    = "HTTP_PROXY"
-  integration_http_method = "GET"
-  uri                     = "http://${var.ms_auth_host}:${var.ms_auth_port}/me"
+  request_parameters = {
+    "integration.request.path.proxy" = "method.request.path.proxy"
+  }
 }
 
 # ─── Deployment ───────────────────────────────────────────────────────────────
@@ -168,10 +103,7 @@ resource "aws_api_gateway_deployment" "chave" {
   stage_name  = "v1"
 
   depends_on = [
-    aws_api_gateway_integration.auth_login,
-    aws_api_gateway_integration.auth_refresh,
-    aws_api_gateway_integration.auth_logout,
-    aws_api_gateway_integration.auth_me,
+    aws_api_gateway_integration.proxy_integration
   ]
 }
 
