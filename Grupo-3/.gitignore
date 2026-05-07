@@ -1,0 +1,19 @@
+# --- NODE / FRONTEND ---
+**/node_modules/
+**/.next/
+**/out/
+
+# --- JAVA / BACKEND ---
+**/target/
+**/*.class
+**/build/
+
+# --- INFRA / TERRAFORM ---
+**/.terraform/
+**/*.tfstate
+**/*.tfstate.backup
+
+# --- GERAL ---
+.env*
+.DS_Store
+Thumbs.db

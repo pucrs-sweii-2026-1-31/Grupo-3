@@ -1,0 +1,13 @@
+/* src/app/globals.css */
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: #d7d7d7;
+  height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
