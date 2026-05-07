@@ -4,7 +4,6 @@ import com.example.Trabalho_Eng_Soft_II.dto.UserDTO;
 import com.example.Trabalho_Eng_Soft_II.dto.UserResumoDTO;
 import com.example.Trabalho_Eng_Soft_II.model.Role;
 import com.example.Trabalho_Eng_Soft_II.model.User;
-import com.example.Trabalho_Eng_Soft_II.repository.RoleRepository;
 import com.example.Trabalho_Eng_Soft_II.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +22,6 @@ public class UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
     public UserResumoDTO criarUsuario(UserDTO userDTO) {
@@ -39,20 +35,10 @@ public class UserService {
             throw new IllegalArgumentException("Nome de usuário já existe");
         }
 
-        // Validar perfil
-        if (!isValidPerfil(userDTO.getPerfil())) {
-            throw new IllegalArgumentException("Perfil inválido. Use 'IDOSO' ou 'ADMINISTRADOR'");
-        }
-
         User user = toModel(userDTO);
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         
-        // Buscar e atribuir o role apropriado
-        Role role = roleRepository.findByName(userDTO.getPerfil())
-                .orElseThrow(() -> new IllegalArgumentException("Role não encontrado: " + userDTO.getPerfil()));
-        
         Set<Role> roles = new HashSet<>();
-        roles.add(role);
         user.setRoles(roles);
         
         user = userRepository.save(user);
@@ -64,11 +50,12 @@ public class UserService {
                 .map(UserResumoDTO::fromModel);
     }
 
-    public void deletarUsuario(Long id) {
+    public boolean deletarUsuario(Long id) {
     if (!userRepository.existsById(id)) {
         throw new IllegalArgumentException("Usuário com o id não cadastrado");
     }
     userRepository.deleteById(id);
+    return true;
     }
 
     private User toModel(UserDTO dto){
@@ -76,12 +63,7 @@ public class UserService {
         user.setUserName(dto.getUserName());
         user.setEmail(dto.getEmail());
         user.setPassword(dto.getPassword());
-        user.setDataNascimento(dto.getDataNascimento());
         return user;
-    }
-
-    private boolean isValidPerfil(String perfil) {
-        return "IDOSO".equals(perfil) || "ADMINISTRADOR".equals(perfil);
     }
 }
 
