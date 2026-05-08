@@ -12,21 +12,14 @@ export default defineConfig({
         './LoginPage': './src/components/LoginForm.tsx',
         './RegisterForm': './src/components/RegisterForm.tsx',
       },
-      shared: ['react', 'react-dom'],
+      shared: ['react', 'react-dom']
     }),
   ],
   build: {
+    assetsDir: '', // ADICIONE ISSO: Garante que os arquivos fiquem na raiz do dist
     modulePreload: false,
     target: 'esnext',
     minify: false,
     cssCodeSplit: false,
   },
-  server: {
-    port: 4001,
-    host: true,
-  },
-  preview: {
-    port: 4001,
-    host: true,
-  }
 });

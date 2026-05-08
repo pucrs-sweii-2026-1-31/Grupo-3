@@ -1,13 +1,21 @@
-FROM node:20-alpine AS build
+FROM node:20-alpine
+
 WORKDIR /app
+
+# Copia os arquivos de configuração
 COPY package*.json ./
+
+# Instala as dependências
 RUN npm install
+
+# Copia o restante do código (incluindo o vite.config.ts)
 COPY . .
+
+# GERA O ARQUIVO remoteEntry.js (Sem isso o Shell dá erro 404)
 RUN npm run build
 
-FROM node:20-alpine
-WORKDIR /app
-RUN npm install -g vite
-COPY --from=build /app/dist ./dist
+# Expõe a porta do MFE
 EXPOSE 4001
-CMD ["vite", "preview", "--port", "4001", "--host"]
+
+# Serve o conteúdo buildado na porta 4001
+CMD ["npm", "run", "preview"]
