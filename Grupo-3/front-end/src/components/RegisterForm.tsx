@@ -1,58 +1,28 @@
-'use client';
-
-import { useState, type ChangeEvent, type FormEvent } from 'react';
-import {
-  Box,
-  Button,
-  Container,
-  Paper,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
-import Link from 'next/link';
+import React, { useState } from 'react';
+import { TextField, Button, Typography, Paper, Box, Stack, Container } from '@mui/material';
+import { RegisterCredentials } from '../models/auth';
 
 export default function RegisterForm() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [form, setForm] = useState<RegisterCredentials>({ name: '', email: '', password: '' });
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    console.log('Cadastro:', { email, password });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   return (
-    <Container maxWidth="sm">
-      <Paper elevation={3} sx={{ mt: 10, p: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Cadastro
+    <Container maxWidth="xs">
+      <Paper elevation={3} sx={{ p: 4, mt: 8, borderRadius: 2 }}>
+        <Typography variant="h5" align="center" sx={{ mb: 3, fontWeight: 'bold' }}>
+          Chave - Cadastro
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate>
+        <Box component="form">
           <Stack spacing={2}>
-            <TextField
-              label="Email"
-              type="email"
-              value={email}
-              onChange={(event: ChangeEvent<HTMLInputElement>) => setEmail(event.target.value)}
-              required
-              fullWidth
-            />
-            <TextField
-              label="Senha"
-              type="password"
-              value={password}
-              onChange={(event: ChangeEvent<HTMLInputElement>) => setPassword(event.target.value)}
-              required
-              fullWidth
-            />
-            <Button type="submit" variant="contained" size="large">
+            <TextField label="Nome" name="name" fullWidth required onChange={handleChange} />
+            <TextField label="E-mail" name="email" type="email" fullWidth required onChange={handleChange} />
+            <TextField label="Senha" name="password" type="password" fullWidth required onChange={handleChange} />
+            <Button variant="contained" color="secondary" size="large" fullWidth sx={{ mt: 2 }}>
               Cadastrar
             </Button>
-            <Link href="/login" passHref>
-              <Button component="a" variant="text">
-                Já tenho conta
-              </Button>
-            </Link>
           </Stack>
         </Box>
       </Paper>
