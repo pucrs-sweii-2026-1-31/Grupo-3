@@ -1,75 +1,52 @@
-'use client';
+import React, { useState } from 'react';
+import { TextField, Button, Typography, Paper, Box, Stack, Container } from '@mui/material';
+import { LoginCredentials } from '../models/auth';
 
-import React, { useState, type ChangeEvent, type FormEvent } from 'react';
-import { 
-  Box, 
-  Button, 
-  Container, 
-  Paper, 
-  Stack, 
-  TextField, 
-  Typography 
-} from '@mui/material';
-import Link from 'next/link';
+interface LoginFormProps {
+  onLogin?: () => void;
+}
 
-export default function LoginForm() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+export default function LoginForm({ onLogin }: LoginFormProps) {
+  const [credentials, setCredentials] = useState<LoginCredentials>({ email: '', password: '' });
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    // A lógica de integração com o back (authService) pode ser adicionada aqui depois
-    console.log('Login:', { email, password });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCredentials({ ...credentials, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Login acionado no MFE:', credentials);
+    // Integração com o Shell:
+    if (onLogin) onLogin();
   };
 
   return (
-    <Container maxWidth="sm">
-      <Paper elevation={3} sx={{ mt: 10, p: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom className="font-bold">
-          Login
+    <Container maxWidth="xs">
+      <Paper elevation={3} sx={{ p: 4, mt: 8, borderRadius: 2 }}>
+        <Typography variant="h5" align="center" sx={{ mb: 3, fontWeight: 'bold' }}>
+          Chave - Login
         </Typography>
-        
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box component="form" onSubmit={handleSubmit}>
           <Stack spacing={2}>
-            <TextField
-              label="Email"
-              type="email"
-              variant="outlined"
-              value={email}
-              onChange={(event: ChangeEvent<HTMLInputElement>) => setEmail(event.target.value)}
+            <TextField 
+              label="E-mail" 
+              name="email" 
+              fullWidth 
               required
-              fullWidth
-              autoComplete="email"
+              onChange={handleChange} 
+              value={credentials.email} 
             />
-            
-            <TextField
-              label="Senha"
-              type="password"
-              variant="outlined"
-              value={password}
-              onChange={(event: ChangeEvent<HTMLInputElement>) => setPassword(event.target.value)}
+            <TextField 
+              label="Senha" 
+              name="password" 
+              type="password" 
+              fullWidth 
               required
-              fullWidth
-              autoComplete="current-password"
+              onChange={handleChange} 
+              value={credentials.password} 
             />
-
-            <Button 
-              type="submit" 
-              variant="contained" 
-              size="large" 
-              fullWidth
-              sx={{ py: 1.5, mt: 1 }}
-            >
-              Entrar
-            </Button>
-
-            <Button 
-              component={Link} 
-              href="/register" 
-              variant="text" 
-              fullWidth
-            >
-              Ainda não tenho conta
+            <Button variant="contained" type="submit" size="large" fullWidth sx={{ mt: 2 }}>
+              Acessar
             </Button>
           </Stack>
         </Box>
