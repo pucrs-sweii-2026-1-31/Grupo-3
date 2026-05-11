@@ -7,14 +7,14 @@ CREATE TABLE IF NOT EXISTS tb_role (
 );
 
 CREATE TABLE IF NOT EXISTS tb_user (
-    id VARCHAR(255) PRIMARY KEY,
-    username VARCHAR(100) NOT NULL UNIQUE,
+    id BIGSERIAL PRIMARY KEY,
+    user_name VARCHAR(100) NOT NULL UNIQUE,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS user_roles (
-    user_id VARCHAR(255) NOT NULL,
+    user_id BIGINT NOT NULL,
     role_id BIGINT NOT NULL,
     PRIMARY KEY (user_id, role_id),
     FOREIGN KEY (user_id) REFERENCES tb_user(id),
