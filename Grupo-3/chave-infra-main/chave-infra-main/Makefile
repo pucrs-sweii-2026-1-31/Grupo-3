@@ -7,7 +7,7 @@ setup: .env
 	@echo "[make] Iniciando setup completo via Docker..."
 	$(COMPOSE) up -d postgres ministack
 	@echo "[make] Aguardando 10 segundos para a infraestrutura estabilizar..."
-	@timeout /t 10 /nobreak > nul
+	@sleep 10
 	@$(MAKE) tf-init
 	@$(MAKE) tf-apply
 	@echo "[make] Subindo todos os serviços (Backend, Shell, MFE)..."
