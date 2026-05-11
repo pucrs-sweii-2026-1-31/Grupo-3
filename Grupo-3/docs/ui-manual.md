@@ -31,3 +31,22 @@ A aplicação deve suportar **Light Mode** e **Dark Mode**.
 ## Responsividade
 - Utilizar breakpoints do MUI (`xs`, `sm`, `md`, `lg`, `xl`).
 - Ocultar Sidebars em tamanhos menores (`xs` e `sm`) em favor de um menu *Hamburger*.
+- Tabelas de dados devem utilizar scroll horizontal ou colapsar colunas menos importantes em telas pequenas.
+
+## Melhores Práticas e UI Patterns
+- **Feedback Visual**: Sempre exibir um `LinearProgress` ou `CircularProgress` durante chamadas de API.
+- **Snackbars/Alerts**: Utilizar notificações para sucessos (`Success`) e erros críticos (`Error`).
+- **Empty States**: Páginas sem dados devem exibir ilustrações ou mensagens amigáveis em vez de uma tela vazia.
+- **Botão de Ação Principal (FAB)**: Usar com moderação para ações de criação global.
+
+## Ícones
+- Utilizar exclusivamente a biblioteca `@mui/icons-material`.
+- Manter consistência: 
+  - Lixeira para `Excluir`.
+  - Lápis para `Editar`.
+  - Check para `Confirmar`.
+
+## Acessibilidade (a11y)
+- Contraste de cores deve seguir o padrão WCAG AA.
+- Todos os campos de formulário devem possuir `label` e `aria-label`.
+- Navegação via teclado deve ser fluida e o foco visual deve ser nítido.
