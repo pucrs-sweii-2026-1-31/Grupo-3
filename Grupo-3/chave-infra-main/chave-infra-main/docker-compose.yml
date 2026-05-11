@@ -73,7 +73,7 @@ services:
       postgres:
         condition: service_healthy
       infra-provisioner:
-        condition: service_started
+        condition: service_completed_successfully
     restart: unless-stopped
 
   chave-mfe-auth:

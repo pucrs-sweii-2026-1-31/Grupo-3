@@ -1,10 +1,7 @@
-export interface LoginCredentials {
-  email: string;
-  password?: string;
-}
-
-export interface RegisterCredentials {
-  name: string;
-  email: string;
-  password?: string;
-}
+export type {
+  AuthSession,
+  LoginCredentials,
+  LoginResponse,
+  RegisterCredentials,
+  UserSummary,
+} from '../types/auth';

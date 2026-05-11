@@ -1,0 +1,89 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+  release:
+    types: [created]
+
+jobs:
+  backend-test:
+    name: Backend CI (Java)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build and Test with Maven
+        run: |
+          cd Grupo-3/Trabalho_Eng_Soft_II
+          chmod +x mvnw
+          ./mvnw clean verify
+
+      - name: Upload JaCoCo Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-report
+          path: Grupo-3/Trabalho_Eng_Soft_II/target/site/jacoco/
+
+  frontend-test:
+    name: Frontend CI (Node)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: |
+            Grupo-3/front-end/package-lock.json
+            Grupo-3/chave-shell-main/chave-shell-main/package-lock.json
+
+      - name: Test and Build MFE Remote
+        run: |
+          cd Grupo-3/front-end
+          npm ci
+          npm test
+          npm run build
+
+      - name: Test and Build Shell Host
+        run: |
+          cd Grupo-3/chave-shell-main/chave-shell-main
+          npm ci
+          npm test
+          npm run build
+
+  generate-release:
+    name: Release Generation
+    needs: [backend-test, frontend-test]
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Create Release Assets
+        run: |
+          mkdir -p release-assets
+          cp Grupo-3/Trabalho_Eng_Soft_II/target/*.jar release-assets/ || true
+          tar -czvf release-assets/frontend-mfe.tar.gz -C Grupo-3/front-end/dist .
+          tar -czvf release-assets/shell-host.tar.gz -C Grupo-3/chave-shell-main/chave-shell-main/dist .
+
+      - name: Upload to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release-assets/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -3,29 +3,24 @@ package com.example.Trabalho_Eng_Soft_II.service;
 import com.example.Trabalho_Eng_Soft_II.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.util.ReflectionTestUtils;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@ExtendWith(MockitoExtension.class)
 public class TokenServiceTest {
 
-    @InjectMocks
     private TokenService tokenService;
-
     private User user;
 
     @BeforeEach
     void setUp() {
+        tokenService = new TokenService("test-secret-key-for-jwt");
+
         user = new User();
         user.setEmail("test@email.com");
-
-        // Set the secret using reflection for testing
-        ReflectionTestUtils.setField(tokenService, "secret", "test-secret-key-for-jwt");
     }
 
     @Test
@@ -34,7 +29,7 @@ public class TokenServiceTest {
 
         assertNotNull(token);
         assertFalse(token.isEmpty());
-        assertTrue(token.startsWith("eyJ")); // JWT tokens start with "eyJ"
+        assertTrue(token.startsWith("eyJ"));
     }
 
     @Test
@@ -51,5 +46,14 @@ public class TokenServiceTest {
         String subject = tokenService.validateToken(invalidToken);
 
         assertEquals("", subject);
+    }
+
+    @Test
+    void constructor_ShouldThrowException_WhenSecretIsBlank() {
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
+            new TokenService(" ");
+        });
+
+        assertEquals("JWT_SECRET nao configurado", exception.getMessage());
     }
 }

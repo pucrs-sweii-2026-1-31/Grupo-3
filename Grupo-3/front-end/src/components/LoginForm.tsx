@@ -1,32 +1,51 @@
 import React, { useState } from 'react';
-import { TextField, Button, Typography, Paper, Box, Stack, Container } from '@mui/material';
+import { Alert, TextField, Button, Typography, Paper, Box, Stack, Container } from '@mui/material';
 import { LoginCredentials } from '../models/auth';
+import { ApiClientError } from '../types/api';
+import { useAuth } from '../hooks/useAuth';
 
 interface LoginFormProps {
-  onLogin?: () => void;
+  onLogin?: (token: string) => void;
 }
 
 export default function LoginForm({ onLogin }: LoginFormProps) {
   const [credentials, setCredentials] = useState<LoginCredentials>({ email: '', password: '' });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const auth = useAuth();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Login acionado no MFE:', credentials);
-    if (onLogin) onLogin();
+    setError('');
+    setLoading(true);
+
+    try {
+      const token = await auth.login(credentials);
+      onLogin?.(token);
+    } catch (err) {
+      if (err instanceof ApiClientError) {
+        setError(err.message);
+      } else {
+        setError('Nao foi possivel realizar o login');
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <Container maxWidth="xs">
       <Paper elevation={3} sx={{ p: 4, mt: 8, borderRadius: 2 }}>
         <Typography variant="h5" align="center" sx={{ mb: 3, fontWeight: 'bold' }}>
-          Chave - Login
+          Chave — Autoavaliação de Competências
         </Typography>
         <Box component="form" onSubmit={handleSubmit}>
           <Stack spacing={2}>
+            {error && <Alert severity="error">{error}</Alert>}
             <TextField 
               label="E-mail" 
               name="email" 
@@ -44,8 +63,8 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
               onChange={handleChange} 
               value={credentials.password} 
             />
-            <Button variant="contained" type="submit" size="large" fullWidth sx={{ mt: 2 }}>
-              Acessar
+            <Button variant="contained" type="submit" size="large" fullWidth sx={{ mt: 2 }} disabled={loading}>
+              {loading ? 'Acessando...' : 'Acessar'}
             </Button>
           </Stack>
         </Box>
