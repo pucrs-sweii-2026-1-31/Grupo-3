@@ -71,37 +71,37 @@ O projeto é dividido em domínios arquiteturais claros:
 
 ## 🚀 Como Executar Localmente
 
-> **Pré-requisitos:** Docker Desktop, Node.js (v18+) e Java (JDK 21) instalados.
+> **Pré-requisitos:** Docker Desktop instalado e rodando.
 
-### 1. Infraestrutura e Backend (Docker)
-Inicie todos os serviços core de uma só vez:
+### Iniciar todo o Ecossistema (Infra, DB, Backend e MFEs)
 
+O projeto está configurado para subir todas as aplicações de forma orquestrada via Docker Compose.
+
+Abra o terminal na raiz do projeto e navegue até a pasta de infraestrutura:
 ```bash
 cd chave-infra-main/chave-infra-main
 cp .env.example .env
+```
 
-# Sobe os contêineres e roda a infra via Terraform
+**Se você estiver no Linux, Mac ou WSL (com `make` instalado):**
+```bash
 make setup
 ```
-*(O Swagger do Backend ficará disponível em http://localhost:3001/swagger-ui/index.html)*
 
-### 2. Micro-frontends (MFE & Shell)
-Abra terminais separados para rodar as interfaces.
-
-**MFE Auth (Remoto):**
+**Se você estiver no Prompt de Comando / PowerShell (Windows):**
 ```bash
-cd front-end
-npm install
-npm run dev # Disponível em localhost:4001
+docker compose up -d postgres ministack
+docker compose run --rm infra-provisioner init
+docker compose run --rm infra-provisioner apply -auto-approve
+docker compose up -d
 ```
 
-**Shell Host (Aplicação Principal):**
-```bash
-cd chave-shell-main/chave-shell-main
-npm install
-npm run dev # Disponível em localhost:3000
-```
-Acesse [http://localhost:3000](http://localhost:3000) para visualizar o projeto completo.
+Após a execução, **todos os serviços** estarão disponíveis automaticamente:
+* 🌐 **Aplicação Completa (Shell):** [http://localhost:3000](http://localhost:3000)
+* 📜 **Swagger (API Docs):** [http://localhost:3001/swagger-ui/index.html](http://localhost:3001/swagger-ui/index.html)
+* 🧩 **MFE Auth (Isolado):** [http://localhost:4001](http://localhost:4001)
+
+> **Nota para Desenvolvimento Local:** Se desejar rodar os Front-ends (`front-end` e `chave-shell-main`) usando `npm run dev` para ver alterações em tempo real (hot-reload), certifique-se de parar os contêineres deles no Docker primeiro (`docker stop chave-shell chave-mfe-auth`) para liberar as portas.
 
 ---
 
