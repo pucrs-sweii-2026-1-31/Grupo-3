@@ -2,7 +2,7 @@
 -- Define a estrutura base de usuários e roles para garantir consistência entre ambientes
 
 CREATE TABLE IF NOT EXISTS tb_role (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL UNIQUE
 );
 
@@ -22,5 +22,5 @@ CREATE TABLE IF NOT EXISTS user_roles (
 );
 
 -- Seed de Roles básicas
-INSERT INTO tb_role (name) VALUES ('ROLE_USER') ON DUPLICATE KEY UPDATE name=name;
-INSERT INTO tb_role (name) VALUES ('ROLE_ADMIN') ON DUPLICATE KEY UPDATE name=name;
+INSERT INTO tb_role (name) VALUES ('ROLE_USER') ON CONFLICT (name) DO NOTHING;
+INSERT INTO tb_role (name) VALUES ('ROLE_ADMIN') ON CONFLICT (name) DO NOTHING;

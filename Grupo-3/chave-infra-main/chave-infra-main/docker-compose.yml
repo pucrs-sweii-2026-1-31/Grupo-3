@@ -45,6 +45,7 @@ services:
   infra-provisioner:
     image: hashicorp/terraform:latest
     container_name: infra-provisioner
+    command: -version
     working_dir: /infra
     volumes:
       - ./terraform:/infra
