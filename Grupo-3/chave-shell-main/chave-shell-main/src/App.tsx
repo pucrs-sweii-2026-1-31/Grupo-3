@@ -49,6 +49,9 @@ import WifiOffIcon from '@mui/icons-material/WifiOff';
 const LoginPage = lazy(() => import("mfe_auth/LoginPage"));
 const RegisterPage = lazy(() => import("mfe_auth/RegisterForm"));
 
+import HistoryEduIcon from '@mui/icons-material/HistoryEdu';
+import CodeIcon from '@mui/icons-material/Code';
+
 const drawerWidth = 270;
 
 const GlobalStyles = () => (
@@ -126,8 +129,9 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   const location = useLocation();
   const items = [
     { label: "Dashboard", icon: <DashboardIcon />, to: "/" },
+    { label: "Cadastro", icon: <PersonAddIcon />, to: "/cadastro" },
+    { label: "Transparência", icon: <HistoryEduIcon />, to: "/transparency" },
     { label: "Login", icon: <LoginIcon />, to: "/login" },
-    { label: "Cadastro", icon: <PersonAddIcon />, to: "/register" },
   ];
 
   return (
@@ -257,6 +261,50 @@ function StatTile({ title, value, subtitle, icon, gradient, delay, endpoint, det
         </Collapse>
       </CardContent>
     </Card>
+  );
+}
+
+function TransparencyPage() {
+  const members = [
+    { name: "Rafael Reis", logs: ["prompt_log_2026-05-11_rafael.json", "prompt_log_2026-05-11_rafael_current.json", "prompt_log_2026-05-11_rafael_recovered.json", "prompt_log_2026-05-05_rafael.json", "prompt_log_2026-05-04_rafael.json"] },
+    { name: "Daniel", logs: ["prompt_log_2026-05-08_daniel.json", "prompt_log_2026-05-07_daniel.json", "prompt_log_2026-05-03_daniel.json", "prompt_log_2026-05-02_daniel.json", "prompt_log_2026-04-30_daniel.json"] },
+    { name: "Gustavo Henrique", logs: ["prompt_log_2026-05-04_gustavo-henrique.json", "prompt_log_2026-05-03_gustavo-henrique.json", "prompt_log_2026-04-30_gustavo-henrique.json"] },
+    { name: "João Wiskow", logs: ["prompt_log_2026-05-09_joao-wiskow.json", "prompt_log_2026-05-06_joao-wiskow.json", "prompt_log_2026-04-30_joao-wiskow.json"] },
+    { name: "Davi Asculski", logs: ["prompt_log_2026-05-05_daviasculski.json"] },
+    { name: "Matheus Masera", logs: ["prompt_log_2026-05-06_matheusmasera12.json"] },
+  ];
+
+  return (
+    <Stack spacing={4}>
+      <Box className="fade-in">
+        <Typography variant="h3" fontWeight={900}>Transparência</Typography>
+        <Typography color="text.secondary" variant="subtitle1">Logs de interação com IA (Prompt Engineering) de todos os membros do Grupo 3.</Typography>
+      </Box>
+
+      <Grid container spacing={3}>
+        {members.map((member, i) => (
+          <Grid item xs={12} md={6} key={i}>
+            <Card className={`fade-in delay-${(i % 3) + 1}`}>
+              <CardContent>
+                <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 2 }}>
+                  <Avatar sx={{ bgcolor: 'primary.main' }}>{member.name[0]}</Avatar>
+                  <Typography variant="h6" fontWeight={700}>{member.name}</Typography>
+                </Stack>
+                <Divider sx={{ mb: 2 }} />
+                <List dense>
+                  {member.logs.map((log, j) => (
+                    <ListItemButton key={j} component="a" href={`https://github.com/pucrs-sweii-2026-1-31/Grupo-3/blob/main/.ai_log/${log}`} target="_blank">
+                      <ListItemIcon><CodeIcon fontSize="small" /></ListItemIcon>
+                      <ListItemText primary={log} secondary="Ver log no GitHub" />
+                    </ListItemButton>
+                  ))}
+                </List>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+    </Stack>
   );
 }
 
@@ -462,12 +510,20 @@ export default function App() {
               </Suspense>
             </ErrorBoundary>
           } />
-          <Route path="/register" element={
+          <Route path="/register" element={<Navigate to="/cadastro" replace />} />
+          <Route path="/cadastro" element={
             <ErrorBoundary>
               <Suspense fallback={<LoadingFallback />}>
                 <RegisterPage />
               </Suspense>
             </ErrorBoundary>
+          } />
+          <Route path="/transparency" element={
+            <PrivateRoute>
+              <ShellLayout mode={mode} onToggleMode={() => setMode((current) => current === "dark" ? "light" : "dark")}>
+                <TransparencyPage />
+              </ShellLayout>
+            </PrivateRoute>
           } />
           <Route path="/" element={
             <PrivateRoute>

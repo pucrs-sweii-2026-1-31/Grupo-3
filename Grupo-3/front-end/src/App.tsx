@@ -33,7 +33,8 @@ export default function App() {
               <Routes>
                 {/* Auth pages (full screen, no shell) */}
                 <Route path="/login" element={<LoginForm onLogin={handleLogin} />} />
-                <Route path="/register" element={<RegisterForm />} />
+                <Route path="/cadastro" element={<RegisterForm />} />
+                <Route path="/register" element={<Navigate to="/cadastro" replace />} />
 
                 {/* App pages (with shell layout) */}
                 <Route

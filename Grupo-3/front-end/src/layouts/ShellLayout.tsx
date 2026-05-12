@@ -36,8 +36,9 @@ interface ShellLayoutProps {
 
 const navItems = [
   { label: 'Dashboard', icon: <DashboardIcon />, to: '/' },
+  { label: 'Cadastro', icon: <PersonAddIcon />, to: '/cadastro' },
+  { label: 'Transparência', icon: <SecurityIcon />, to: '/transparency' },
   { label: 'Login', icon: <LoginIcon />, to: '/login' },
-  { label: 'Cadastro', icon: <PersonAddIcon />, to: '/register' },
 ];
 
 function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
