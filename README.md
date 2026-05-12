@@ -115,12 +115,17 @@ O sistema foi rigorosamente coberto usando metodologias ágeis.
   cd Trabalho_Eng_Soft_II
   # No Windows (PowerShell):
   .\mvnw verify
-  # No Linux/WSL:
+  # No Linux/WSL (se der erro de 'bad interpreter'):
+  sed -i 's/\r$//' ./mvnw
   chmod +x mvnw && ./mvnw verify
   ```
 - **Frontends (Vitest + Testing Library):** Mock de APIs e rotas.
   ```bash
-  # No front-end ou no shell
+  # Para o remote MFE:
+  cd front-end
+  npm run test:coverage
+  # Para o Shell:
+  cd chave-shell-main/chave-shell-main
   npm run test:coverage
   ```
 - **Smoke Tests E2E:** Um script em PowerShell foi criado para validar se todas as camadas (Gateway, Backend, Remote e Shell) estão de pé.
