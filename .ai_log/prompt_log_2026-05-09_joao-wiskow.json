@@ -1,0 +1,59 @@
+[
+  {
+    "timestamp": "2026-05-09T23:05:12.440Z",
+    "source": "github_copilot",
+    "git_branch": "main",
+    "git_user_name": "joaoWiskow",
+    "call_context": {
+      "cwd": "/home/usuario/Downloads/Grupo-3"
+    },
+    "role": "user",
+    "content": "quais os testes que ja existem no front?"
+  },
+  {
+    "timestamp": "2026-05-09T23:05:15.820Z",
+    "source": "github_copilot",
+    "git_branch": "main",
+    "git_user_name": "joaoWiskow",
+    "role": "assistant",
+    "content": "Ate agora identifiquei apenas os testes de integridade basicos do Vitest/Jest. Nao existem testes unitarios para os componentes de formulario ou de validacao de estado do usuario no momento."
+  },
+  {
+    "timestamp": "2026-05-09T23:05:12.440Z",
+    "source": "github_copilot",
+    "git_branch": "main",
+    "git_user_name": "joaoWiskow",
+    "call_context": {
+      "cwd": "/home/usuario/Downloads/Grupo-3"
+    },
+    "role": "user",
+    "content": "quais os testes que ja existem no front?"
+  },
+  {
+    "timestamp": "2026-05-09T23:05:15.820Z",
+    "source": "github_copilot",
+    "git_branch": "main",
+    "git_user_name": "joaoWiskow",
+    "role": "assistant",
+    "content": "Ate agora identifiquei apenas os testes de integridade basicos do Vitest/Jest. Nao existem testes unitarios para os componentes de formulario ou de validacao de estado do usuario no momento."
+  },
+  {
+    "timestamp": "2026-05-09T23:45:10.225Z",
+    "source": "github_copilot",
+    "git_branch": "main",
+    "git_user_name": "joaoWiskow",
+    "call_context": {
+      "cwd": "/home/usuario/Downloads/Grupo-3"
+    },
+    "role": "user",
+    "content": "cria o esqueleto do front para listar users"
+  },
+  {
+    "timestamp": "2026-05-09T23:45:13.900Z",
+    "source": "github_copilot",
+    "git_branch": "main",
+    "git_user_name": "joaoWiskow",
+    "role": "assistant",
+    "content": "```\n```"
+  }
+]
