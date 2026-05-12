@@ -1,0 +1,26 @@
+[
+  {
+    "timestamp": "2026-05-05T14:37:04.947Z",
+    "source": "github_copilot",
+    "git_branch": "davi",
+    "git_user_name": "daviasculski",
+    "call_context": {
+      "cwd": "c:\\Users\\daviasculski\\Documents\\Faculdade\\2026.1\\ENG_SOFT_II"
+    },
+    
+    "role": "user",
+    "content": "Atue como um Engenheiro de Software Sênior especializado em Java e Spring Boot. Estamos desenvolvendo o microsserviço 'User & Group Service' para um sistema de autoavaliação de competências para pessoas idosas. Objetivo: Implementar o endpoint de criação de usuários (POST /api/users/register) e autenticação básica (POST /api/users/login). Requisitos Técnicos: Tecnologias: Java 21, Spring Boot 3.4 e Spring Data JPA. Arquitetura: Utilize o padrão Layered Architecture (Controller, Service, Repository, DTO). Segurança: Utilize Spring Security com criptografia BCrypt para as senhas. Para a P1, implemente uma autenticação simples retornando um Token JWT (ou estrutura básica de Session). Banco de Dados: Configure para PostgreSQL (que será emulado pelo Localstack via Docker). Documentação: Adicione anotações do Swagger/OpenAPI v3 nos métodos do Controller. Validação: Use jakarta.validation para garantir que campos como 'email' e 'senha' não sejam nulos ou inválidos. Regra de Negócio: O usuário deve ter: nome, email, senha, data_nascimento e perfil (ex: IDOSO ou ADMINISTRADOR). Entregável: Gere o código da Entity User, o UserRepository, o UserService, o UserController e o AuthRequestDTO."
+  },
+  {
+    "timestamp": "2026-05-05T14:51:56.947Z",
+    "source": "github_copilot",
+    "git_branch": "davi",
+    "git_user_name": "daviasculski",
+    "call_context": {
+      "cwd": "c:\\Users\\daviasculski\\Documents\\Faculdade\\2026.1\\ENG_SOFT_II"
+    },
+    
+    "role": "user",
+    "content": "Vá até o arquivo /src/test/java/com/example/Trabalho_Eng_Soft_II/controller/UserControllerTest.java na linha 49 e ajuste a criação do DTO e altere os parametros passados, para estar no padrao do construtor."
+  }
+]
