@@ -55,5 +55,43 @@
     "git_user_name": "joaoWiskow",
     "role": "assistant",
     "content": "Nao e obrigatorio. Geralmente usamos o exclude apenas quando queremos desativar o Spring Security ou o DataSource para testes muito especificos e rapidos. Para um ambiente padrao com MockMvc, basta usar as anotacoes corretas (como @WebMvcTest) que o Spring gerencia o contexto necessario."
+  },
+  {
+    "timestamp": "2026-05-06T11:20:30.750Z",
+    "source": "github_copilot",
+    "git_branch": "main",
+    "git_user_name": "joaoWiskow",
+    "call_context": {
+      "cwd": "/home/usuario/Downloads/Grupo-3"
+    },
+    "role": "user",
+    "content": "faca uma avaliacao completa dos testes que implementamos ate agora no backend  ve se o authcontroller ta adequada considerando casos de erro como credenciais invalidas e tokens expirados, analise tambem se os mocks do userservice estao isolando bem as camadas Diz se existe algum  comportamento inesperado que possa causar falhas nos testes de integracao com banco h2."
+  },
+  {
+    "timestamp": "2026-05-06T11:20:35.210Z",
+    "source": "github_copilot",
+    "git_branch": "main",
+    "git_user_name": "joaoWiskow",
+    "role": "assistant",
+    "content": "Sua suite de testes atual cobre bem o caminho feliz, mas a avaliacao aponta falhas na verificacao de excecoes. O AuthController nao testa o cenario de BadCredentialsException adequadamente. Os mocks estao bem estruturados usando Mockito, porem o banco H2 nos testes de integracao pode falhar se as constraints de unique key (como email) nao forem limpas entre cada execucao. Recomendo usar @DirtiesContext ou garantir o cleanup no banco."
+  },
+  {
+    "timestamp": "2026-05-06T11:35:10.115Z",
+    "source": "github_copilot",
+    "git_branch": "main",
+    "git_user_name": "joaoWiskow",
+    "call_context": {
+      "cwd": "/home/usuario/Downloads/Grupo-3"
+    },
+    "role": "user",
+    "content": "quais os codigos de resposta http tipo 400 devo usar para validar os erros?"
+  },
+  {
+    "timestamp": "2026-05-06T11:35:14.600Z",
+    "source": "github_copilot",
+    "git_branch": "main",
+    "git_user_name": "joaoWiskow",
+    "role": "assistant",
+    "content": "Para validar erros nos testes, voce deve focar nos seguintes: 400 (Bad Request) para erros de validacao de campos; 401 (Unauthorized) quando a autenticacao falha ou o token e invalido; 403 (Forbidden) quando o usuario nao tem a role necessaria; e 404 (Not Found) se o recurso buscado nao existir. Validar esses status garante que o seu GlobalExceptionHandler esta funcionando corretamente."
   }
 ]
