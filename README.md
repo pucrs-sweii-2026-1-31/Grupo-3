@@ -113,7 +113,10 @@ O sistema foi rigorosamente coberto usando metodologias ágeis.
 - **Backend (JUnit/Mockito):** Regras de JaCoCo ativas falham o build se a cobertura ficar abaixo de 70%.
   ```bash
   cd Trabalho_Eng_Soft_II
+  # No Windows (PowerShell):
   .\mvnw verify
+  # No Linux/WSL:
+  chmod +x mvnw && ./mvnw verify
   ```
 - **Frontends (Vitest + Testing Library):** Mock de APIs e rotas.
   ```bash
@@ -123,7 +126,10 @@ O sistema foi rigorosamente coberto usando metodologias ágeis.
 - **Smoke Tests E2E:** Um script em PowerShell foi criado para validar se todas as camadas (Gateway, Backend, Remote e Shell) estão de pé.
   ```bash
   cd scripts
-  .\smoke_tests.ps1
+  # No Windows (PowerShell):
+  powershell -ExecutionPolicy Bypass -File .\smoke_tests.ps1
+  # No Linux/WSL:
+  powershell.exe -ExecutionPolicy Bypass -File ./smoke_tests.ps1
   ```
 
 ---
