@@ -9,12 +9,10 @@ import com.example.Trabalho_Eng_Soft_II.model.User;
 import com.example.Trabalho_Eng_Soft_II.service.TokenService;
 import com.example.Trabalho_Eng_Soft_II.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,22 +23,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/auth")
-@Tag(name = "Authentication", description = "API de autenticação e registro de usuários")
+@Tag(name = "Authentication", description = "API de autenticacao e registro de usuarios")
 public class AuthController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
+    private final TokenService tokenService;
+    private final UserService userService;
 
-    @Autowired
-    private TokenService tokenService;
-
-    @Autowired
-    private UserService userService;
+    public AuthController(AuthenticationManager authenticationManager, TokenService tokenService, UserService userService) {
+        this.authenticationManager = authenticationManager;
+        this.tokenService = tokenService;
+        this.userService = userService;
+    }
 
     @PostMapping("/login")
     @Operation(
-        summary = "Autenticar usuário (Login)",
-        description = "Realiza a autenticação do usuário e retorna um token JWT para requisições autenticadas",
+        summary = "Autenticar usuario (Login)",
+        description = "Realiza a autenticacao do usuario e retorna um token JWT para requisicoes autenticadas",
         tags = {"Authentication"}
     )
     @ApiResponses(value = {
@@ -50,18 +49,16 @@ public class AuthController {
         ),
         @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "401",
-            description = "Email ou senha inválidos"
+            description = "Email ou senha invalidos"
         ),
         @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "400",
-            description = "Dados inválidos"
+            description = "Dados invalidos"
         )
     })
-    public ResponseEntity<ApiResponse<LoginResponseDTO>> login(
-            @RequestBody @Valid AuthDTO authDTO) {
+    public ResponseEntity<ApiResponse<LoginResponseDTO>> login(@RequestBody @Valid AuthDTO authDTO) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(authDTO.getEmail(), authDTO.getPassword());
-        var auth = this.authenticationManager.authenticate(usernamePassword);
-
+        var auth = authenticationManager.authenticate(usernamePassword);
         var token = tokenService.generateToken((User) auth.getPrincipal());
 
         return ResponseEntity.ok(ApiResponse.success("Login realizado com sucesso", new LoginResponseDTO(token)));
@@ -69,24 +66,23 @@ public class AuthController {
 
     @PostMapping("/register")
     @Operation(
-        summary = "Registrar novo usuário",
-        description = "Cria um novo usuário no sistema com dados de registro incluindo data de nascimento e perfil",
+        summary = "Registrar novo usuario",
+        description = "Cria um novo usuario no sistema com dados de registro",
         tags = {"Authentication"}
     )
     @ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "200",
-            description = "Usuário registrado com sucesso"
+            description = "Usuario registrado com sucesso"
         ),
         @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "400",
-            description = "Dados inválidos ou usuário já existe"
+            description = "Dados invalidos ou usuario ja existe"
         )
     })
-    public ResponseEntity<ApiResponse<UserResumoDTO>> register(
-            @RequestBody @Valid UserDTO userDTO) {
+    public ResponseEntity<ApiResponse<UserResumoDTO>> register(@RequestBody @Valid UserDTO userDTO) {
         UserResumoDTO createdUser = userService.criarUsuario(userDTO);
-        return ResponseEntity.ok(ApiResponse.success("Usuário registrado com sucesso", createdUser));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.success("Usuario registrado com sucesso", createdUser));
     }
 }
-

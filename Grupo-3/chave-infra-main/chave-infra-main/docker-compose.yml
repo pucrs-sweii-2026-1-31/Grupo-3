@@ -45,6 +45,7 @@ services:
   infra-provisioner:
     image: hashicorp/terraform:latest
     container_name: infra-provisioner
+    command: -version
     working_dir: /infra
     volumes:
       - ./terraform:/infra
@@ -73,7 +74,7 @@ services:
       postgres:
         condition: service_healthy
       infra-provisioner:
-        condition: service_started
+        condition: service_completed_successfully
     restart: unless-stopped
 
   chave-mfe-auth:

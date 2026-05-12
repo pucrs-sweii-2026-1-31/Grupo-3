@@ -9,14 +9,21 @@ export default defineConfig({
       name: 'mfe_auth',
       filename: 'remoteEntry.js',
       exposes: {
-        './LoginPage': './src/components/LoginForm.tsx',
-        './RegisterForm': './src/components/RegisterForm.tsx',
+        './LoginPage': './src/pages/LoginPage.tsx',
+        './RegisterForm': './src/pages/RegisterPage.tsx',
+        './AuthContract': './src/federation/authContract.ts',
       },
-      shared: ['react', 'react-dom']
+      shared: [
+        'react',
+        'react-dom',
+        '@mui/material',
+        '@emotion/react',
+        '@emotion/styled',
+      ]
     }),
   ],
   build: {
-    assetsDir: '', // ADICIONE ISSO: Garante que os arquivos fiquem na raiz do dist
+    assetsDir: '',
     modulePreload: false,
     target: 'esnext',
     minify: false,

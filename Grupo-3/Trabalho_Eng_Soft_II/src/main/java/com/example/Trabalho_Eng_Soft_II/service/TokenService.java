@@ -14,8 +14,16 @@ import java.time.ZoneOffset;
 
 @Service
 public class TokenService {
-    @Value("${api.security.token.secret}")
-    private String secret;
+
+    private final String secret;
+
+    public TokenService(@Value("${api.security.token.secret}") String secret) {
+        if (secret == null || secret.isBlank()) {
+            throw new IllegalStateException("JWT_SECRET nao configurado");
+        }
+
+        this.secret = secret;
+    }
 
     public String generateToken(User user) {
         try {

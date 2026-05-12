@@ -2,12 +2,12 @@ package com.example.Trabalho_Eng_Soft_II.service;
 
 import com.example.Trabalho_Eng_Soft_II.dto.UserDTO;
 import com.example.Trabalho_Eng_Soft_II.dto.UserResumoDTO;
+import com.example.Trabalho_Eng_Soft_II.exception.DuplicateResourceException;
+import com.example.Trabalho_Eng_Soft_II.exception.ResourceNotFoundException;
 import com.example.Trabalho_Eng_Soft_II.model.Role;
 import com.example.Trabalho_Eng_Soft_II.model.User;
-import com.example.Trabalho_Eng_Soft_II.repository.UserRepository;
 import com.example.Trabalho_Eng_Soft_II.repository.RoleRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.Trabalho_Eng_Soft_II.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,37 +18,30 @@ import java.util.Set;
 @Service
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private static final String DEFAULT_ROLE = "ROLE_USER";
 
-    @Autowired
-    private RoleRepository roleRepository;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public UserResumoDTO criarUsuario(UserDTO userDTO) {
-        // Validar se o email já existe
         if (userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("Email já cadastrado");
+            throw new DuplicateResourceException("Email ja cadastrado");
         }
 
-        // Validar se o userName já existe
         if (userRepository.findByUserName(userDTO.getUserName()).isPresent()) {
-            throw new IllegalArgumentException("Nome de usuário já existe");
+            throw new DuplicateResourceException("Nome de usuario ja existe");
         }
 
         User user = toModel(userDTO);
-        
-        Role userRole = roleRepository.findByName("ROLE_USER")
-        .orElseGet(() -> {
-            Role newRole = new Role();
-            newRole.setName("ROLE_USER");
-            return roleRepository.save(newRole);
-        });
+        user.setRoles(Set.of(getOrCreateDefaultRole()));
 
-        user.setRoles(Set.of(userRole));
-        
         user = userRepository.save(user);
         return UserResumoDTO.fromModel(user);
     }
@@ -59,14 +52,24 @@ public class UserService {
     }
 
     public boolean deletarUsuario(Long id) {
-    if (!userRepository.existsById(id)) {
-        throw new IllegalArgumentException("Usuário com o id não cadastrado");
-    }
-    userRepository.deleteById(id);
-    return true;
+        if (!userRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Usuario com o id nao cadastrado");
+        }
+
+        userRepository.deleteById(id);
+        return true;
     }
 
-    private User toModel(UserDTO dto){
+    private Role getOrCreateDefaultRole() {
+        return roleRepository.findByName(DEFAULT_ROLE)
+                .orElseGet(() -> {
+                    Role newRole = new Role();
+                    newRole.setName(DEFAULT_ROLE);
+                    return roleRepository.save(newRole);
+                });
+    }
+
+    private User toModel(UserDTO dto) {
         User user = new User();
         user.setUserName(dto.getUserName());
         user.setEmail(dto.getEmail());
@@ -74,4 +77,3 @@ public class UserService {
         return user;
     }
 }
-
