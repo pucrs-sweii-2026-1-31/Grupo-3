@@ -13,7 +13,7 @@ describe('LoginForm', () => {
     renderWithProviders(<LoginForm />);
 
     expect(screen.getByLabelText(/e-mail/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/senha/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/senha/i, { selector: 'input' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /acessar/i })).toBeInTheDocument();
   });
 
@@ -31,7 +31,7 @@ describe('LoginForm', () => {
     renderWithProviders(<LoginForm onLogin={onLogin} />);
 
     await userEvent.type(screen.getByLabelText(/e-mail/i), 'joao@email.com');
-    await userEvent.type(screen.getByLabelText(/senha/i), 'senha123');
+    await userEvent.type(screen.getByLabelText(/senha/i, { selector: 'input' }), 'senha123');
     await userEvent.click(screen.getByRole('button', { name: /acessar/i }));
 
     await waitFor(() => expect(onLogin).toHaveBeenCalledWith('jwt-token'));
@@ -48,7 +48,7 @@ describe('LoginForm', () => {
     renderWithProviders(<LoginForm />);
 
     await userEvent.type(screen.getByLabelText(/e-mail/i), 'joao@email.com');
-    await userEvent.type(screen.getByLabelText(/senha/i), 'senha123');
+    await userEvent.type(screen.getByLabelText(/senha/i, { selector: 'input' }), 'senha123');
     await userEvent.click(screen.getByRole('button', { name: /acessar/i }));
 
     await waitFor(() => expect(screen.getByText(/Credenciais invalidas/i)).toBeInTheDocument());

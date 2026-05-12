@@ -12,9 +12,9 @@ describe('RegisterForm', () => {
   it('renderiza campos principais', () => {
     renderWithProviders(<RegisterForm />);
 
-    expect(screen.getByLabelText(/nome/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/nome completo/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/e-mail/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/senha/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/senha/i, { selector: 'input' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /criar conta/i })).toBeInTheDocument();
   });
 
@@ -30,9 +30,9 @@ describe('RegisterForm', () => {
 
     renderWithProviders(<RegisterForm />);
 
-    await userEvent.type(screen.getByLabelText(/nome/i), 'joao');
+    await userEvent.type(screen.getByLabelText(/nome completo/i), 'joao');
     await userEvent.type(screen.getByLabelText(/e-mail/i), 'joao@email.com');
-    await userEvent.type(screen.getByLabelText(/senha/i), 'senha123');
+    await userEvent.type(screen.getByLabelText(/senha/i, { selector: 'input' }), 'senha123');
     await userEvent.click(screen.getByRole('button', { name: /criar conta/i }));
 
     await waitFor(() => expect(screen.getByText(/Cadastro realizado com sucesso/i)).toBeInTheDocument());
@@ -47,9 +47,9 @@ describe('RegisterForm', () => {
 
     renderWithProviders(<RegisterForm />);
 
-    await userEvent.type(screen.getByLabelText(/nome/i), 'João');
+    await userEvent.type(screen.getByLabelText(/nome completo/i), 'João');
     await userEvent.type(screen.getByLabelText(/e-mail/i), 'joao@email.com');
-    await userEvent.type(screen.getByLabelText(/senha/i), 'senha123');
+    await userEvent.type(screen.getByLabelText(/senha/i, { selector: 'input' }), 'senha123');
     await userEvent.click(screen.getByRole('button', { name: /criar conta/i }));
 
     await waitFor(() => expect(screen.getByText(/Email ja cadastrado/i)).toBeInTheDocument());
