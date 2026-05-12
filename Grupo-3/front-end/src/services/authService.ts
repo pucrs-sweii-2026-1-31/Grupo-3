@@ -20,7 +20,18 @@ export async function register(credentials: RegisterCredentials): Promise<UserSu
   return response.data;
 }
 
+export async function refresh(refreshToken: string): Promise<LoginResponse> {
+  const response = await requestJson<ApiResponse<LoginResponse>>('/refresh', {
+    method: 'POST',
+    body: JSON.stringify({ refreshToken }),
+  });
+
+  return response.data;
+}
+
 export const authService = {
   login,
   register,
+  refresh,
 };
+

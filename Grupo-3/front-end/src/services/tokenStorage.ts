@@ -1,4 +1,5 @@
 const TOKEN_KEY = 'token';
+const REFRESH_TOKEN_KEY = 'refresh_token';
 
 export const tokenStorage = {
   getToken(): string | null {
@@ -9,7 +10,17 @@ export const tokenStorage = {
     localStorage.setItem(TOKEN_KEY, token);
   },
 
+  getRefreshToken(): string | null {
+    return localStorage.getItem(REFRESH_TOKEN_KEY);
+  },
+
+  setRefreshToken(token: string): void {
+    localStorage.setItem(REFRESH_TOKEN_KEY, token);
+  },
+
   clearToken(): void {
     localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(REFRESH_TOKEN_KEY);
   },
 };
+

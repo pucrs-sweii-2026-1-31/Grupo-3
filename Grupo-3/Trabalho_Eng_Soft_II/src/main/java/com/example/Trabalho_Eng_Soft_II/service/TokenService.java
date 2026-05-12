@@ -26,12 +26,20 @@ public class TokenService {
     }
 
     public String generateToken(User user) {
+        return createToken(user, 120); // 2 horas
+    }
+
+    public String generateRefreshToken(User user) {
+        return createToken(user, 10080); // 7 dias (7 * 24 * 60)
+    }
+
+    private String createToken(User user, int minutes) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.create()
                     .withIssuer("auth-api")
                     .withSubject(user.getEmail())
-                    .withExpiresAt(genExpirationDate())
+                    .withExpiresAt(genExpirationDate(minutes))
                     .sign(algorithm);
         } catch (JWTCreationException exception) {
             throw new RuntimeException("Erro ao gerar token", exception);
@@ -51,7 +59,8 @@ public class TokenService {
         }
     }
 
-    private Instant genExpirationDate() {
-        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
+    private Instant genExpirationDate(int minutes) {
+        return LocalDateTime.now().plusMinutes(minutes).toInstant(ZoneOffset.of("-03:00"));
     }
 }
+

@@ -133,18 +133,20 @@ O sistema foi rigorosamente coberto usando metodologias ágeis.
 Os detalhes arquiteturais, registros do TDD e guias de resolução de problemas estão centralizados na pasta `/docs`:
 
 * 🏗️ **Arquitetura:** 
-  * [Baseline e Requisitos](./docs/architecture/01-baseline-system.md)
-  * [Critérios de Aceite](./docs/architecture/02-acceptance-criteria.md)
-  * [Trade-offs e Decisões](./docs/architecture/03-trade-offs.md)
+  * [Baseline e Requisitos](./Grupo-3/docs/architecture/01-baseline-system.md)
+  * [Critérios de Aceite](./Grupo-3/docs/architecture/02-acceptance-criteria.md)
+  * [Trade-offs e Decisões](./Grupo-3/docs/architecture/03-trade-offs.md)
 * ⚙️ **DevOps e CI/CD:**
-  * [Runbook Local](./docs/devops/runbook-and-troubleshooting.md)
+  * [Runbook Local](./Grupo-3/docs/devops/runbook-and-troubleshooting.md)
   * [Configuração do Pipeline (GitHub Actions)](../.github/workflows/pipeline.yml)
 * 🎨 **Design System:**
-  * [Manual de UI](./docs/ui-manual.md)
+  * [Manual de UI](./Grupo-3/docs/ui-manual.md)
+* 📊 **Avaliação:**
+  * [Critérios Avaliativos](./Grupo-3/docs/assessment-criteria.md)
 * 📜 **Jornada TDD (Histórico):**
-  * [Logs do Backend](./docs/tdd-journey/backend-tdd-logs.md)
-  * [Logs do Frontend](./docs/tdd-journey/frontend-tdd-logs.md)
-  * [Logs de CI/CD](./docs/tdd-journey/ci-cd-tdd-logs.md)
+  * [Logs do Backend](./Grupo-3/docs/tdd-journey/backend-tdd-logs.md)
+  * [Logs do Frontend](./Grupo-3/docs/tdd-journey/frontend-tdd-logs.md)
+  * [Logs de CI/CD](./Grupo-3/docs/tdd-journey/ci-cd-tdd-logs.md)
 
 ---
 *Desenvolvido pela Equipe do Grupo 3 - Disciplina de Engenharia de Software II.*

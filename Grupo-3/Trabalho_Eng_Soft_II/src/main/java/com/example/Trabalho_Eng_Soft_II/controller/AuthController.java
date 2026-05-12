@@ -59,9 +59,43 @@ public class AuthController {
     public ResponseEntity<ApiResponse<LoginResponseDTO>> login(@RequestBody @Valid AuthDTO authDTO) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(authDTO.getEmail(), authDTO.getPassword());
         var auth = authenticationManager.authenticate(usernamePassword);
-        var token = tokenService.generateToken((User) auth.getPrincipal());
+        
+        User user = (User) auth.getPrincipal();
+        var token = tokenService.generateToken(user);
+        var refreshToken = tokenService.generateRefreshToken(user);
 
-        return ResponseEntity.ok(ApiResponse.success("Login realizado com sucesso", new LoginResponseDTO(token)));
+        return ResponseEntity.ok(ApiResponse.success("Login realizado com sucesso", new LoginResponseDTO(token, refreshToken)));
+    }
+
+    @PostMapping("/refresh")
+    @Operation(
+        summary = "Renovar token de acesso",
+        description = "Recebe um Refresh Token válido e retorna um novo Token de Acesso e um novo Refresh Token",
+        tags = {"Authentication"}
+    )
+    @ApiResponses(value = {
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = "Token renovado com sucesso"
+        ),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "401",
+            description = "Refresh Token inválido ou expirado"
+        )
+    })
+    public ResponseEntity<ApiResponse<LoginResponseDTO>> refresh(@RequestBody @Valid com.example.Trabalho_Eng_Soft_II.dto.RefreshTokenDTO refreshTokenDTO) {
+        String email = tokenService.validateToken(refreshTokenDTO.getRefreshToken());
+        
+        if (email.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(ApiResponse.error("Token de atualização inválido ou expirado"));
+        }
+
+        User user = (User) userService.findByEmail(email); // Assumes userService has this method
+        var newToken = tokenService.generateToken(user);
+        var newRefreshToken = tokenService.generateRefreshToken(user);
+
+        return ResponseEntity.ok(ApiResponse.success("Token renovado com sucesso", new LoginResponseDTO(newToken, newRefreshToken)));
     }
 
     @PostMapping("/register")

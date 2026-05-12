@@ -11,6 +11,7 @@ export interface RegisterCredentials {
 
 export interface LoginResponse {
   token: string;
+  refreshToken: string;
 }
 
 export interface UserSummary {
@@ -21,4 +22,5 @@ export interface UserSummary {
 
 export interface AuthSession {
   token: string;
+  refreshToken: string;
 }

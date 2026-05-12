@@ -22,9 +22,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     async login(credentials) {
       const response = await authService.login(credentials);
       tokenStorage.setToken(response.token);
+      tokenStorage.setRefreshToken(response.refreshToken);
       setToken(response.token);
       return response.token;
     },
+
     async register(credentials) {
       return authService.register(credentials);
     },

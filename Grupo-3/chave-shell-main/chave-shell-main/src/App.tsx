@@ -266,16 +266,16 @@ function Dashboard() {
       title: "Backend", value: "JWT", subtitle: "Autenticação ativa", icon: <SecurityIcon />, gradient: 'linear-gradient(135deg, #3b82f6, #1d4ed8)', delay: 1,
       endpoint: "http://localhost:3001/auth",
       details: [
-        { label: "Endpoint", value: "http://localhost:3001/auth" },
-        { label: "Database", value: "PostgreSQL (chave-postgres)" }
+        { label: "Ponto de Extremidade (Endpoint)", value: "http://localhost:3001/auth" },
+        { label: "Banco de Dados", value: "PostgreSQL (chave-postgres)" }
       ]
     },
     { 
       title: "Remote MFE", value: "Auth", subtitle: "Módulo federado", icon: <ViewModuleIcon />, gradient: 'linear-gradient(135deg, #10b981, #059669)', delay: 2,
       endpoint: "http://localhost:4001/remoteEntry.js",
       details: [
-        { label: "Container", value: "chave-mfe-auth" },
-        { label: "Remote Entry", value: "http://localhost:4001/remoteEntry.js" }
+        { label: "Contêiner", value: "chave-mfe-auth" },
+        { label: "Entrada Remota", value: "http://localhost:4001/remoteEntry.js" }
       ]
     },
     { 
@@ -283,7 +283,15 @@ function Dashboard() {
       endpoint: "http://localhost:4566/_localstack/health",
       details: [
         { label: "Serviços", value: "S3, RDS, API Gateway" },
-        { label: "AWS Endpoint", value: "http://localhost:4566" }
+        { label: "Ponto de Acesso AWS", value: "http://localhost:4566" }
+      ]
+    },
+    { 
+      title: "Avaliações", value: "12", subtitle: "Competências", icon: <CheckCircleIcon />, gradient: 'linear-gradient(135deg, #f59e0b, #d97706)', delay: 4,
+      endpoint: "http://localhost:3001/api/assessments/health", // Placeholder or real endpoint
+      details: [
+        { label: "Total", value: "12 avaliações" },
+        { label: "Última", value: "Hoje, 14:20" }
       ]
     },
   ];
@@ -316,6 +324,7 @@ function Dashboard() {
                   <Chip label="Shell host" color="primary" variant="outlined" sx={{ fontWeight: 600 }} />
                   <Chip label="Module Federation" color="success" variant="outlined" sx={{ fontWeight: 600 }} />
                   <Chip label="Bearer JWT" color="info" variant="outlined" sx={{ fontWeight: 600 }} />
+                  <Chip label="PostgreSQL" color="warning" variant="outlined" sx={{ fontWeight: 600 }} />
                   <Chip label="Terraform Provisioned" color="secondary" variant="outlined" sx={{ fontWeight: 600 }} />
                 </Stack>
                 <Box sx={{ mt: 1 }}>

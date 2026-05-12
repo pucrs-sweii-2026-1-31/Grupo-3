@@ -46,6 +46,12 @@ public class UserService {
         return UserResumoDTO.fromModel(user);
     }
 
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario nao encontrado com o email: " + email));
+    }
+
+
     public Page<UserResumoDTO> listarUsuarios(Pageable pageable) {
         return userRepository.findAll(pageable)
                 .map(UserResumoDTO::fromModel);
