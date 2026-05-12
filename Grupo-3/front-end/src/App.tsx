@@ -11,11 +11,17 @@ import PrivateRoute from './components/PrivateRoute';
 import ErrorBoundary from './components/ErrorBoundary';
 
 export default function App() {
-  const [mode, setMode] = useState<'light' | 'dark'>('light');
+  const [mode, setMode] = useState<'light' | 'dark'>(
+    localStorage.getItem('theme') === 'dark' ? 'dark' : 'light'
+  );
   const theme = useMemo(() => buildTheme(mode), [mode]);
 
   const toggleMode = () => {
-    setMode((prev) => (prev === 'dark' ? 'light' : 'dark'));
+    setMode((prev) => {
+      const newMode = prev === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('theme', newMode);
+      return newMode;
+    });
   };
 
   const handleLogin = (token: string) => {
@@ -26,7 +32,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <div data-theme={mode}>
+      <div data-theme={mode} data-testid="app-container">
         <AuthProvider>
           <BrowserRouter>
             <ErrorBoundary>

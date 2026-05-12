@@ -54,4 +54,30 @@ describe('RegisterForm', () => {
 
     await waitFor(() => expect(screen.getByText(/Email ja cadastrado/i)).toBeInTheDocument());
   });
+
+  it('exibe mensagem de erro generica em falha desconhecida', async () => {
+    vi.spyOn(globalThis, 'fetch').mockRejectedValue(new Error('Unknown'));
+
+    renderWithProviders(<RegisterForm />);
+
+    await userEvent.type(screen.getByLabelText(/nome completo/i), 'João');
+    await userEvent.type(screen.getByLabelText(/e-mail/i), 'joao@email.com');
+    await userEvent.type(screen.getByLabelText(/senha/i, { selector: 'input' }), 'senha123');
+    await userEvent.click(screen.getByRole('button', { name: /criar conta/i }));
+
+    expect(await screen.findByText(/Não foi possível realizar o cadastro/i)).toBeInTheDocument();
+  });
+
+  it('alterna visibilidade da senha ao clicar no icone', async () => {
+    renderWithProviders(<RegisterForm />);
+    const passwordInput = screen.getByLabelText(/senha/i, { selector: 'input' });
+    const toggleBtn = screen.getByLabelText(/mostrar senha/i);
+
+    expect(passwordInput).toHaveAttribute('type', 'password');
+    await userEvent.click(toggleBtn);
+    expect(passwordInput).toHaveAttribute('type', 'text');
+    
+    await userEvent.click(screen.getByLabelText(/ocultar senha/i));
+    expect(passwordInput).toHaveAttribute('type', 'password');
+  });
 });

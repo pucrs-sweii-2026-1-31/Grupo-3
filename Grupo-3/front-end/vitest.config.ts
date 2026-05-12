@@ -10,10 +10,20 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html'],
+      exclude: [
+        'src/main.tsx',
+        'src/federation/**',
+        'src/types/**',
+        'src/theme/**',
+        '**/*.test.tsx',
+        '**/*.test.ts',
+        'src/test-utils.tsx',
+        'src/setupTests.ts'
+      ],
       thresholds: {
-        lines: 70,
-        functions: 70,
-        branches: 60,
+        lines: 100,
+        functions: 100,
+        branches: 100,
       },
     },
   },

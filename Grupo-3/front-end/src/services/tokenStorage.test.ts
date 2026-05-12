@@ -31,4 +31,13 @@ describe('tokenStorage', () => {
     tokenStorage.setToken('new-token');
     expect(tokenStorage.getToken()).toBe('new-token');
   });
+
+  it('gerencia refresh token corretamente', () => {
+    expect(tokenStorage.getRefreshToken()).toBeNull();
+    tokenStorage.setRefreshToken('refresh-jwt');
+    expect(tokenStorage.getRefreshToken()).toBe('refresh-jwt');
+    
+    tokenStorage.clearToken();
+    expect(tokenStorage.getRefreshToken()).toBeNull();
+  });
 });

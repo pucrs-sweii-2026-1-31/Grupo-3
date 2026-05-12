@@ -1,5 +1,6 @@
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import LoginForm from './LoginForm';
 import { renderWithProviders } from '../test-utils';
 
@@ -26,7 +27,7 @@ describe('LoginForm', () => {
         message: 'Login realizado com sucesso',
         data: { token: 'jwt-token' },
       }),
-    } as Response);
+    } as unknown as Response);
 
     renderWithProviders(<LoginForm onLogin={onLogin} />);
 
@@ -43,7 +44,7 @@ describe('LoginForm', () => {
       ok: false,
       status: 401,
       json: async () => ({ status: 401, message: 'Credenciais invalidas' }),
-    } as Response);
+    } as unknown as Response);
 
     renderWithProviders(<LoginForm />);
 
@@ -52,5 +53,30 @@ describe('LoginForm', () => {
     await userEvent.click(screen.getByRole('button', { name: /acessar/i }));
 
     await waitFor(() => expect(screen.getByText(/Credenciais invalidas/i)).toBeInTheDocument());
+  });
+
+  it('exibe mensagem de erro generica em falha desconhecida', async () => {
+    vi.spyOn(globalThis, 'fetch').mockRejectedValue(new Error('Unknown'));
+
+    renderWithProviders(<LoginForm />);
+
+    await userEvent.type(screen.getByLabelText(/e-mail/i), 'joao@email.com');
+    await userEvent.type(screen.getByLabelText(/senha/i, { selector: 'input' }), 'senha123');
+    await userEvent.click(screen.getByRole('button', { name: /acessar/i }));
+
+    expect(await screen.findByText(/Não foi possível realizar o login/i)).toBeInTheDocument();
+  });
+
+  it('alterna visibilidade da senha ao clicar no icone', async () => {
+    renderWithProviders(<LoginForm />);
+    const passwordInput = screen.getByLabelText(/senha/i, { selector: 'input' });
+    const toggleBtn = screen.getByLabelText(/mostrar senha/i);
+
+    expect(passwordInput).toHaveAttribute('type', 'password');
+    await userEvent.click(toggleBtn);
+    expect(passwordInput).toHaveAttribute('type', 'text');
+    
+    await userEvent.click(screen.getByLabelText(/ocultar senha/i));
+    expect(passwordInput).toHaveAttribute('type', 'password');
   });
 });

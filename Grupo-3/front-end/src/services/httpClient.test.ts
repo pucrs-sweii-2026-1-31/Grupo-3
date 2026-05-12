@@ -1,5 +1,5 @@
 import { ApiClientError } from '../types/api';
-import { requestJson } from './httpClient';
+import { requestJson, getAuthBaseUrl } from './httpClient';
 import { tokenStorage } from './tokenStorage';
 
 describe('httpClient', () => {
@@ -8,12 +8,18 @@ describe('httpClient', () => {
     vi.restoreAllMocks();
   });
 
+  it('usa a URL base do ambiente se disponível', () => {
+    vi.stubEnv('VITE_MS_AUTH_URL', 'http://api.test');
+    expect(getAuthBaseUrl()).toBe('http://api.test');
+    vi.unstubAllEnvs();
+  });
+
   it('envia Authorization Bearer quando chamada autenticada tem token', async () => {
     tokenStorage.setToken('jwt-token');
     const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue({
       ok: true,
       json: async () => ({ ok: true }),
-    } as Response);
+    } as unknown as Response);
 
     await requestJson('/users', { authenticated: true });
 
@@ -27,9 +33,19 @@ describe('httpClient', () => {
       ok: false,
       status: 401,
       json: async () => ({ status: 401, error: 'Unauthorized', message: 'Credenciais invalidas' }),
-    } as Response);
+    } as unknown as Response);
 
-    await expect(requestJson('/users', { authenticated: true })).rejects.toBeInstanceOf(ApiClientError);
+    await expect(requestJson('/users', { authenticated: true })).rejects.toThrow('Credenciais invalidas');
     expect(tokenStorage.getToken()).toBeNull();
+  });
+
+  it('lida com erro de API quando corpo nao e JSON', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue({
+      ok: false,
+      status: 500,
+      json: () => Promise.reject(new Error('Not JSON')),
+    } as unknown as Response);
+
+    await expect(requestJson('/test')).rejects.toThrow('Erro ao comunicar com a API');
   });
 });

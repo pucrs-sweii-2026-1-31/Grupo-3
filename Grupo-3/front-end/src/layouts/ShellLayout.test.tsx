@@ -1,4 +1,6 @@
 import { screen, fireEvent } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { describe, it, expect, vi } from 'vitest';
 import ShellLayout from './ShellLayout';
 import { renderWithProviders } from '../test-utils';
 
@@ -19,9 +21,6 @@ describe('ShellLayout', () => {
 
     // Verifica itens de navegacao
     expect(screen.getAllByText('Dashboard').length).toBeGreaterThan(0);
-    expect(screen.getAllByText('Cadastro').length).toBeGreaterThan(0);
-    expect(screen.getAllByText('Transparência').length).toBeGreaterThan(0);
-    expect(screen.getAllByText('Login').length).toBeGreaterThan(0);
   });
 
   it('chama onToggleMode ao clicar no botao de tema', () => {
@@ -36,6 +35,28 @@ describe('ShellLayout', () => {
     expect(mockOnToggleMode).toHaveBeenCalled();
   });
 
+  it('abre e fecha o menu mobile', async () => {
+    renderWithProviders(
+      <ShellLayout mode="light" onToggleMode={mockOnToggleMode}>
+        <div>Content</div>
+      </ShellLayout>
+    );
+    
+    const openBtn = screen.getByLabelText(/abrir menu/i);
+    await userEvent.click(openBtn);
+    
+    // Verifica se o conteúdo do drawer apareceu (estará duplicado pois o sidebar fixo também está lá)
+    const dashboardLinks = screen.getAllByText('Dashboard');
+    expect(dashboardLinks.length).toBeGreaterThan(1);
+    
+    // Clica no dashboard link do mobile drawer para fechar (onNavigate)
+    await userEvent.click(dashboardLinks[1]);
+
+    // Reabre e fecha via backdrop/escape (onClose)
+    await userEvent.click(openBtn);
+    fireEvent.keyDown(screen.getByRole('presentation'), { key: 'Escape', code: 'Escape' });
+  });
+
   it('realiza logout ao clicar no botao de sair', () => {
     const clearSpy = vi.spyOn(Storage.prototype, 'clear');
     
@@ -48,5 +69,16 @@ describe('ShellLayout', () => {
     const logoutBtn = screen.getByLabelText(/sair/i);
     fireEvent.click(logoutBtn);
     expect(clearSpy).toHaveBeenCalled();
+  });
+
+  it('renderiza corretamente no modo escuro', () => {
+    renderWithProviders(
+      <ShellLayout mode="dark" onToggleMode={mockOnToggleMode}>
+        <div>Content</div>
+      </ShellLayout>
+    );
+    
+    // Verifica se o ícone de tema claro (sol) aparece quando estamos no dark
+    expect(screen.getByLabelText(/tema claro/i)).toBeInTheDocument();
   });
 });

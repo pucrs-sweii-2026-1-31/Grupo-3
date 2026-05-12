@@ -42,4 +42,19 @@ describe('authService', () => {
       expect(response).toEqual(mockResponse.data);
     });
   });
+
+  describe('refresh', () => {
+    it('chama httpClient com refreshToken e retorna data', async () => {
+      const mockResponse = { data: { token: 'new-token' } };
+      vi.mocked(requestJson).mockResolvedValue(mockResponse);
+
+      const response = await authService.refresh('old-refresh-token');
+
+      expect(requestJson).toHaveBeenCalledWith('/refresh', {
+        method: 'POST',
+        body: JSON.stringify({ refreshToken: 'old-refresh-token' }),
+      });
+      expect(response).toEqual(mockResponse.data);
+    });
+  });
 });
