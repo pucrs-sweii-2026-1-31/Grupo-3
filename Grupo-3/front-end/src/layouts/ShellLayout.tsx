@@ -16,6 +16,7 @@ import {
   Tooltip,
   Typography,
   useTheme,
+  alpha,
 } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import LoginIcon from '@mui/icons-material/Login';
@@ -26,7 +27,7 @@ import SecurityIcon from '@mui/icons-material/Security';
 import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 
-const DRAWER_WIDTH = 270;
+const DRAWER_WIDTH = 280;
 
 interface ShellLayoutProps {
   children: React.ReactNode;
@@ -44,41 +45,50 @@ const navItems = [
 function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   const location = useLocation();
   const theme = useTheme();
+  const isDark = theme.palette.mode === 'dark';
 
   return (
-    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: 'background.default' }}>
       {/* Brand */}
-      <Stack spacing={0.5} sx={{ p: 2.5 }}>
-        <Stack direction="row" spacing={1.5} alignItems="center">
+      <Stack spacing={0.5} sx={{ p: 3, pt: 4 }}>
+        <Stack direction="row" spacing={2} alignItems="center">
           <Avatar
             sx={{
-              width: 40,
-              height: 40,
-              background: 'linear-gradient(135deg, #3b82f6, #1d4ed8)',
-              boxShadow: '0 4px 12px rgba(59,130,246,0.3)',
+              width: 44,
+              height: 44,
+              background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
+              boxShadow: '0 8px 16px -4px rgba(59,130,246,0.5)',
+              border: '2px solid rgba(255,255,255,0.1)',
             }}
           >
-            <SecurityIcon sx={{ fontSize: 20 }} />
+            <SecurityIcon sx={{ fontSize: 24 }} />
           </Avatar>
           <Box>
-            <Typography variant="subtitle1" fontWeight={800} sx={{ lineHeight: 1.2 }}>
+            <Typography variant="h6" fontWeight={800} sx={{ lineHeight: 1, letterSpacing: '-0.02em' }}>
               Chave
             </Typography>
             <Typography
               variant="caption"
-              color="text.secondary"
-              sx={{ fontSize: '0.65rem', letterSpacing: 0.5 }}
+              sx={{ 
+                fontSize: '0.65rem', 
+                fontWeight: 600, 
+                color: 'text.secondary',
+                letterSpacing: '0.05em',
+                textTransform: 'uppercase'
+              }}
             >
-              Autoavaliação de Competências
+              Enterprise Stack
             </Typography>
           </Box>
         </Stack>
       </Stack>
 
-      <Divider />
+      <Box sx={{ px: 2, my: 2 }}>
+        <Divider sx={{ borderColor: alpha(theme.palette.divider, 0.5) }} />
+      </Box>
 
       {/* Navigation */}
-      <List sx={{ px: 1.5, py: 1.5, flex: 1 }}>
+      <List sx={{ px: 2, py: 1, flex: 1 }}>
         {navItems.map((item) => {
           const active = location.pathname === item.to;
           return (
@@ -88,31 +98,49 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
               to={item.to}
               onClick={onNavigate}
               sx={{
-                borderRadius: 2,
-                mb: 0.5,
+                borderRadius: '14px',
+                mb: 1,
                 px: 2,
-                py: 1,
-                bgcolor: active ? 'primary.main' : 'transparent',
-                color: active ? '#fff' : 'text.primary',
+                py: 1.2,
+                background: active 
+                  ? `linear-gradient(90deg, ${alpha(theme.palette.primary.main, 0.15)} 0%, ${alpha(theme.palette.primary.main, 0.05)} 100%)` 
+                  : 'transparent',
+                color: active ? 'primary.main' : 'text.secondary',
                 '&:hover': {
-                  bgcolor: active ? 'primary.dark' : 'action.hover',
+                  bgcolor: active ? alpha(theme.palette.primary.main, 0.2) : alpha(theme.palette.text.primary, 0.04),
+                  color: 'text.primary',
                 },
-                transition: 'all 0.2s ease',
+                position: 'relative',
+                transition: 'all 0.3s ease',
               }}
             >
+              {active && (
+                <Box 
+                  sx={{ 
+                    position: 'absolute', 
+                    left: 0, 
+                    top: '20%', 
+                    bottom: '20%', 
+                    width: 4, 
+                    bgcolor: 'primary.main',
+                    borderRadius: '0 4px 4px 0',
+                    boxShadow: '0 0 12px rgba(59,130,246,0.6)'
+                  }} 
+                />
+              )}
               <ListItemIcon
                 sx={{
-                  color: active ? '#fff' : 'text.secondary',
-                  minWidth: 40,
+                  color: active ? 'primary.main' : 'inherit',
+                  minWidth: 42,
                 }}
               >
-                {item.icon}
+                {React.cloneElement(item.icon as React.ReactElement, { sx: { fontSize: 22 } })}
               </ListItemIcon>
               <ListItemText
                 primary={item.label}
                 primaryTypographyProps={{
-                  fontWeight: active ? 600 : 400,
-                  fontSize: '0.9rem',
+                  fontWeight: active ? 700 : 500,
+                  fontSize: '0.92rem',
                 }}
               />
             </ListItemButton>
@@ -120,22 +148,36 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
         })}
       </List>
 
-      {/* Footer */}
-      <Box sx={{ p: 2 }}>
+      {/* Footer Info Card */}
+      <Box sx={{ p: 3 }}>
         <Box
           sx={{
-            p: 2,
-            borderRadius: 2,
-            bgcolor: theme.palette.mode === 'dark' ? 'rgba(59,130,246,0.08)' : 'rgba(59,130,246,0.04)',
+            p: 2.5,
+            borderRadius: '20px',
+            bgcolor: isDark ? alpha(theme.palette.primary.main, 0.05) : alpha(theme.palette.primary.main, 0.03),
             border: '1px solid',
-            borderColor: theme.palette.mode === 'dark' ? 'rgba(59,130,246,0.15)' : 'rgba(59,130,246,0.1)',
+            borderColor: isDark ? alpha(theme.palette.primary.main, 0.1) : alpha(theme.palette.primary.main, 0.08),
+            position: 'relative',
+            overflow: 'hidden',
           }}
         >
-          <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.65rem' }}>
+          <Box 
+            sx={{ 
+              position: 'absolute', 
+              top: -20, 
+              right: -20, 
+              width: 60, 
+              height: 60, 
+              borderRadius: '50%', 
+              bgcolor: alpha(theme.palette.primary.main, 0.05),
+              filter: 'blur(20px)'
+            }} 
+          />
+          <Typography variant="caption" sx={{ fontWeight: 800, color: 'primary.main', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'block', mb: 0.5 }}>
             PUCRS · Eng. Software II
           </Typography>
-          <Typography variant="caption" display="block" color="text.secondary" sx={{ fontSize: '0.65rem' }}>
-            Grupo 3 · 2026/1
+          <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 600, fontSize: '0.7rem' }}>
+            Grupo 3 · Turma 2026/1
           </Typography>
         </Box>
       </Box>
@@ -147,6 +189,7 @@ export default function ShellLayout({ children, mode, onToggleMode }: ShellLayou
   const [mobileOpen, setMobileOpen] = useState(false);
   const navigate = useNavigate();
   const theme = useTheme();
+  const isDark = mode === 'dark';
 
   const logout = () => {
     localStorage.clear();
@@ -155,7 +198,6 @@ export default function ShellLayout({ children, mode, onToggleMode }: ShellLayou
 
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: 'background.default' }}>
-      {/* AppBar */}
       <AppBar
         position="fixed"
         elevation={0}
@@ -163,57 +205,99 @@ export default function ShellLayout({ children, mode, onToggleMode }: ShellLayou
           zIndex: (t) => t.zIndex.drawer + 1,
         }}
       >
-        <Toolbar>
+        <Toolbar sx={{ height: 72 }}>
           <IconButton
             color="inherit"
             edge="start"
             onClick={() => setMobileOpen(true)}
             sx={{ mr: 2, display: { md: 'none' } }}
-            aria-label="Abrir menu"
           >
             <MenuIcon />
           </IconButton>
 
-          <Stack direction="row" alignItems="center" spacing={1} sx={{ flexGrow: 1 }}>
-            <SecurityIcon sx={{ fontSize: 22, color: 'primary.main' }} />
-            <Typography
-              variant="h6"
-              fontWeight={700}
-              sx={{
-                fontSize: { xs: '0.9rem', sm: '1.1rem' },
-                display: { xs: 'none', sm: 'block' },
+          <Stack direction="row" alignItems="center" spacing={1.5} sx={{ flexGrow: 1 }}>
+            <Box 
+              sx={{ 
+                width: 32, 
+                height: 32, 
+                borderRadius: '8px', 
+                bgcolor: 'primary.main', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center',
+                boxShadow: '0 4px 12px rgba(59,130,246,0.3)',
+                display: { xs: 'none', sm: 'flex' }
               }}
             >
-              Chave
-            </Typography>
-            <Typography
-              variant="body2"
-              color="text.secondary"
-              sx={{
-                display: { xs: 'none', md: 'block' },
-                ml: 0.5,
-              }}
-            >
-              — Sistema de Autoavaliação de Competências
-            </Typography>
+              <SecurityIcon sx={{ fontSize: 18, color: '#fff' }} />
+            </Box>
+            <Box>
+              <Typography
+                variant="subtitle1"
+                fontWeight={800}
+                sx={{
+                  fontSize: '1rem',
+                  letterSpacing: '-0.01em',
+                  lineHeight: 1.2
+                }}
+              >
+                Chave
+              </Typography>
+              <Typography
+                variant="caption"
+                sx={{
+                  display: { xs: 'none', md: 'block' },
+                  color: 'text.secondary',
+                  fontWeight: 600,
+                  fontSize: '0.65rem',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em'
+                }}
+              >
+                Orquestrador de Competências
+              </Typography>
+            </Box>
           </Stack>
 
-          <Stack direction="row" spacing={0.5}>
-            <Tooltip title={mode === 'dark' ? 'Tema claro' : 'Tema escuro'}>
-              <IconButton onClick={onToggleMode} size="small" sx={{ color: 'text.primary' }}>
-                {mode === 'dark' ? <LightModeOutlinedIcon /> : <DarkModeOutlinedIcon />}
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Sair">
-              <IconButton onClick={logout} size="small" sx={{ color: 'text.primary' }}>
-                <LogoutIcon />
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Box 
+              sx={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                bgcolor: isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)',
+                borderRadius: '12px',
+                p: 0.5,
+                mr: 1
+              }}
+            >
+              <Tooltip title={isDark ? 'Ativar Modo Claro' : 'Ativar Modo Escuro'}>
+                <IconButton onClick={onToggleMode} size="small" sx={{ p: 1 }}>
+                  {isDark ? <LightModeOutlinedIcon sx={{ fontSize: 20 }} /> : <DarkModeOutlinedIcon sx={{ fontSize: 20 }} />}
+                </IconButton>
+              </Tooltip>
+            </Box>
+            
+            <Tooltip title="Sair do Sistema">
+              <IconButton 
+                onClick={logout} 
+                size="small" 
+                sx={{ 
+                  p: 1,
+                  bgcolor: alpha(theme.palette.error.main, 0.1),
+                  color: 'error.main',
+                  '&:hover': {
+                    bgcolor: alpha(theme.palette.error.main, 0.2),
+                  }
+                }}
+              >
+                <LogoutIcon sx={{ fontSize: 20 }} />
               </IconButton>
             </Tooltip>
           </Stack>
         </Toolbar>
       </AppBar>
 
-      {/* Mobile Drawer */}
+      {/* Sidebar logic remains same with styled SidebarContent */}
       <Drawer
         variant="temporary"
         open={mobileOpen}
@@ -223,15 +307,13 @@ export default function ShellLayout({ children, mode, onToggleMode }: ShellLayou
           display: { xs: 'block', md: 'none' },
           '& .MuiDrawer-paper': {
             width: DRAWER_WIDTH,
-            bgcolor: 'background.paper',
+            border: 'none',
           },
         }}
       >
-        <Toolbar />
         <SidebarContent onNavigate={() => setMobileOpen(false)} />
       </Drawer>
 
-      {/* Permanent Drawer */}
       <Drawer
         variant="permanent"
         sx={{
@@ -239,27 +321,29 @@ export default function ShellLayout({ children, mode, onToggleMode }: ShellLayou
           '& .MuiDrawer-paper': {
             width: DRAWER_WIDTH,
             boxSizing: 'border-box',
-            bgcolor: 'background.paper',
           },
         }}
         open
       >
-        <Toolbar />
         <SidebarContent />
       </Drawer>
 
-      {/* Main Content */}
       <Box
         component="main"
         sx={{
           flexGrow: 1,
-          p: { xs: 2, md: 3 },
+          p: { xs: 3, md: 5 },
           ml: { md: `${DRAWER_WIDTH}px` },
           maxWidth: { md: `calc(100% - ${DRAWER_WIDTH}px)` },
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column'
         }}
       >
-        <Toolbar />
-        {children}
+        <Toolbar sx={{ height: 72 }} />
+        <Box sx={{ flex: 1, position: 'relative' }}>
+          {children}
+        </Box>
       </Box>
     </Box>
   );

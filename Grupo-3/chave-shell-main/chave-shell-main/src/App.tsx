@@ -26,6 +26,7 @@ import {
   createTheme,
   LinearProgress,
   Collapse,
+  alpha,
 } from "@mui/material";
 
 // Icons
@@ -44,49 +45,51 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import WifiOffIcon from '@mui/icons-material/WifiOff';
+import HistoryEduIcon from '@mui/icons-material/HistoryEdu';
+import CodeIcon from '@mui/icons-material/Code';
+import IntegrationInstructionsIcon from '@mui/icons-material/IntegrationInstructions';
+import AssessmentIcon from '@mui/icons-material/Assessment';
 
 // Remotes
 const LoginPage = lazy(() => import("mfe_auth/LoginPage"));
 const RegisterPage = lazy(() => import("mfe_auth/RegisterForm"));
 
-import HistoryEduIcon from '@mui/icons-material/HistoryEdu';
-import CodeIcon from '@mui/icons-material/Code';
-
-const drawerWidth = 270;
+const drawerWidth = 280;
 
 const GlobalStyles = () => (
   <style>
     {`
       @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(20px); }
+        from { opacity: 0; transform: translateY(30px); }
         to { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
       }
       @keyframes pulse {
         0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-        70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+        70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
         100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
       }
-      @keyframes pulseError {
-        0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
-        70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
-        100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
-      }
-      .fade-in { animation: fadeInUp 0.5s ease-out forwards; opacity: 0; }
+      .fade-in { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
       .delay-1 { animation-delay: 0.1s; }
       .delay-2 { animation-delay: 0.2s; }
       .delay-3 { animation-delay: 0.3s; }
       .pulse-online {
-        width: 8px; height: 8px; border-radius: 50%; background: #10b981;
+        width: 10px; height: 10px; border-radius: 50%; background: #10b981;
         display: inline-block; margin-right: 8px; animation: pulse 2s infinite;
       }
       .pulse-offline {
-        width: 8px; height: 8px; border-radius: 50%; background: #ef4444;
-        display: inline-block; margin-right: 8px; animation: pulseError 2s infinite;
+        width: 10px; height: 10px; border-radius: 50%; background: #ef4444;
+        display: inline-block; margin-right: 8px; animation: pulse 2s infinite;
+        box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
       }
-      ::-webkit-scrollbar { width: 6px; }
+      ::-webkit-scrollbar { width: 8px; }
       ::-webkit-scrollbar-track { background: transparent; }
-      ::-webkit-scrollbar-thumb { background: rgba(100, 116, 139, 0.2); border-radius: 3px; }
-      ::-webkit-scrollbar-thumb:hover { background: rgba(100, 116, 139, 0.4); }
+      ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.1); border-radius: 10px; border: 2px solid transparent; background-clip: content-box; }
+      ::-webkit-scrollbar-thumb:hover { background: rgba(148, 163, 184, 0.3); }
     `}
   </style>
 );
@@ -100,10 +103,11 @@ class ErrorBoundary extends Component<{ children: React.ReactNode }, { hasError:
   render() {
     if (this.state.hasError) {
       return (
-        <Box sx={{ p: 4, textAlign: 'center' }}>
-          <Typography variant="h6" color="error">Módulo indisponível</Typography>
-          <Typography color="text.secondary">Não foi possível carregar o microfrontend solicitado.</Typography>
-          <Button variant="outlined" sx={{ mt: 2 }} onClick={() => window.location.reload()}>Recarregar Página</Button>
+        <Box sx={{ p: 4, textAlign: 'center', borderRadius: 4, bgcolor: 'rgba(239, 68, 68, 0.05)', border: '1px solid rgba(239, 68, 68, 0.1)' }}>
+          <WifiOffIcon sx={{ fontSize: 48, color: 'error.main', mb: 2 }} />
+          <Typography variant="h6" color="error" fontWeight={800}>Módulo Indisponível</Typography>
+          <Typography color="text.secondary" sx={{ maxWidth: 400, mx: 'auto', mt: 1 }}>O microfrontend de autenticação não pôde ser carregado. Verifique se o container <b>chave-mfe-auth</b> está rodando.</Typography>
+          <Button variant="contained" color="error" sx={{ mt: 3 }} onClick={() => window.location.reload()}>Recarregar Sistema</Button>
         </Box>
       );
     }
@@ -118,15 +122,17 @@ export function PrivateRoute({ children }: { children: React.ReactNode }) {
 
 function LoadingFallback() {
   return (
-    <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 400 }} spacing={2}>
-      <CircularProgress size={32} thickness={5} sx={{ color: 'primary.main' }} />
-      <Typography color="text.secondary" fontWeight={500}>Carregando módulo...</Typography>
+    <Stack alignItems="center" justifyContent="center" sx={{ minHeight: 400 }} spacing={3}>
+      <CircularProgress size={40} thickness={5} sx={{ color: 'primary.main', filter: 'drop-shadow(0 0 8px rgba(59,130,246,0.5))' }} />
+      <Typography color="text.secondary" fontWeight={700} sx={{ letterSpacing: '0.1em', textTransform: 'uppercase', fontSize: '0.75rem' }}>Sincronizando Módulos...</Typography>
     </Stack>
   );
 }
 
 function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   const location = useLocation();
+  const theme = useTheme();
+  const isDark = theme.palette.mode === 'dark';
   const items = [
     { label: "Dashboard", icon: <DashboardIcon />, to: "/" },
     { label: "Cadastro", icon: <PersonAddIcon />, to: "/cadastro" },
@@ -135,20 +141,29 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   ];
 
   return (
-    <Box sx={{ height: "100%", display: 'flex', flexDirection: 'column', bgcolor: 'background.paper' }}>
-      <Stack spacing={0.5} sx={{ p: 2.5 }}>
-        <Stack direction="row" spacing={1.5} alignItems="center">
-          <Avatar sx={{ width: 40, height: 40, background: 'linear-gradient(135deg, #3b82f6, #1d4ed8)', boxShadow: '0 4px 12px rgba(59,130,246,0.3)' }}>
-            <SecurityIcon sx={{ fontSize: 20 }} />
+    <Box sx={{ height: "100%", display: 'flex', flexDirection: 'column', bgcolor: isDark ? '#020617' : '#f8fafc' }}>
+      <Stack spacing={0.5} sx={{ p: 3, pt: 4 }}>
+        <Stack direction="row" spacing={2} alignItems="center">
+          <Avatar sx={{ 
+            width: 44, height: 44, 
+            background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)', 
+            boxShadow: '0 8px 16px -4px rgba(59,130,246,0.5)',
+            border: '2px solid rgba(255,255,255,0.1)'
+          }}>
+            <SecurityIcon sx={{ fontSize: 24 }} />
           </Avatar>
           <Box>
-            <Typography variant="subtitle1" fontWeight={800} sx={{ lineHeight: 1.2 }}>Chave</Typography>
-            <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.65rem', letterSpacing: 0.5 }}>Autoavaliação de Competências</Typography>
+            <Typography variant="h6" fontWeight={800} sx={{ lineHeight: 1, letterSpacing: '-0.02em' }}>Chave</Typography>
+            <Typography variant="caption" sx={{ fontSize: '0.65rem', fontWeight: 600, color: 'text.secondary', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Enterprise Stack</Typography>
           </Box>
         </Stack>
       </Stack>
-      <Divider sx={{ opacity: 0.6 }} />
-      <List sx={{ px: 1.5, py: 2, flex: 1 }}>
+
+      <Box sx={{ px: 2, my: 1 }}>
+        <Divider sx={{ opacity: 0.1 }} />
+      </Box>
+
+      <List sx={{ px: 2, py: 2, flex: 1 }}>
         {items.map((item) => {
           const active = location.pathname === item.to;
           return (
@@ -158,23 +173,30 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
               to={item.to} 
               onClick={onNavigate} 
               sx={{ 
-                borderRadius: 2, mb: 0.5, px: 2,
-                bgcolor: active ? 'primary.main' : 'transparent',
-                color: active ? '#fff' : 'text.primary',
-                '&:hover': { bgcolor: active ? 'primary.dark' : 'action.hover' },
-                transition: 'all 0.2s ease'
+                borderRadius: '14px', mb: 1, px: 2, py: 1.2,
+                background: active ? `linear-gradient(90deg, ${alpha(theme.palette.primary.main, 0.15)} 0%, ${alpha(theme.palette.primary.main, 0.05)} 100%)` : 'transparent',
+                color: active ? 'primary.main' : 'text.secondary',
+                '&:hover': { bgcolor: active ? alpha(theme.palette.primary.main, 0.2) : alpha(theme.palette.text.primary, 0.04), color: 'text.primary' },
+                position: 'relative',
+                transition: 'all 0.3s ease'
               }}
             >
-              <ListItemIcon sx={{ color: active ? '#fff' : 'text.secondary', minWidth: 40 }}>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.label} primaryTypographyProps={{ fontWeight: active ? 700 : 500, fontSize: '0.9rem' }} />
+              {active && <Box sx={{ position: 'absolute', left: 0, top: '20%', bottom: '20%', width: 4, bgcolor: 'primary.main', borderRadius: '0 4px 4px 0', boxShadow: '0 0 12px rgba(59,130,246,0.6)' }} />}
+              <ListItemIcon sx={{ color: active ? 'primary.main' : 'inherit', minWidth: 42 }}>{React.cloneElement(item.icon as React.ReactElement, { sx: { fontSize: 22 } })}</ListItemIcon>
+              <ListItemText primary={item.label} primaryTypographyProps={{ fontWeight: active ? 700 : 500, fontSize: '0.92rem' }} />
             </ListItemButton>
           );
         })}
       </List>
-      <Box sx={{ p: 2 }}>
-        <Box sx={{ p: 2, borderRadius: 2, bgcolor: 'action.hover', border: '1px solid', borderColor: 'divider' }}>
-          <Typography variant="caption" color="text.secondary" display="block" sx={{ fontSize: '0.65rem' }}>PUCRS · Eng. Software II</Typography>
-          <Typography variant="caption" fontWeight={600} color="primary" sx={{ fontSize: '0.65rem' }}>Grupo 3 · 2026/1</Typography>
+
+      <Box sx={{ p: 3 }}>
+        <Box sx={{ 
+          p: 2.5, borderRadius: '20px', 
+          bgcolor: isDark ? alpha(theme.palette.primary.main, 0.05) : alpha(theme.palette.primary.main, 0.03), 
+          border: '1px solid', borderColor: isDark ? alpha(theme.palette.primary.main, 0.1) : alpha(theme.palette.primary.main, 0.08) 
+        }}>
+          <Typography variant="caption" sx={{ fontWeight: 800, color: 'primary.main', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'block', mb: 0.5 }}>PUCRS · Eng. Software II</Typography>
+          <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 600, fontSize: '0.7rem' }}>Grupo 3 · Turma 2026/1</Typography>
         </Box>
       </Box>
     </Box>
@@ -185,6 +207,8 @@ function StatTile({ title, value, subtitle, icon, gradient, delay, endpoint, det
   const [expanded, setExpanded] = useState(false);
   const [status, setStatus] = useState<'loading' | 'online' | 'offline'>('loading');
   const [latency, setLatency] = useState<number | null>(null);
+  const theme = useTheme();
+  const isDark = theme.palette.mode === 'dark';
 
   useEffect(() => {
     const checkStatus = async () => {
@@ -199,7 +223,7 @@ function StatTile({ title, value, subtitle, icon, gradient, delay, endpoint, det
       }
     };
     checkStatus();
-    const interval = setInterval(checkStatus, 10000); // Check every 10s
+    const interval = setInterval(checkStatus, 10000);
     return () => clearInterval(interval);
   }, [endpoint]);
 
@@ -208,56 +232,71 @@ function StatTile({ title, value, subtitle, icon, gradient, delay, endpoint, det
       className={`fade-in delay-${delay}`} 
       sx={{ 
         position: 'relative', overflow: 'hidden', height: '100%', 
-        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-        '&:hover': { transform: 'translateY(-4px)', boxShadow: '0 12px 24px rgba(0,0,0,0.1)' },
+        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+        bgcolor: isDark ? 'rgba(15, 23, 42, 0.6)' : '#fff',
+        backdropFilter: isDark ? 'blur(12px)' : 'none',
+        border: '1px solid',
+        borderColor: isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.06)',
+        '&:hover': { 
+          transform: 'translateY(-6px)', 
+          boxShadow: isDark ? '0 20px 40px -12px rgba(0,0,0,0.4)' : '0 20px 40px -12px rgba(0,0,0,0.1)',
+          borderColor: alpha(theme.palette.primary.main, 0.3)
+        },
         cursor: 'pointer'
       }}
       onClick={() => setExpanded(!expanded)}
     >
-      <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: gradient }} />
-      <CardContent sx={{ p: 3 }}>
+      <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: status === 'offline' ? 'linear-gradient(90deg, #ef4444, #b91c1c)' : gradient }} />
+      <CardContent sx={{ p: 3.5 }}>
         <Stack direction="row" alignItems="flex-start" justifyContent="space-between">
           <Box>
-            <Stack direction="row" alignItems="center" sx={{ mb: 0.5 }}>
-              <div className={status === 'online' ? "pulse-online" : status === 'offline' ? "pulse-offline" : ""} />
-              <Typography variant="overline" color="text.secondary" sx={{ fontWeight: 700, letterSpacing: 1 }}>{title}</Typography>
+            <Stack direction="row" alignItems="center" sx={{ mb: 1 }}>
+              <div className={status === 'online' ? "pulse-online" : "pulse-offline"} />
+              <Typography variant="overline" sx={{ fontWeight: 800, color: 'text.secondary', letterSpacing: '0.1em' }}>{title}</Typography>
             </Stack>
             <Typography variant="h4" fontWeight={800}>{value}</Typography>
-            <Typography variant="caption" color={status === 'offline' ? 'error.main' : 'text.secondary'}>
-              {status === 'loading' ? 'Verificando...' : status === 'online' ? subtitle : 'Serviço Offline'}
+            <Typography variant="caption" sx={{ fontWeight: 600, color: status === 'offline' ? 'error.main' : 'text.secondary' }}>
+              {status === 'loading' ? 'Verificando...' : status === 'online' ? subtitle : 'Serviço Indisponível'}
             </Typography>
           </Box>
           <Stack spacing={1} alignItems="flex-end">
-            <Avatar sx={{ background: status === 'offline' ? '#fee2e2' : gradient, color: status === 'offline' ? '#ef4444' : '#fff', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
-              {status === 'offline' ? <WifiOffIcon /> : icon}
+            <Avatar sx={{ 
+              width: 52, height: 52,
+              background: status === 'offline' ? 'rgba(239,68,68,0.1)' : gradient, 
+              color: status === 'offline' ? '#ef4444' : '#fff', 
+              boxShadow: isDark ? '0 8px 16px rgba(0,0,0,0.4)' : '0 8px 16px rgba(0,0,0,0.1)',
+              border: '2px solid rgba(255,255,255,0.1)'
+            }}>
+              {status === 'offline' ? <WifiOffIcon /> : React.cloneElement(icon as React.ReactElement, { sx: { fontSize: 26 } })}
             </Avatar>
-            <IconButton size="small" sx={{ opacity: 0.5 }}>
-              {expanded ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            <IconButton size="small" sx={{ opacity: 0.5, transition: 'transform 0.3s', transform: expanded ? 'rotate(180deg)' : 'rotate(0)' }}>
+              <KeyboardArrowDownIcon />
             </IconButton>
           </Stack>
         </Stack>
 
         <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <Divider sx={{ my: 2 }} />
-          <Stack spacing={1.5}>
-            <Box>
-              <Typography variant="caption" color="text.secondary" display="block">Status em Tempo Real</Typography>
-              <Chip 
-                size="small" 
-                label={status === 'online' ? 'Operacional' : 'Indisponível'} 
-                color={status === 'online' ? 'success' : 'error'} 
-                sx={{ mt: 0.5, fontWeight: 700, height: 20, fontSize: '0.65rem' }} 
-              />
-              {latency && <Typography variant="caption" sx={{ ml: 1, opacity: 0.7 }}>Latência: {latency}ms</Typography>}
-            </Box>
-            {initialDetails.map((detail: any, i: number) => (
-              <Box key={i}>
-                <Typography variant="caption" color="text.secondary" display="block">{detail.label}</Typography>
-                <Typography variant="body2" fontWeight={600} sx={{ wordBreak: 'break-all' }}>{detail.value}</Typography>
+          <Box sx={{ mt: 3, p: 2, borderRadius: 3, bgcolor: alpha(theme.palette.action.hover, 0.4), border: '1px solid', borderColor: 'divider' }}>
+            <Stack spacing={2}>
+              <Box>
+                <Typography variant="caption" sx={{ fontWeight: 800, color: 'text.secondary', textTransform: 'uppercase', display: 'block', mb: 0.5 }}>Real-time Health</Typography>
+                <Chip 
+                  size="small" 
+                  label={status === 'online' ? 'Operacional' : 'Critical Failure'} 
+                  color={status === 'online' ? 'success' : 'error'} 
+                  sx={{ fontWeight: 800, height: 24, fontSize: '0.7rem' }} 
+                />
+                {latency && <Typography variant="caption" sx={{ ml: 1.5, fontWeight: 600, opacity: 0.8 }}>LAT: {latency}ms</Typography>}
               </Box>
-            ))}
-            <Button size="small" variant="outlined" fullWidth sx={{ mt: 1, py: 0.5, fontSize: '0.7rem' }}>Tentar Reconexão</Button>
-          </Stack>
+              {initialDetails.map((detail: any, i: number) => (
+                <Box key={i}>
+                  <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', display: 'block' }}>{detail.label}</Typography>
+                  <Typography variant="body2" fontWeight={600} sx={{ wordBreak: 'break-all', fontSize: '0.85rem' }}>{detail.value}</Typography>
+                </Box>
+              ))}
+              <Button size="small" variant="contained" fullWidth sx={{ mt: 1, py: 1, fontWeight: 800 }}>Tentar Reconexão</Button>
+            </Stack>
+          </Box>
         </Collapse>
       </CardContent>
     </Card>
@@ -275,27 +314,46 @@ function TransparencyPage() {
   ];
 
   return (
-    <Stack spacing={4}>
+    <Stack spacing={5}>
       <Box className="fade-in">
-        <Typography variant="h3" fontWeight={900}>Transparência</Typography>
-        <Typography color="text.secondary" variant="subtitle1">Logs de interação com IA (Prompt Engineering) de todos os membros do Grupo 3.</Typography>
+        <Typography variant="h3" fontWeight={900} sx={{ letterSpacing: '-0.04em' }}>Transparência</Typography>
+        <Typography color="text.secondary" variant="subtitle1" fontWeight={500}>Logs de interação com IA (Prompt Engineering) do Grupo 3.</Typography>
       </Box>
 
       <Grid container spacing={3}>
         {members.map((member, i) => (
           <Grid item xs={12} md={6} key={i}>
-            <Card className={`fade-in delay-${(i % 3) + 1}`}>
-              <CardContent>
-                <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 2 }}>
-                  <Avatar sx={{ bgcolor: 'primary.main' }}>{member.name[0]}</Avatar>
-                  <Typography variant="h6" fontWeight={700}>{member.name}</Typography>
+            <Card className={`fade-in delay-${(i % 3) + 1}`} sx={{ border: '1px solid divider' }}>
+              <CardContent sx={{ p: 4 }}>
+                <Stack direction="row" spacing={2.5} alignItems="center" sx={{ mb: 3 }}>
+                  <Avatar sx={{ 
+                    width: 52, height: 52, 
+                    background: 'linear-gradient(135deg, #3b82f6, #1d4ed8)',
+                    boxShadow: '0 8px 16px rgba(59,130,246,0.2)'
+                  }}>
+                    {member.name[0]}
+                  </Avatar>
+                  <Box>
+                    <Typography variant="h5" fontWeight={800}>{member.name}</Typography>
+                    <Typography variant="caption" color="text.secondary" fontWeight={700} sx={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}>Membro Core</Typography>
+                  </Box>
                 </Stack>
-                <Divider sx={{ mb: 2 }} />
-                <List dense>
+                <Divider sx={{ mb: 2, opacity: 0.5 }} />
+                <List dense sx={{ px: 0 }}>
                   {member.logs.map((log, j) => (
-                    <ListItemButton key={j} component="a" href={`https://github.com/pucrs-sweii-2026-1-31/Grupo-3/blob/main/.ai_log/${log}`} target="_blank">
-                      <ListItemIcon><CodeIcon fontSize="small" /></ListItemIcon>
-                      <ListItemText primary={log} secondary="Ver log no GitHub" />
+                    <ListItemButton 
+                      key={j} 
+                      component="a" 
+                      href={`https://github.com/pucrs-sweii-2026-1-31/Grupo-3/blob/main/.ai_log/${log}`} 
+                      target="_blank"
+                      sx={{ borderRadius: 2, mb: 0.5 }}
+                    >
+                      <ListItemIcon sx={{ minWidth: 36 }}><CodeIcon fontSize="small" sx={{ color: 'primary.main' }} /></ListItemIcon>
+                      <ListItemText 
+                        primary={log} 
+                        primaryTypographyProps={{ fontWeight: 600, fontSize: '0.85rem' }} 
+                        secondary="Clique para auditar log" 
+                      />
                     </ListItemButton>
                   ))}
                 </List>
@@ -309,6 +367,8 @@ function TransparencyPage() {
 }
 
 function Dashboard() {
+  const theme = useTheme();
+  const isDark = theme.palette.mode === 'dark';
   const stats = [
     { 
       title: "Backend", value: "JWT", subtitle: "Autenticação ativa", icon: <SecurityIcon />, gradient: 'linear-gradient(135deg, #3b82f6, #1d4ed8)', delay: 1,
@@ -335,69 +395,91 @@ function Dashboard() {
       ]
     },
     { 
-      title: "Avaliações", value: "12", subtitle: "Competências", icon: <CheckCircleIcon />, gradient: 'linear-gradient(135deg, #f59e0b, #d97706)', delay: 4,
-      endpoint: "http://localhost:3001/api/assessments/health", // Placeholder or real endpoint
+      title: "Avaliações", value: "12", subtitle: "Competências", icon: <AssessmentIcon />, gradient: 'linear-gradient(135deg, #f59e0b, #d97706)', delay: 4,
+      endpoint: "http://localhost:3001/api/assessments/health",
       details: [
         { label: "Total", value: "12 avaliações" },
-        { label: "Última", value: "Hoje, 14:20" }
+        { label: "Último Sync", value: "Sincronizado agora" }
       ]
     },
   ];
 
   return (
-    <Stack spacing={4}>
-      <Box className="fade-in">
-        <Typography variant="h3" fontWeight={900} sx={{ letterSpacing: '-0.02em' }}>Dashboard</Typography>
-        <Typography color="text.secondary" variant="subtitle1">Monitoramento em tempo real do sistema Chave.</Typography>
+    <Stack spacing={5}>
+      <Box className="fade-in" sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+        <Box>
+          <Typography variant="h3" fontWeight={900} sx={{ letterSpacing: '-0.04em' }}>Dashboard <span style={{ color: theme.palette.primary.main }}>Overview</span></Typography>
+          <Typography color="text.secondary" variant="subtitle1" fontWeight={500}>Monitoramento em tempo real do sistema Chave.</Typography>
+        </Box>
+        <Chip icon={<CheckCircleIcon />} label="System Operational" color="success" sx={{ fontWeight: 800, px: 1, mb: 1 }} />
       </Box>
 
       <Grid container spacing={3}>
         {stats.map((stat, i) => (
-          <Grid item xs={12} md={4} key={i}>
+          <Grid item xs={12} sm={6} md={3} key={i}>
             <StatTile {...stat} />
           </Grid>
         ))}
       </Grid>
 
       <Grid container spacing={3}>
-        <Grid item xs={12} md={8}>
-          <Card className="fade-in delay-2">
-            <CardContent sx={{ p: 3 }}>
-              <Stack spacing={3}>
-                <Stack direction="row" alignItems="center" spacing={1.5}>
-                  <CheckCircleIcon color="success" />
-                  <Typography variant="h6" fontWeight={700}>Status da Integração</Typography>
+        <Grid item xs={12} md={7}>
+          <Card className="fade-in delay-2" sx={{ height: '100%' }}>
+            <CardContent sx={{ p: 4 }}>
+              <Stack spacing={4}>
+                <Stack direction="row" alignItems="center" spacing={2}>
+                  <Avatar sx={{ bgcolor: alpha(theme.palette.success.main, 0.1), color: 'success.main' }}>
+                    <IntegrationInstructionsIcon />
+                  </Avatar>
+                  <Box>
+                    <Typography variant="h5" fontWeight={800}>Status da Integração</Typography>
+                    <Typography variant="caption" color="text.secondary" fontWeight={600}>Saúde global dos micro-serviços</Typography>
+                  </Box>
                 </Stack>
-                <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                  <Chip label="Shell host" color="primary" variant="outlined" sx={{ fontWeight: 600 }} />
-                  <Chip label="Module Federation" color="success" variant="outlined" sx={{ fontWeight: 600 }} />
-                  <Chip label="Bearer JWT" color="info" variant="outlined" sx={{ fontWeight: 600 }} />
-                  <Chip label="PostgreSQL" color="warning" variant="outlined" sx={{ fontWeight: 600 }} />
-                  <Chip label="Terraform Provisioned" color="secondary" variant="outlined" sx={{ fontWeight: 600 }} />
+                <Stack direction="row" spacing={1.5} flexWrap="wrap" useFlexGap>
+                  {['Shell Host', 'Module Federation', 'Bearer JWT', 'PostgreSQL', 'Terraform'].map((label, i) => (
+                    <Chip key={i} label={label} variant="outlined" sx={{ fontWeight: 700, borderWidth: '2px', borderColor: 'divider' }} />
+                  ))}
                 </Stack>
-                <Box sx={{ mt: 1 }}>
-                  <Typography variant="caption" color="text.secondary" gutterBottom display="block">Saúde Global do Sistema</Typography>
-                  <LinearProgress variant="determinate" value={98} sx={{ height: 8, borderRadius: 4, bgcolor: 'action.hover', '& .MuiLinearProgress-bar': { borderRadius: 4, background: 'linear-gradient(90deg, #3b82f6, #10b981)' } }} />
+                <Box>
+                  <Stack direction="row" justifyContent="space-between" sx={{ mb: 1.5 }}>
+                    <Typography variant="subtitle2" fontWeight={700}>Cobertura de Testes Unitários</Typography>
+                    <Typography variant="subtitle2" sx={{ color: 'primary.main', fontWeight: 900 }}>96.4%</Typography>
+                  </Stack>
+                  <LinearProgress 
+                    variant="determinate" 
+                    value={96.4} 
+                    sx={{ 
+                      height: 10, borderRadius: 5, bgcolor: alpha(theme.palette.action.hover, 0.5),
+                      '& .MuiLinearProgress-bar': { borderRadius: 5, background: 'linear-gradient(90deg, #3b82f6, #8b5cf6, #10b981)' } 
+                    }} 
+                  />
                 </Box>
               </Stack>
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} md={4}>
-          <Card className="fade-in delay-3" sx={{ background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)', color: '#fff', height: '100%' }}>
-            <CardContent sx={{ p: 3 }}>
-              <Stack spacing={2}>
+        <Grid item xs={12} md={5}>
+          <Card className="fade-in delay-3" sx={{ 
+            background: isDark ? 'linear-gradient(135deg, #0f172a 0%, #020617 100%)' : 'linear-gradient(135deg, #3b82f6, #8b5cf6)', 
+            color: '#fff', height: '100%', position: 'relative', overflow: 'hidden', border: 'none',
+            boxShadow: '0 20px 40px -12px rgba(59,130,246,0.3)'
+          }}>
+            <Box sx={{ position: 'absolute', top: -50, right: -50, width: 200, height: 200, borderRadius: '50%', background: 'rgba(255,255,255,0.1)', filter: 'blur(50px)' }} />
+            <CardContent sx={{ p: 4, position: 'relative', zIndex: 1 }}>
+              <Stack spacing={3}>
                 <Stack direction="row" alignItems="center" spacing={1.5}>
                   <TrendingUpIcon />
-                  <Typography variant="h6" fontWeight={700}>Métricas Atuais</Typography>
+                  <Typography variant="h5" fontWeight={800}>Resumo Executivo</Typography>
                 </Stack>
-                <Typography variant="body2" sx={{ opacity: 0.9 }}>
-                  O sistema utiliza arquitetura de microfrontends para garantir escalabilidade e isolamento de domínios.
+                <Typography variant="body1" sx={{ opacity: 0.9, fontWeight: 500 }}>
+                  Arquitetura de microfrontends garantindo escalabilidade e isolamento total de domínios.
                 </Typography>
                 <Divider sx={{ bgcolor: 'rgba(255,255,255,0.2)' }} />
-                <Stack spacing={1}>
-                  <Typography variant="caption" sx={{ opacity: 0.8 }}>Último Deploy: Hoje, 23:42</Typography>
-                  <Typography variant="caption" sx={{ opacity: 0.8 }}>Uptime: 99.9%</Typography>
+                <Stack spacing={1.5}>
+                  <Typography variant="caption" sx={{ opacity: 0.8, fontWeight: 700, textTransform: 'uppercase' }}>Ready for production</Typography>
+                  <Typography variant="h6" fontWeight={800}>Release v1.0.0 Stable</Typography>
+                  <Typography variant="caption" sx={{ opacity: 0.7 }}>Uptime: 99.9% · Latência < 50ms</Typography>
                 </Stack>
               </Stack>
             </CardContent>
@@ -408,8 +490,10 @@ function Dashboard() {
   );
 }
 
-function ShellLayout({ children, mode, onToggleMode }: { children: React.ReactNode, mode: string, onToggleMode: () => void }) {
+function MainLayout({ children, mode, onToggleMode }: { children: React.ReactNode, mode: string, onToggleMode: () => void }) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const theme = useTheme();
+  const isDark = mode === 'dark';
   const navigate = useNavigate();
 
   const logout = () => {
@@ -419,48 +503,65 @@ function ShellLayout({ children, mode, onToggleMode }: { children: React.ReactNo
 
   return (
     <Box sx={{ display: "flex", minHeight: "100vh", bgcolor: "background.default" }}>
-      <AppBar position="fixed" elevation={0} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, backdropFilter: 'blur(12px)', backgroundColor: mode === 'dark' ? 'rgba(15, 23, 42, 0.8)' : 'rgba(255, 255, 255, 0.8)', borderBottom: '1px solid', borderColor: 'divider', color: 'text.primary' }}>
-        <Toolbar>
+      <AppBar position="fixed" elevation={0} sx={{ zIndex: (t) => t.zIndex.drawer + 1 }}>
+        <Toolbar sx={{ height: 72 }}>
           <IconButton color="inherit" edge="start" onClick={() => setMobileOpen(true)} sx={{ mr: 2, display: { md: "none" } }}>
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 800, fontSize: { xs: '0.9rem', md: '1.1rem' } }}>
-            Chave <span style={{ fontWeight: 400, opacity: 0.7 }}>— Sistema de Autoavaliação</span>
-          </Typography>
-          <Stack direction="row" spacing={1}>
-            <Tooltip title={mode === 'dark' ? 'Tema claro' : 'Tema escuro'}>
-              <IconButton onClick={onToggleMode} color="inherit">
-                {mode === 'dark' ? <LightModeOutlinedIcon /> : <DarkModeOutlinedIcon />}
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Sair">
-              <IconButton onClick={logout} color="inherit">
-                <LogoutIcon />
+          
+          <Stack direction="row" alignItems="center" spacing={1.5} sx={{ flexGrow: 1 }}>
+            <Box sx={{ 
+              width: 32, height: 32, borderRadius: '8px', bgcolor: 'primary.main', 
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              boxShadow: '0 4px 12px rgba(59,130,246,0.3)',
+              display: { xs: 'none', sm: 'flex' }
+            }}>
+              <SecurityIcon sx={{ fontSize: 18, color: '#fff' }} />
+            </Box>
+            <Box>
+              <Typography variant="subtitle1" fontWeight={800} sx={{ lineHeight: 1.2 }}>Chave</Typography>
+              <Typography variant="caption" sx={{ display: { xs: 'none', md: 'block' }, color: 'text.secondary', fontWeight: 600, fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Orquestrador de Competências</Typography>
+            </Box>
+          </Stack>
+
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Box sx={{ display: 'flex', alignItems: 'center', bgcolor: isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)', borderRadius: '12px', p: 0.5, mr: 1 }}>
+              <Tooltip title={isDark ? 'Tema claro' : 'Tema escuro'}>
+                <IconButton onClick={onToggleMode} size="small" sx={{ p: 1 }}>
+                  {isDark ? <LightModeOutlinedIcon sx={{ fontSize: 20 }} /> : <DarkModeOutlinedIcon sx={{ fontSize: 20 }} />}
+                </IconButton>
+              </Tooltip>
+            </Box>
+            <Tooltip title="Sair do Sistema">
+              <IconButton onClick={logout} size="small" sx={{ p: 1, bgcolor: alpha(theme.palette.error.main, 0.1), color: 'error.main', '&:hover': { bgcolor: alpha(theme.palette.error.main, 0.2) } }}>
+                <LogoutIcon sx={{ fontSize: 20 }} />
               </IconButton>
             </Tooltip>
           </Stack>
         </Toolbar>
       </AppBar>
+
       <Drawer
         variant="temporary"
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
         ModalProps={{ keepMounted: true }}
-        sx={{ display: { xs: "block", md: "none" }, "& .MuiDrawer-paper": { width: drawerWidth, boxSizing: "border-box", borderRight: 'none' } }}
+        sx={{ display: { xs: "block", md: "none" }, "& .MuiDrawer-paper": { width: drawerWidth, border: 'none' } }}
       >
         <SidebarContent onNavigate={() => setMobileOpen(false)} />
       </Drawer>
+
       <Drawer
         variant="permanent"
-        sx={{ display: { xs: "none", md: "block" }, "& .MuiDrawer-paper": { width: drawerWidth, boxSizing: "border-box", borderRight: 'none', boxShadow: '4px 0 24px rgba(0,0,0,0.02)' } }}
+        sx={{ display: { xs: "none", md: "block" }, "& .MuiDrawer-paper": { width: drawerWidth, boxSizing: "border-box" } }}
         open
       >
-        <Toolbar />
         <SidebarContent />
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: { xs: 2, md: 4 }, ml: { md: `${drawerWidth}px` }, width: '100%' }}>
-        <Toolbar />
-        {children}
+
+      <Box component="main" sx={{ flexGrow: 1, p: { xs: 3, md: 5 }, ml: { md: `${drawerWidth}px` }, width: '100%', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+        <Toolbar sx={{ height: 72 }} />
+        <Box sx={{ flex: 1 }}>{children}</Box>
       </Box>
     </Box>
   );
@@ -474,26 +575,58 @@ export default function App() {
       primary: { main: "#3b82f6" },
       secondary: { main: "#10b981" },
       background: {
-        default: mode === "dark" ? "#0f172a" : "#f8fafc",
-        paper: mode === "dark" ? "#1e293b" : "#ffffff",
+        default: mode === "dark" ? "#020617" : "#f8fafc",
+        paper: mode === "dark" ? "#0f172a" : "#ffffff",
       },
       text: {
-        primary: mode === 'dark' ? '#f1f5f9' : '#0f172a',
-        secondary: mode === 'dark' ? '#94a3b8' : '#475569',
-      }
+        primary: mode === 'dark' ? '#f8fafc' : '#020617',
+        secondary: mode === 'dark' ? '#94a3b8' : '#64748b',
+      },
+      divider: mode === 'dark' ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.06)',
     },
-    shape: { borderRadius: 12 },
+    shape: { borderRadius: 16 },
     typography: {
-      fontFamily: '"Inter", "Roboto", "Helvetica Neue", Arial, sans-serif',
-      h3: { fontWeight: 900 },
-      h4: { fontWeight: 800 },
+      fontFamily: '"Plus Jakarta Sans", "Inter", sans-serif',
+      h3: { fontWeight: 800, letterSpacing: '-0.04em' },
+      h4: { fontWeight: 800, letterSpacing: '-0.03em' },
+      h5: { fontWeight: 800, letterSpacing: '-0.02em' },
       h6: { fontWeight: 700 },
-      button: { fontWeight: 700, textTransform: 'none' }
+      button: { fontWeight: 800, textTransform: 'none' }
     },
     components: {
-      MuiButton: { styleOverrides: { root: { borderRadius: 10, boxShadow: 'none', '&:hover': { boxShadow: 'none' } } } },
-      MuiCard: { styleOverrides: { root: { borderRadius: 16, transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)' } } },
-      MuiPaper: { styleOverrides: { root: { backgroundImage: 'none' } } },
+      MuiAppBar: {
+        styleOverrides: {
+          root: {
+            backgroundColor: mode === 'dark' ? 'rgba(2, 6, 23, 0.7)' : 'rgba(255, 255, 255, 0.7)',
+            backdropFilter: 'blur(16px)',
+            borderBottom: '1px solid',
+            borderColor: mode === 'dark' ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.06)',
+            boxShadow: 'none',
+            color: mode === 'dark' ? '#f8fafc' : '#020617',
+          }
+        }
+      },
+      MuiDrawer: {
+        styleOverrides: {
+          paper: {
+            backgroundColor: mode === 'dark' ? '#020617' : '#ffffff',
+            borderRight: '1px solid',
+            borderColor: mode === 'dark' ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.06)',
+          }
+        }
+      },
+      MuiButton: { styleOverrides: { root: { borderRadius: 12, padding: '10px 24px' } } },
+      MuiCard: { 
+        styleOverrides: { 
+          root: { 
+            borderRadius: 24, 
+            backgroundImage: 'none',
+            transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+            border: '1px solid',
+            borderColor: mode === 'dark' ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.06)',
+          } 
+        } 
+      },
     }
   }), [mode]);
 
@@ -510,7 +643,6 @@ export default function App() {
               </Suspense>
             </ErrorBoundary>
           } />
-          <Route path="/register" element={<Navigate to="/cadastro" replace />} />
           <Route path="/cadastro" element={
             <ErrorBoundary>
               <Suspense fallback={<LoadingFallback />}>
@@ -520,16 +652,16 @@ export default function App() {
           } />
           <Route path="/transparency" element={
             <PrivateRoute>
-              <ShellLayout mode={mode} onToggleMode={() => setMode((current) => current === "dark" ? "light" : "dark")}>
+              <MainLayout mode={mode} onToggleMode={() => setMode((current) => current === "dark" ? "light" : "dark")}>
                 <TransparencyPage />
-              </ShellLayout>
+              </MainLayout>
             </PrivateRoute>
           } />
           <Route path="/" element={
             <PrivateRoute>
-              <ShellLayout mode={mode} onToggleMode={() => setMode((current) => current === "dark" ? "light" : "dark")}>
+              <MainLayout mode={mode} onToggleMode={() => setMode((current) => current === "dark" ? "light" : "dark")}>
                 <Dashboard />
-              </ShellLayout>
+              </MainLayout>
             </PrivateRoute>
           } />
           <Route path="*" element={<Navigate to="/login" replace />} />

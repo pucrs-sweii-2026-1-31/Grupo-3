@@ -11,6 +11,7 @@ import {
   IconButton,
   LinearProgress,
   Divider,
+  alpha,
 } from '@mui/material';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -63,10 +64,10 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
         alignItems: 'center',
         justifyContent: 'center',
         position: 'relative',
+        overflow: 'hidden',
         py: 4,
       }}
     >
-      {/* Animated background */}
       <div className="auth-background">
         <div className="orb orb-1" />
         <div className="orb orb-2" />
@@ -77,8 +78,8 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
         <Box
           className="glass-card fade-in-up"
           sx={{
-            p: { xs: 3, sm: 5 },
-            borderRadius: 4,
+            p: { xs: 4, sm: 6 },
+            borderRadius: 6,
             position: 'relative',
             overflow: 'hidden',
           }}
@@ -90,160 +91,163 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
                 top: 0,
                 left: 0,
                 right: 0,
-                borderRadius: '16px 16px 0 0',
+                height: 4,
+                bgcolor: 'transparent',
+                '& .MuiLinearProgress-bar': {
+                  background: 'linear-gradient(90deg, #3b82f6, #8b5cf6)',
+                }
               }}
             />
           )}
 
-          {/* Logo / Brand */}
-          <Stack spacing={1} alignItems="center" sx={{ mb: 4 }} className="fade-in-up fade-in-up-delay-1">
-            <Box
-              sx={{
-                width: 56,
-                height: 56,
-                borderRadius: 3,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
-                boxShadow: '0 8px 24px rgba(59,130,246,0.3)',
-                mb: 1,
-              }}
-            >
-              <SecurityIcon sx={{ color: '#fff', fontSize: 28 }} />
-            </Box>
-            <Typography variant="h4" fontWeight={800} sx={{ background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-              Chave
-            </Typography>
-            <Typography variant="body2" color="text.secondary" textAlign="center">
-              Autoavaliação de Competências para Pessoas Idosas
-            </Typography>
-          </Stack>
-
-          <Divider sx={{ mb: 3 }}>
-            <Typography variant="caption" color="text.secondary" sx={{ px: 1 }}>
-              Acesse sua conta
-            </Typography>
-          </Divider>
-
-          {/* Form */}
-          <Box component="form" onSubmit={handleSubmit} id="login-form">
-            <Stack spacing={2.5}>
-              {error && (
-                <Alert
-                  severity="error"
-                  variant="filled"
-                  sx={{ borderRadius: 2 }}
-                  className="fade-in-up"
-                >
-                  {error}
-                </Alert>
-              )}
-
-              <TextField
-                id="login-email"
-                label="E-mail"
-                name="email"
-                type="email"
-                fullWidth
-                required
-                onChange={handleChange}
-                value={credentials.email}
-                placeholder="seu@email.com"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <EmailOutlinedIcon sx={{ color: 'text.secondary', fontSize: 20 }} />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-
-              <TextField
-                id="login-password"
-                label="Senha"
-                name="password"
-                type={showPassword ? 'text' : 'password'}
-                fullWidth
-                required
-                onChange={handleChange}
-                value={credentials.password}
-                placeholder="••••••••"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <LockOutlinedIcon sx={{ color: 'text.secondary', fontSize: 20 }} />
-                    </InputAdornment>
-                  ),
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={() => setShowPassword(!showPassword)}
-                        edge="end"
-                        size="small"
-                        aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
-                      >
-                        {showPassword ? <VisibilityOffOutlinedIcon fontSize="small" /> : <VisibilityOutlinedIcon fontSize="small" />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-
-              <Button
-                id="login-submit"
-                variant="contained"
-                type="submit"
-                size="large"
-                fullWidth
-                disabled={loading}
+          <Stack spacing={4}>
+            {/* Brand Header */}
+            <Stack spacing={1} alignItems="center">
+              <Box
                 sx={{
-                  mt: 1,
-                  py: 1.5,
-                  fontSize: '1rem',
-                  fontWeight: 700,
-                  background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
-                  '&:hover': {
-                    background: 'linear-gradient(135deg, #60a5fa 0%, #2563eb 100%)',
-                    boxShadow: '0 8px 24px rgba(59,130,246,0.35)',
-                  },
+                  width: 64,
+                  height: 64,
+                  borderRadius: '20px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+                  boxShadow: '0 12px 30px rgba(59,130,246,0.4)',
+                  mb: 1.5,
+                  transform: 'rotate(-5deg)',
                 }}
               >
-                {loading ? 'Acessando...' : 'Acessar Plataforma'}
-              </Button>
+                <SecurityIcon sx={{ color: '#fff', fontSize: 32 }} />
+              </Box>
+              <Typography variant="h4" fontWeight={900} sx={{ letterSpacing: '-0.04em' }}>
+                Chave <span style={{ opacity: 0.5 }}>Portal</span>
+              </Typography>
+              <Typography variant="body2" color="text.secondary" textAlign="center" sx={{ maxWidth: 300, fontWeight: 500 }}>
+                Acesse o sistema de autoavaliação de competências de forma segura.
+              </Typography>
             </Stack>
-          </Box>
 
-          {/* Footer */}
-          <Stack direction="row" justifyContent="center" alignItems="center" spacing={0.5} sx={{ mt: 3 }}>
-            <Typography variant="body2" color="text.secondary">
-              Não tem conta?
-            </Typography>
-            <Typography
-              variant="body2"
-              component="a"
-              href="/register"
-              sx={{
-                color: 'primary.main',
-                fontWeight: 600,
-                textDecoration: 'none',
-                '&:hover': { textDecoration: 'underline' },
-              }}
-            >
-              Cadastre-se
-            </Typography>
+            <Divider>
+              <Typography variant="caption" sx={{ fontWeight: 800, color: 'text.secondary', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                Credenciais
+              </Typography>
+            </Divider>
+
+            <Box component="form" onSubmit={handleSubmit} id="login-form">
+              <Stack spacing={3}>
+                {error && (
+                  <Alert
+                    severity="error"
+                    variant="filled"
+                    sx={{ 
+                      borderRadius: 3,
+                      background: 'linear-gradient(90deg, #ef4444, #dc2626)',
+                      boxShadow: '0 4px 12px rgba(239,68,68,0.2)'
+                    }}
+                  >
+                    {error}
+                  </Alert>
+                )}
+
+                <TextField
+                  id="login-email"
+                  label="E-mail"
+                  name="email"
+                  type="email"
+                  fullWidth
+                  required
+                  variant="outlined"
+                  onChange={handleChange}
+                  value={credentials.email}
+                  placeholder="exemplo@email.com"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <EmailOutlinedIcon sx={{ color: 'primary.main', fontSize: 22, mr: 0.5 }} />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+
+                <TextField
+                  id="login-password"
+                  label="Senha"
+                  name="password"
+                  type={showPassword ? 'text' : 'password'}
+                  fullWidth
+                  required
+                  onChange={handleChange}
+                  value={credentials.password}
+                  placeholder="Sua senha secreta"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <LockOutlinedIcon sx={{ color: 'primary.main', fontSize: 22, mr: 0.5 }} />
+                      </InputAdornment>
+                    ),
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => setShowPassword(!showPassword)}
+                          edge="end"
+                          size="small"
+                        >
+                          {showPassword ? <VisibilityOffOutlinedIcon fontSize="small" /> : <VisibilityOutlinedIcon fontSize="small" />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+
+                <Button
+                  id="login-submit"
+                  variant="contained"
+                  type="submit"
+                  size="large"
+                  fullWidth
+                  disabled={loading}
+                  sx={{
+                    py: 1.8,
+                    fontSize: '1rem',
+                    fontWeight: 800,
+                    borderRadius: 3,
+                    boxShadow: '0 12px 24px -6px rgba(59,130,246,0.5)',
+                  }}
+                >
+                  {loading ? 'Validando...' : 'Entrar no Sistema'}
+                </Button>
+              </Stack>
+            </Box>
+
+            <Box sx={{ textAlign: 'center' }}>
+              <Typography variant="body2" color="text.secondary" fontWeight={500}>
+                Ainda não tem acesso?{' '}
+                <Typography
+                  variant="body2"
+                  component="a"
+                  href="/register"
+                  sx={{
+                    color: 'primary.main',
+                    fontWeight: 800,
+                    textDecoration: 'none',
+                    '&:hover': { textDecoration: 'underline' },
+                  }}
+                >
+                  Criar minha conta
+                </Typography>
+              </Typography>
+            </Box>
           </Stack>
         </Box>
 
-        {/* Bottom branding */}
         <Typography
           variant="caption"
           color="text.secondary"
           textAlign="center"
           display="block"
-          sx={{ mt: 3, opacity: 0.6 }}
+          sx={{ mt: 4, opacity: 0.5, fontWeight: 600, letterSpacing: '0.05em' }}
         >
-          © 2026 Chave · PUCRS · Engenharia de Software II
+          SISTEMA PROTEGIDO · PUCRS GRUPO 3 · 2026
         </Typography>
       </Container>
     </Box>
