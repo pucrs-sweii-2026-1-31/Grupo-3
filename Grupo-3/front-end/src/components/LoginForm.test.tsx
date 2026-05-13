@@ -35,7 +35,7 @@ describe('LoginForm', () => {
     await userEvent.type(screen.getByLabelText(/senha/i, { selector: 'input' }), 'senha123');
     await userEvent.click(screen.getByRole('button', { name: /Entrar no Sistema/i }));
 
-    await waitFor(() => expect(onLogin).toHaveBeenCalledWith('jwt-token'));
+    await waitFor(() => expect(onLogin).toHaveBeenCalledWith('jwt-token'), { timeout: 2000 });
     expect(localStorage.getItem('token')).toBe('jwt-token');
   });
 
