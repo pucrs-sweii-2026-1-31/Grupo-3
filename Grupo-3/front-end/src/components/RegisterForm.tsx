@@ -76,11 +76,16 @@ export default function RegisterForm() {
       <Container maxWidth="sm">
         <style>
           {`
+            @keyframes fadeInUp {
+              from { opacity: 0; transform: translateY(20px); }
+              to { opacity: 1; transform: translateY(0); }
+            }
             @keyframes shake {
               0%, 100% { transform: translateX(0); }
               20%, 60% { transform: translateX(-8px); }
               40%, 80% { transform: translateX(8px); }
             }
+            .fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
             .shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
           `}
         </style>
