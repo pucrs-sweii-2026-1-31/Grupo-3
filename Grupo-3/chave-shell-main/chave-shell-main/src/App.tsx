@@ -206,6 +206,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
 function StatTile({ title, value, subtitle, icon, gradient, delay, endpoint, details: initialDetails }: any) {
   const [expanded, setExpanded] = useState(false);
   const [status, setStatus] = useState<'loading' | 'online' | 'offline'>('loading');
+  const [refreshing, setRefreshing] = useState(false);
   const [latency, setLatency] = useState<number | null>(null);
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
@@ -220,12 +221,23 @@ function StatTile({ title, value, subtitle, icon, gradient, delay, endpoint, det
       } catch (err) {
         setStatus('offline');
         setLatency(null);
+      } finally {
+        setRefreshing(false);
       }
     };
     checkStatus();
     const interval = setInterval(checkStatus, 10000);
     return () => clearInterval(interval);
   }, [endpoint]);
+
+  const handleReconnect = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setRefreshing(true);
+    setStatus('loading');
+    setTimeout(() => {
+      window.location.reload(); // Re-sincroniza o MFE se necessário
+    }, 1000);
+  };
 
   return (
     <Card 
@@ -254,7 +266,7 @@ function StatTile({ title, value, subtitle, icon, gradient, delay, endpoint, det
               <div className={status === 'online' ? "pulse-online" : "pulse-offline"} />
               <Typography variant="overline" sx={{ fontWeight: 800, color: 'text.secondary', letterSpacing: '0.1em' }}>{title}</Typography>
             </Stack>
-            <Typography variant="h4" fontWeight={800}>{value}</Typography>
+            <Typography variant="h5" fontWeight={800}>{value}</Typography>
             <Typography variant="caption" sx={{ fontWeight: 600, color: status === 'offline' ? 'error.main' : 'text.secondary' }}>
               {status === 'loading' ? 'Verificando...' : status === 'online' ? subtitle : 'Serviço Indisponível'}
             </Typography>
@@ -276,25 +288,49 @@ function StatTile({ title, value, subtitle, icon, gradient, delay, endpoint, det
         </Stack>
 
         <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <Box sx={{ mt: 3, p: 2, borderRadius: 3, bgcolor: alpha(theme.palette.action.hover, 0.4), border: '1px solid', borderColor: 'divider' }}>
-            <Stack spacing={2}>
-              <Box>
-                <Typography variant="caption" sx={{ fontWeight: 800, color: 'text.secondary', textTransform: 'uppercase', display: 'block', mb: 0.5 }}>Real-time Health</Typography>
+          <Box sx={{ 
+            mt: 2.5, p: 2, borderRadius: 3, 
+            bgcolor: isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)', 
+            border: '1px solid', 
+            borderColor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)',
+            backdropFilter: 'blur(4px)'
+          }}>
+            <Stack spacing={1.5}>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <Typography variant="caption" sx={{ fontWeight: 800, color: 'text.secondary', textTransform: 'uppercase', fontSize: '0.65rem' }}>Real-time Health</Typography>
+                {latency && <Typography variant="caption" sx={{ fontWeight: 700, color: 'primary.main', bgcolor: alpha(theme.palette.primary.main, 0.1), px: 1, borderRadius: 1 }}>{latency}ms</Typography>}
+              </Box>
+              
+              <Stack direction="row" spacing={1}>
                 <Chip 
                   size="small" 
-                  label={status === 'online' ? 'Operacional' : 'Critical Failure'} 
-                  color={status === 'online' ? 'success' : 'error'} 
-                  sx={{ fontWeight: 800, height: 24, fontSize: '0.7rem' }} 
+                  label={status === 'online' ? 'Operacional' : status === 'loading' ? 'Sincronizando' : 'Falha Crítica'} 
+                  color={status === 'online' ? 'success' : status === 'loading' ? 'primary' : 'error'} 
+                  sx={{ fontWeight: 800, height: 20, fontSize: '0.6rem', textTransform: 'uppercase' }} 
                 />
-                {latency && <Typography variant="caption" sx={{ ml: 1.5, fontWeight: 600, opacity: 0.8 }}>LAT: {latency}ms</Typography>}
-              </Box>
+              </Stack>
+
               {initialDetails.map((detail: any, i: number) => (
                 <Box key={i}>
-                  <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', display: 'block' }}>{detail.label}</Typography>
-                  <Typography variant="body2" fontWeight={600} sx={{ wordBreak: 'break-all', fontSize: '0.85rem' }}>{detail.value}</Typography>
+                  <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', display: 'block', fontSize: '0.65rem' }}>{detail.label}</Typography>
+                  <Typography variant="body2" fontWeight={600} sx={{ wordBreak: 'break-all', fontSize: '0.75rem', opacity: 0.9 }}>{detail.value}</Typography>
                 </Box>
               ))}
-              <Button size="small" variant="contained" fullWidth sx={{ mt: 1, py: 1, fontWeight: 800 }}>Tentar Reconexão</Button>
+              
+              <Button 
+                size="small" 
+                variant="contained" 
+                fullWidth 
+                onClick={handleReconnect}
+                disabled={refreshing}
+                sx={{ 
+                  mt: 1, py: 0.8, fontWeight: 800, fontSize: '0.7rem',
+                  boxShadow: 'none',
+                  '&:hover': { boxShadow: '0 4px 12px rgba(59,130,246,0.3)' }
+                }}
+              >
+                {refreshing ? 'Sincronizando...' : 'Tentar Reconexão'}
+              </Button>
             </Stack>
           </Box>
         </Collapse>

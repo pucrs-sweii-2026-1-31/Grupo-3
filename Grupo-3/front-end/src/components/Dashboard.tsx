@@ -98,19 +98,19 @@ function StatCard({ title, value, subtitle, icon, gradient, delay }: StatCardPro
         {icon}
       </Box>
       
-      <CardContent sx={{ p: 3.5 }}>
+      <CardContent sx={{ p: 2.5 }}>
         <Stack spacing={2.5}>
           <Stack direction="row" alignItems="center" justifyContent="space-between">
             <Avatar
               sx={{
-                width: 52,
-                height: 52,
+                width: 44,
+                height: 44,
                 background: gradient,
                 boxShadow: isDark ? '0 8px 16px -4px rgba(0,0,0,0.5)' : '0 8px 16px -4px rgba(0,0,0,0.1)',
                 border: '2px solid rgba(255,255,255,0.1)',
               }}
             >
-              {React.cloneElement(icon as React.ReactElement, { sx: { fontSize: 26 } })}
+              {React.cloneElement(icon as React.ReactElement, { sx: { fontSize: 22 } })}
             </Avatar>
             <IconButton size="small" sx={{ opacity: 0.5, '&:hover': { opacity: 1, bgcolor: alpha(theme.palette.primary.main, 0.1) } }}>
               <ArrowForwardIcon sx={{ fontSize: 18 }} />
@@ -118,10 +118,10 @@ function StatCard({ title, value, subtitle, icon, gradient, delay }: StatCardPro
           </Stack>
           
           <Box>
-            <Typography variant="overline" sx={{ fontWeight: 800, color: 'text.secondary', letterSpacing: '0.1em' }}>
+            <Typography variant="overline" sx={{ fontWeight: 800, color: 'text.secondary', letterSpacing: '0.1em', fontSize: '0.65rem' }}>
               {title}
             </Typography>
-            <Typography variant="h4" sx={{ mt: 0.5 }}>
+            <Typography variant="h5" sx={{ mt: 0.5, fontWeight: 800 }}>
               {value}
             </Typography>
             {subtitle && (
@@ -191,10 +191,10 @@ export default function Dashboard() {
         {/* Header with Glass Effect */}
         <Box className="fade-in-up" sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
           <Box>
-            <Typography variant="h3" sx={{ mb: 1 }}>
+            <Typography variant="h4" sx={{ mb: 0.5, fontWeight: 900 }}>
               Dashboard <span style={{ color: theme.palette.primary.main }}>Overview</span>
             </Typography>
-            <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, opacity: 0.8 }}>
+            <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 500, opacity: 0.8 }}>
               Monitoramento em tempo real da plataforma de competências.
             </Typography>
           </Box>
