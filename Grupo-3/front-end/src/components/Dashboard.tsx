@@ -12,6 +12,7 @@ import {
   IconButton,
   alpha,
   useTheme,
+  Skeleton,
 } from '@mui/material';
 import SecurityIcon from '@mui/icons-material/Security';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
@@ -136,9 +137,36 @@ function StatCard({ title, value, subtitle, icon, gradient, delay }: StatCardPro
   );
 }
 
+function DashboardSkeleton() {
+  return (
+    <Grid container spacing={3}>
+      {[1, 2, 3, 4].map((i) => (
+        <Grid item xs={12} sm={6} md={3} key={i}>
+          <Card sx={{ p: 2.5, borderRadius: 6 }}>
+            <Stack spacing={2}>
+              <Skeleton variant="circular" width={44} height={44} />
+              <Box>
+                <Skeleton variant="text" width="40%" height={15} />
+                <Skeleton variant="text" width="80%" height={30} />
+                <Skeleton variant="text" width="60%" height={15} />
+              </Box>
+            </Stack>
+          </Card>
+        </Grid>
+      ))}
+    </Grid>
+  );
+}
+
 export default function Dashboard() {
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
   const stats: StatCardProps[] = [
     {
@@ -207,13 +235,17 @@ export default function Dashboard() {
         </Box>
 
         {/* Stat Cards Grid */}
-        <Grid container spacing={3}>
-          {stats.map((stat) => (
-            <Grid item xs={12} sm={6} md={3} key={stat.title}>
-              <StatCard {...stat} />
-            </Grid>
-          ))}
-        </Grid>
+        {loading ? (
+          <DashboardSkeleton />
+        ) : (
+          <Grid container spacing={3}>
+            {stats.map((stat) => (
+              <Grid item xs={12} sm={6} md={3} key={stat.title}>
+                <StatCard {...stat} />
+              </Grid>
+            ))}
+          </Grid>
+        )}
 
         <Grid container spacing={3}>
           {/* Main Status Area */}

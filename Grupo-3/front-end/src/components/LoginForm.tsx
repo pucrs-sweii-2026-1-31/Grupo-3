@@ -29,6 +29,7 @@ interface LoginFormProps {
 export default function LoginForm({ onLogin }: LoginFormProps) {
   const [credentials, setCredentials] = useState<LoginCredentials>({ email: '', password: '' });
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const auth = useAuth();
@@ -44,7 +45,10 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
 
     try {
       const token = await auth.login(credentials);
-      onLogin?.(token);
+      setSuccess(true);
+      setTimeout(() => {
+        onLogin?.(token);
+      }, 1000);
     } catch (err) {
       if (err instanceof ApiClientError) {
         setError(err.message);
@@ -75,8 +79,18 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
       </div>
 
       <Container maxWidth="sm">
+        <style>
+          {`
+            @keyframes shake {
+              0%, 100% { transform: translateX(0); }
+              20%, 60% { transform: translateX(-8px); }
+              40%, 80% { transform: translateX(8px); }
+            }
+            .shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
+          `}
+        </style>
         <Box
-          className="glass-card fade-in-up"
+          className={`glass-card fade-in-up ${error ? 'shake' : ''}`}
           sx={{
             p: { xs: 4, sm: 6 },
             borderRadius: 6,
@@ -146,6 +160,23 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
                     }}
                   >
                     {error}
+                  </Alert>
+                )}
+
+                {success && (
+                  <Alert 
+                    icon={<SecurityIcon />}
+                    severity="success" 
+                    variant="filled"
+                    sx={{ 
+                      borderRadius: 3, 
+                      fontWeight: 700, 
+                      animation: 'fadeInUp 0.5s ease',
+                      background: 'linear-gradient(90deg, #10b981, #059669)',
+                      boxShadow: '0 4px 12px rgba(16,185,129,0.2)'
+                    }}
+                  >
+                    Acesso autorizado! Redirecionando...
                   </Alert>
                 )}
 

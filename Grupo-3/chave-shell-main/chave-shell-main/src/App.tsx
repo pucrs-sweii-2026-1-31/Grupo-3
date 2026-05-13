@@ -28,6 +28,7 @@ import {
   Collapse,
   alpha,
   useTheme,
+  Skeleton,
 } from "@mui/material";
 
 // Icons
@@ -85,6 +86,13 @@ const GlobalStyles = () => (
         width: 10px; height: 10px; border-radius: 50%; background: #ef4444;
         display: inline-block; margin-right: 8px; animation: pulse 2s infinite;
         box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+      }
+      .page-transition {
+        animation: pageFadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      }
+      @keyframes pageFadeIn {
+        from { opacity: 0; transform: translateX(10px); }
+        to { opacity: 1; transform: translateX(0); }
       }
       ::-webkit-scrollbar { width: 8px; }
       ::-webkit-scrollbar-track { background: transparent; }
@@ -402,9 +410,36 @@ function TransparencyPage() {
   );
 }
 
+function DashboardSkeleton() {
+  return (
+    <Grid container spacing={3}>
+      {[1, 2, 3, 4].map((i) => (
+        <Grid item xs={12} sm={6} md={3} key={i}>
+          <Card sx={{ p: 3.5, borderRadius: 6 }}>
+            <Stack spacing={2}>
+              <Skeleton variant="circular" width={52} height={52} />
+              <Box>
+                <Skeleton variant="text" width="40%" height={15} />
+                <Skeleton variant="text" width="80%" height={30} />
+                <Skeleton variant="text" width="60%" height={15} />
+              </Box>
+            </Stack>
+          </Card>
+        </Grid>
+      ))}
+    </Grid>
+  );
+}
+
 function Dashboard() {
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1500);
+    return () => clearTimeout(timer);
+  }, []);
   const stats = [
     { 
       title: "Backend", value: "JWT", subtitle: "Autenticação ativa", icon: <SecurityIcon />, gradient: 'linear-gradient(135deg, #3b82f6, #1d4ed8)', delay: 1,
@@ -451,11 +486,15 @@ function Dashboard() {
       </Box>
 
       <Grid container spacing={3}>
-        {stats.map((stat, i) => (
-          <Grid item xs={12} sm={6} md={3} key={i}>
-            <StatTile {...stat} />
-          </Grid>
-        ))}
+        {loading ? (
+          <DashboardSkeleton />
+        ) : (
+          stats.map((stat, i) => (
+            <Grid item xs={12} sm={6} md={3} key={i}>
+              <StatTile {...stat} />
+            </Grid>
+          ))
+        )}
       </Grid>
 
       <Grid container spacing={3}>
@@ -597,7 +636,7 @@ function MainLayout({ children, mode, onToggleMode }: { children: React.ReactNod
 
       <Box component="main" sx={{ flexGrow: 1, p: { xs: 3, md: 5 }, ml: { md: `${drawerWidth}px` }, width: '100%', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
         <Toolbar sx={{ height: 72 }} />
-        <Box sx={{ flex: 1 }}>{children}</Box>
+        <Box key={location.pathname} className="page-transition" sx={{ flex: 1 }}>{children}</Box>
       </Box>
     </Box>
   );

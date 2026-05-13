@@ -74,8 +74,18 @@ export default function RegisterForm() {
       </div>
 
       <Container maxWidth="sm">
+        <style>
+          {`
+            @keyframes shake {
+              0%, 100% { transform: translateX(0); }
+              20%, 60% { transform: translateX(-8px); }
+              40%, 80% { transform: translateX(8px); }
+            }
+            .shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
+          `}
+        </style>
         <Box
-          className="glass-card fade-in-up"
+          className={`glass-card fade-in-up ${error ? 'shake' : ''}`}
           sx={{
             p: { xs: 4, sm: 6 },
             borderRadius: 6,
