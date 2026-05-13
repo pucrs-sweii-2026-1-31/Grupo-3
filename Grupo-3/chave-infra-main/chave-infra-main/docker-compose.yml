@@ -79,14 +79,15 @@ services:
 
   chave-mfe-auth:
     build:
-      # AJUSTADO: Voltando dois níveis para encontrar a pasta front-end
       context: ../../front-end
       dockerfile: Dockerfile
+      args:
+        - VITE_MS_AUTH_URL=http://localhost:3001/api/auth
     container_name: chave-mfe-auth
     ports:
       - "4001:4001"
     environment:
-      - VITE_MS_AUTH_URL=http://localhost:4566/restapis/chave-api/v1/_user_request_/auth
+      - VITE_MS_AUTH_URL=http://localhost:3001/api/auth
     depends_on:
       infra-provisioner:
         condition: service_started
