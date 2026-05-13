@@ -130,12 +130,12 @@ export function buildTheme(mode: 'light' | 'dark') {
       divider: isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.06)',
     },
     components: {
-      ...(shared.components || {}),
+      ...(shared.components as any || {}),
       MuiCard: {
         styleOverrides: {
-          ...(shared.components?.MuiCard?.styleOverrides || {}),
+          ...(shared.components?.MuiCard?.styleOverrides as any || {}),
           root: {
-            ...(shared.components?.MuiCard?.styleOverrides?.root || {}),
+            ...(shared.components?.MuiCard?.styleOverrides?.root as any || {}),
             borderColor: isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.06)',
             backgroundColor: isDark ? 'rgba(15, 23, 42, 0.6)' : '#ffffff',
             backdropFilter: isDark ? 'blur(12px)' : 'none',

@@ -42,7 +42,7 @@ describe('ShellLayout', () => {
       </ShellLayout>
     );
     
-    const openBtn = screen.getByTestId('MenuIcon').parentElement;
+    const openBtn = screen.getByTestId('MenuIcon').parentElement as HTMLElement;
     await userEvent.click(openBtn);
     
     // Verifica se o conteúdo do drawer apareceu (estará duplicado pois o sidebar fixo também está lá)
