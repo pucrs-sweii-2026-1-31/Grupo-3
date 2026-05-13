@@ -20,9 +20,10 @@ Este projeto foi construído seguindo rigorosos padrões de **TDD (Test-Driven D
   - [🏗️ Estrutura do Monorepo](#️-estrutura-do-monorepo)
   - [🚀 Como Executar Localmente](#-como-executar-localmente)
     - [1. Infraestrutura e Backend (Docker)](#1-infraestrutura-e-backend-docker)
-    - [2. Micro-frontends (MFE \& Shell)](#2-micro-frontends-mfe--shell)
+    - [2. Micro-frontends (MFE & Shell)](#2-micro-frontends-mfe--shell)
   - [🧪 Qualidade e Testes Automatizados](#-qualidade-e-testes-automatizados)
   - [📚 Documentação Técnica](#-documentação-técnica)
+  - [⚠️ Troubleshooting: Tela Branca ou Versão Antiga](#-troubleshooting-tela-branca-ou-versão-antiga)
 
 ---
 
@@ -158,6 +159,30 @@ Os detalhes arquiteturais, registros do TDD e guias de resolução de problemas 
   * [Logs do Backend](./Grupo-3/docs/tdd-journey/backend-tdd-logs.md)
   * [Logs do Frontend](./Grupo-3/docs/tdd-journey/frontend-tdd-logs.md)
   * [Logs de CI/CD](./Grupo-3/docs/tdd-journey/ci-cd-tdd-logs.md)
+
+---
+
+## ⚠️ Troubleshooting: Tela Branca ou Versão Antiga
+
+Se você ou algum membro da equipe clonou o repositório e está vendo uma tela branca (White Screen) ou uma versão antiga (ex: escrito "MFE Auth Standalone"), siga estes passos para limpar o cache do Docker e forçar a atualização:
+
+1.  **Limpar o ambiente atual:**
+    ```bash
+    cd chave-infra-main/chave-infra-main
+    docker compose down
+    ```
+2.  **Puxar as atualizações mais recentes:**
+    ```bash
+    git pull origin main
+    ```
+3.  **Forçar o Build do zero (CRUCIAL):**
+    ```bash
+    docker compose up --build
+    ```
+    *O `--build` garante que o Docker não use imagens antigas em cache.*
+
+4.  **Limpar Cache do Navegador:**
+    Abra o sistema em uma **Janela Anônima** (`Ctrl+Shift+N`) para garantir que o navegador não esteja servindo arquivos JavaScript antigos salvos localmente.
 
 ---
 *Desenvolvido pela Equipe do Grupo 3 - Disciplina de Engenharia de Software II.*
