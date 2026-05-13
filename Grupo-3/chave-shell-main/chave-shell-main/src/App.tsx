@@ -60,10 +60,6 @@ const drawerWidth = 280;
 const GlobalStyles = () => (
   <style>
     {`
-      @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(30px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
       @keyframes float {
         0% { transform: translateY(0px); }
         50% { transform: translateY(-10px); }
@@ -74,10 +70,6 @@ const GlobalStyles = () => (
         70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
         100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
       }
-      .fade-in { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
-      .delay-1 { animation-delay: 0.1s; }
-      .delay-2 { animation-delay: 0.2s; }
-      .delay-3 { animation-delay: 0.3s; }
       .pulse-online {
         width: 10px; height: 10px; border-radius: 50%; background: #10b981;
         display: inline-block; margin-right: 8px; animation: pulse 2s infinite;
@@ -86,13 +78,6 @@ const GlobalStyles = () => (
         width: 10px; height: 10px; border-radius: 50%; background: #ef4444;
         display: inline-block; margin-right: 8px; animation: pulse 2s infinite;
         box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
-      }
-      .page-transition {
-        animation: pageFadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-      }
-      @keyframes pageFadeIn {
-        from { opacity: 0; transform: translateX(10px); }
-        to { opacity: 1; transform: translateX(0); }
       }
       ::-webkit-scrollbar { width: 8px; }
       ::-webkit-scrollbar-track { background: transparent; }
