@@ -90,7 +90,9 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
               20%, 60% { transform: translateX(-8px); }
               40%, 80% { transform: translateX(8px); }
             }
-            .fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+            .fade-in-up { 
+              animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            }
             .shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
           `}
         </style>
@@ -101,6 +103,7 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
             borderRadius: 6,
             position: 'relative',
             overflow: 'hidden',
+            opacity: 1, // Garantia de visibilidade
           }}
         >
           {loading && (
@@ -262,7 +265,7 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
                 <Typography
                   variant="body2"
                   component="a"
-                  href="/register"
+                  href="/cadastro"
                   sx={{
                     color: 'primary.main',
                     fontWeight: 800,
