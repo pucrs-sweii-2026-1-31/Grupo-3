@@ -4,8 +4,11 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { MemoryRouter } from 'react-router-dom';
 import { AuthProvider } from './hooks/useAuth';
 
-export function renderWithProviders(ui: React.ReactElement) {
-  const theme = createTheme();
+export function renderWithProviders(
+  ui: React.ReactElement,
+  { mode = 'light' }: { mode?: 'light' | 'dark' } = {}
+) {
+  const theme = createTheme({ palette: { mode } });
 
   return render(
     <MemoryRouter>
