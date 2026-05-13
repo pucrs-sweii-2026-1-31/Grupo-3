@@ -33,4 +33,10 @@ describe('Dashboard', () => {
     expect(screen.getByText(/Arquitetura MFE escalável/i)).toBeInTheDocument();
     expect(screen.getByText(/Auth JWT Security robusto/i)).toBeInTheDocument();
   });
+
+  it('renderiza corretamente no modo escuro', async () => {
+    renderWithProviders(<Dashboard />, { mode: 'dark' });
+    expect(await screen.findByText('Dashboard', {}, { timeout: 3000 })).toBeInTheDocument();
+    // Apenas renderizar já cobre as branches de isDark
+  });
 });
