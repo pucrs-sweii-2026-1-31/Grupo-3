@@ -479,7 +479,7 @@ function Dashboard() {
                 <Stack spacing={1.5}>
                   <Typography variant="caption" sx={{ opacity: 0.8, fontWeight: 700, textTransform: 'uppercase' }}>Ready for production</Typography>
                   <Typography variant="h6" fontWeight={800}>Release v1.0.0 Stable</Typography>
-                  <Typography variant="caption" sx={{ opacity: 0.7 }}>Uptime: 99.9% · Latência < 50ms</Typography>
+                  <Typography variant="caption" sx={{ opacity: 0.7 }}>Uptime: 99.9% · Latência &lt; 50ms</Typography>
                 </Stack>
               </Stack>
             </CardContent>
