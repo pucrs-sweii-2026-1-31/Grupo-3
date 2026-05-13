@@ -17,7 +17,7 @@ describe('ShellLayout', () => {
     // Verifica Brand
     const brandElements = screen.getAllByText('Chave');
     expect(brandElements.length).toBeGreaterThan(0);
-    expect(screen.getByText(/Sistema de Autoavaliação/i)).toBeInTheDocument();
+    expect(screen.getByText(/Orquestrador de Competências/i)).toBeInTheDocument();
 
     // Verifica itens de navegacao
     expect(screen.getAllByText('Dashboard').length).toBeGreaterThan(0);
@@ -30,7 +30,7 @@ describe('ShellLayout', () => {
       </ShellLayout>
     );
 
-    const toggleBtn = screen.getByLabelText(/tema escuro/i);
+    const toggleBtn = screen.getByLabelText(/Modo Escuro/i);
     fireEvent.click(toggleBtn);
     expect(mockOnToggleMode).toHaveBeenCalled();
   });
@@ -42,7 +42,7 @@ describe('ShellLayout', () => {
       </ShellLayout>
     );
     
-    const openBtn = screen.getByLabelText(/abrir menu/i);
+    const openBtn = screen.getByTestId('MenuIcon').parentElement;
     await userEvent.click(openBtn);
     
     // Verifica se o conteúdo do drawer apareceu (estará duplicado pois o sidebar fixo também está lá)
@@ -79,6 +79,6 @@ describe('ShellLayout', () => {
     );
     
     // Verifica se o ícone de tema claro (sol) aparece quando estamos no dark
-    expect(screen.getByLabelText(/tema claro/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Modo Claro/i)).toBeInTheDocument();
   });
 });

@@ -113,7 +113,7 @@ const shared: ThemeOptions = {
 export function buildTheme(mode: 'light' | 'dark') {
   const isDark = mode === 'dark';
 
-  return createTheme({
+  const themeOptions: any = {
     ...shared,
     palette: {
       mode,
@@ -142,6 +142,7 @@ export function buildTheme(mode: 'light' | 'dark') {
             boxShadow: isDark 
               ? '0 4px 24px -2px rgba(0, 0, 0, 0.2)' 
               : '0 4px 20px -4px rgba(0, 0, 0, 0.05)',
+            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
             '&:hover': {
               borderColor: isDark ? 'rgba(59, 130, 246, 0.4)' : 'rgba(59, 130, 246, 0.2)',
               boxShadow: isDark 
@@ -174,7 +175,9 @@ export function buildTheme(mode: 'light' | 'dark') {
         },
       },
     },
-  });
+  };
+
+  return createTheme(themeOptions);
 }
 
 export const lightTheme = buildTheme('light');

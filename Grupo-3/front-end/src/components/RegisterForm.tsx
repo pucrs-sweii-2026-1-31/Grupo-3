@@ -236,6 +236,7 @@ export default function RegisterForm() {
                             onClick={() => setShowPassword(!showPassword)}
                             edge="end"
                             size="small"
+                            aria-label={showPassword ? "ocultar senha" : "mostrar senha"}
                           >
                             {showPassword ? <VisibilityOffOutlinedIcon fontSize="small" /> : <VisibilityOutlinedIcon fontSize="small" />}
                           </IconButton>

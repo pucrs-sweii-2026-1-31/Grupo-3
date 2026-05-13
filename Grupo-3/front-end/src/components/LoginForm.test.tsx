@@ -15,7 +15,7 @@ describe('LoginForm', () => {
 
     expect(screen.getByLabelText(/e-mail/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/senha/i, { selector: 'input' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /acessar/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Entrar no Sistema/i })).toBeInTheDocument();
   });
 
   it('realiza login, armazena token e chama callback', async () => {
@@ -33,7 +33,7 @@ describe('LoginForm', () => {
 
     await userEvent.type(screen.getByLabelText(/e-mail/i), 'joao@email.com');
     await userEvent.type(screen.getByLabelText(/senha/i, { selector: 'input' }), 'senha123');
-    await userEvent.click(screen.getByRole('button', { name: /acessar/i }));
+    await userEvent.click(screen.getByRole('button', { name: /Entrar no Sistema/i }));
 
     await waitFor(() => expect(onLogin).toHaveBeenCalledWith('jwt-token'));
     expect(localStorage.getItem('token')).toBe('jwt-token');
@@ -50,7 +50,7 @@ describe('LoginForm', () => {
 
     await userEvent.type(screen.getByLabelText(/e-mail/i), 'joao@email.com');
     await userEvent.type(screen.getByLabelText(/senha/i, { selector: 'input' }), 'senha123');
-    await userEvent.click(screen.getByRole('button', { name: /acessar/i }));
+    await userEvent.click(screen.getByRole('button', { name: /Entrar no Sistema/i }));
 
     await waitFor(() => expect(screen.getByText(/Credenciais invalidas/i)).toBeInTheDocument());
   });
@@ -62,7 +62,7 @@ describe('LoginForm', () => {
 
     await userEvent.type(screen.getByLabelText(/e-mail/i), 'joao@email.com');
     await userEvent.type(screen.getByLabelText(/senha/i, { selector: 'input' }), 'senha123');
-    await userEvent.click(screen.getByRole('button', { name: /acessar/i }));
+    await userEvent.click(screen.getByRole('button', { name: /Entrar no Sistema/i }));
 
     expect(await screen.findByText(/Não foi possível realizar o login/i)).toBeInTheDocument();
   });

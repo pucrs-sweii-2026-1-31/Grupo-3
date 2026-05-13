@@ -1,5 +1,4 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import App from './App';
 
@@ -49,7 +48,7 @@ describe('App', () => {
     localStorage.setItem('token', 'fake-token');
     render(<App />);
     
-    const toggleBtn = await screen.findByLabelText(/tema escuro/i);
+    const toggleBtn = await screen.findByLabelText(/Modo Escuro/i);
     fireEvent.click(toggleBtn);
     
     const container = await screen.findByTestId('app-container');
@@ -57,7 +56,7 @@ describe('App', () => {
     expect(localStorage.getItem('theme')).toBe('dark');
 
     // Clica novamente para voltar ao light (cobre a outra branch)
-    const toggleBtnLight = await screen.findByLabelText(/tema claro/i);
+    const toggleBtnLight = await screen.findByLabelText(/Modo Claro/i);
     fireEvent.click(toggleBtnLight);
     expect(container).toHaveAttribute('data-theme', 'light');
     expect(localStorage.getItem('theme')).toBe('light');

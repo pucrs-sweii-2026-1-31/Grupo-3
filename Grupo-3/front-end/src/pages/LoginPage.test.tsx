@@ -10,6 +10,6 @@ describe('LoginPage', () => {
     expect(screen.getByText(/Autoavaliação de Competências/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/e-mail/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/senha/i, { selector: 'input' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /acessar/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Entrar no Sistema/i })).toBeInTheDocument();
   });
 });
