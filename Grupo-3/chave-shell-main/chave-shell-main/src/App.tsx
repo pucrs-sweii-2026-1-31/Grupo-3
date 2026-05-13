@@ -27,6 +27,7 @@ import {
   LinearProgress,
   Collapse,
   alpha,
+  useTheme,
 } from "@mui/material";
 
 // Icons
@@ -43,7 +44,6 @@ import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import WifiOffIcon from '@mui/icons-material/WifiOff';
 import HistoryEduIcon from '@mui/icons-material/HistoryEdu';
 import CodeIcon from '@mui/icons-material/Code';
@@ -512,7 +512,7 @@ function MainLayout({ children, mode, onToggleMode }: { children: React.ReactNod
           <Stack direction="row" alignItems="center" spacing={1.5} sx={{ flexGrow: 1 }}>
             <Box sx={{ 
               width: 32, height: 32, borderRadius: '8px', bgcolor: 'primary.main', 
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              alignItems: 'center', justifyContent: 'center',
               boxShadow: '0 4px 12px rgba(59,130,246,0.3)',
               display: { xs: 'none', sm: 'flex' }
             }}>
