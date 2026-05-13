@@ -42,7 +42,7 @@ describe('useAuth', () => {
 
   it('login atualiza estado e salva token', async () => {
     vi.mocked(tokenStorage.getToken).mockReturnValue(null);
-    vi.mocked(authService.login).mockResolvedValue({ token: 'new-token' });
+    vi.mocked(authService.login).mockResolvedValue({ token: 'new-token', refreshToken: 'new-refresh-token' });
     const wrapper = ({ children }: { children: React.ReactNode }) => <AuthProvider>{children}</AuthProvider>;
     
     const { result } = renderHook(() => useAuth(), { wrapper });
@@ -53,6 +53,7 @@ describe('useAuth', () => {
     
     expect(authService.login).toHaveBeenCalled();
     expect(tokenStorage.setToken).toHaveBeenCalledWith('new-token');
+    expect(tokenStorage.setRefreshToken).toHaveBeenCalledWith('new-refresh-token');
     expect(result.current.token).toBe('new-token');
     expect(result.current.authenticated).toBe(true);
   });

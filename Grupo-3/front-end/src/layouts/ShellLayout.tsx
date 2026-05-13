@@ -222,7 +222,6 @@ export default function ShellLayout({ children, mode, onToggleMode }: ShellLayou
                 height: 32, 
                 borderRadius: '8px', 
                 bgcolor: 'primary.main', 
-                display: 'flex', 
                 alignItems: 'center', 
                 justifyContent: 'center',
                 boxShadow: '0 4px 12px rgba(59,130,246,0.3)',
