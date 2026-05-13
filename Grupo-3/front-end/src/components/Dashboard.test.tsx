@@ -36,7 +36,7 @@ describe('Dashboard', () => {
 
   it('renderiza corretamente no modo escuro', async () => {
     renderWithProviders(<Dashboard />, { mode: 'dark' });
-    expect(await screen.findByText('Dashboard', {}, { timeout: 3000 })).toBeInTheDocument();
-    // Apenas renderizar já cobre as branches de isDark
+    // Esperamos por um conteúdo dentro do StatCard para garantir que o Skeleton sumiu
+    expect(await screen.findByText(/JWT Active/i, {}, { timeout: 3000 })).toBeInTheDocument();
   });
 });
